@@ -41,7 +41,7 @@ svg{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.8;st
 /* navegação */
 nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--card);border-top:1px solid var(--line);
   padding:6px 6px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px rgba(0,0,0,.07)}
-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:var(--mut);font:600 .68rem inherit;padding:7px 2px;border-radius:12px;cursor:pointer;transition:.15s}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:var(--mut);font-family:inherit;font-weight:600;font-size:.68rem;padding:7px 2px;border-radius:12px;cursor:pointer;transition:.15s}
 nav button svg{width:22px;height:22px}
 nav button.on{color:var(--ink);background:var(--brand-soft)}
 nav button.on svg{color:var(--brand-d)}
@@ -61,12 +61,12 @@ nav button.on svg{color:var(--brand-d)}
 .grid{display:grid;gap:12px}
 @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}.grid .full{grid-column:1/-1}}
 label{display:flex;flex-direction:column;gap:5px;font-size:.74rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--mut)}
-input,textarea{font:400 .95rem inherit;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;width:100%;transition:.15s}
+input,textarea{font-family:inherit;font-weight:400;font-size:.95rem;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;width:100%;transition:.15s}
 input:focus,textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 4px rgba(255,192,0,.22);background:var(--card)}
 textarea{resize:vertical;min-height:92px}
 
 /* botões */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 .9rem inherit;border:0;border-radius:12px;padding:12px 16px;background:var(--brand);color:#1c1b1f;cursor:pointer;transition:.15s;box-shadow:0 2px 0 var(--brand-d)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:.9rem;border:0;border-radius:12px;padding:12px 16px;background:var(--brand);color:#1c1b1f;cursor:pointer;transition:.15s;box-shadow:0 2px 0 var(--brand-d)}
 .btn:active{transform:translateY(1px);box-shadow:none}
 .btn.sec{background:var(--card);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
 .btn.sec:hover{border-color:var(--brand)}
@@ -117,35 +117,124 @@ textarea{resize:vertical;min-height:92px}
 code{background:var(--field);border:1px solid var(--line);padding:1px 6px;border-radius:6px;font-size:.8em}
 #logoPrev{max-height:64px;max-width:180px;border:1px solid var(--line);border-radius:10px;padding:6px;background:#fff;display:block;margin-bottom:10px}
 
-/* total fixo no celular */
-#totalbar{position:fixed;left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:25;background:#1c1b1f;color:#fff;border-radius:14px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 26px rgba(0,0,0,.3);font-size:.85rem}
-#totalbar b{color:var(--brand);font-size:1.05rem}
-@media(min-width:900px){#totalbar{display:none!important}}
 
 /* aviso */
 #toast{position:fixed;left:50%;top:calc(72px + env(safe-area-inset-top));transform:translate(-50%,-20px);opacity:0;pointer-events:none;z-index:60;background:#1c1b1f;color:#fff;padding:11px 18px;border-radius:12px;font-size:.88rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:.25s;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}#toast.err{background:var(--danger)}
 footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
+
+/* ===== v3: celular de tela média, propostas salvas, final, backup ===== */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+.shell>*,main,.card,.grid>*,.f4>*{min-width:0}
+input,textarea,select{font-size:16px}
+select{font-family:inherit;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;width:100%;text-transform:none;letter-spacing:0}
+select:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 4px rgba(255,192,0,.22)}
+input.bad{border-color:var(--danger);background:#fff1f1;color:#7a1f1f}
+.hint{font-size:.76rem;color:var(--mut);min-height:1.1em;margin-top:-4px;text-transform:none;letter-spacing:0;font-weight:500}
+.hint .bad,.bad{color:var(--danger)}
+.f4 .full2{grid-column:1/-1}
+.tag{font-size:.64rem;font-weight:800;letter-spacing:.05em;background:var(--brand-soft);color:#8a5d00;border:1px solid var(--brand);border-radius:6px;padding:2px 6px}
+.row.tight{gap:6px}.row.tight .btn{min-width:0;padding:9px 6px;font-size:.78rem}
+#bkBanner{position:sticky;top:64px;z-index:19;background:#fff3cd;color:#5c4300;border-bottom:1px solid #ffd966;padding:9px 14px;font-size:.84rem;font-weight:600;text-align:center;cursor:pointer}
+#bkBanner[hidden]{display:none}
+
+/* barra inferior com botão Gerar */
+#totalbar{position:fixed;left:10px;right:10px;bottom:calc(70px + env(safe-area-inset-bottom));z-index:25;background:#1c1b1f;color:#fff;border-radius:16px;padding:8px 8px 8px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 8px 26px rgba(0,0,0,.3)}
+#totalbar[hidden]{display:none}
+#totalbar .tb span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:#b9b6c1;font-weight:700}
+#totalbar b{color:var(--brand);font-size:1.08rem}
+#totalbar .btn{padding:12px 16px;white-space:nowrap}
+@media(min-width:900px){#totalbar{left:auto;right:24px;bottom:20px;min-width:440px}}
+
+/* atual + salvas */
+.curcard{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.cc span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}
+.cc b{display:block;font-size:.98rem;overflow-wrap:anywhere}
+.kb{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.06em;border-radius:6px;padding:2px 6px;background:var(--field);border:1px solid var(--line);color:var(--mut);vertical-align:middle;margin-left:4px}
+.kb.fin{background:var(--ok);border-color:var(--ok);color:#fff}.kb.now{background:var(--brand);border-color:var(--brand);color:#1c1b1f}
+.sv{border:1.5px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:var(--card)}
+.sv.cur{border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,192,0,.2)}
+.svh{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.svh b{font-size:.98rem;margin-right:2px;overflow-wrap:anywhere}
+.svp{color:var(--mut);font-size:.84rem;margin:2px 0 6px;overflow-wrap:anywhere}
+.svm{font-size:.8rem;color:var(--mut);margin-bottom:10px}.svm b{color:var(--ink)}
+
+/* guia final */
+.fs{margin-bottom:12px}
+.fi{padding:12px}.fi.ganho::before{background:var(--ok)}.fi.perdido::before{background:var(--danger)}.fi.perdido{opacity:.75}
+.fdesc{font-size:.86rem;color:var(--mut);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.chip.r{margin-left:auto}
+.seg{display:flex;gap:6px;margin-bottom:12px}
+.seg button{flex:1;font:700 .84rem system-ui,sans-serif;font-family:inherit;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:11px;padding:11px 6px;cursor:pointer}
+.seg button.on{background:var(--brand);border-color:var(--brand-d);color:#1c1b1f}
+.seg.two{margin-bottom:0}.seg.two button.g.on{background:var(--ok);border-color:var(--ok);color:#fff}.seg.two button.p.on{background:var(--danger);border-color:var(--danger);color:#fff}
+input[readonly]{background:var(--line);color:var(--mut)}
+
+/* cabeçalho / marca d'água */
+.paper{background:#fff;color:#000;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px;box-shadow:inset 0 0 0 1px #fff;overflow:hidden}
+.rng{margin:12px 0 4px;flex-direction:column}.rng b{float:right;color:var(--ink);text-transform:none}
+.rng input[type=range],input[type=range]{padding:0;border:0;background:none;height:30px;accent-color:var(--brand-d);box-shadow:none}
+.qk{margin:2px 0 6px}.qk .btn{min-width:0}
+.sw{flex-direction:row;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-size:.9rem;font-weight:600;color:var(--ink);margin:6px 0 4px}
+.sw input{width:20px;height:20px;accent-color:var(--brand-d);flex:none}
+.wmprev{background:#fff;border:1px solid var(--line);border-radius:10px;margin-top:8px;height:210px;display:grid;place-items:center;overflow:hidden}
+.wmprev img{max-width:90%;max-height:96%}.wmprev img:not([src]){display:none}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:.88rem}
+.kv span{color:var(--mut)}.kv b{text-align:right;overflow-wrap:anywhere}
+
+/* folha "Gerar proposta" */
+.sheet{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.sheet-box{position:relative;width:100%;max-width:520px;background:var(--card);border-radius:22px 22px 0 0;padding:10px 18px calc(16px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.grab{width:42px;height:4px;border-radius:9px;background:var(--line);margin:0 auto 12px}
+.sheet-box h2{margin:0;font-size:1.15rem}
+.sheet-box .sub{margin:2px 0 10px;overflow-wrap:anywhere}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;padding:8px 0;border-bottom:1px dashed var(--line)}
+.ck i{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.8rem;background:var(--field);color:var(--mut)}
+.ck.ok i{background:var(--ok);color:#fff}.ck.warn i{background:var(--brand);color:#1c1b1f}
+.btn:disabled{opacity:.45;pointer-events:none}
+@media(min-width:640px){.sheet{align-items:center}.sheet-box{border-radius:22px}}
+
+/* celular de tela média (≈ 360–430 px) */
+@media(max-width:480px){
+  .top{padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+  .top h1{font-size:1rem}.pill{font-size:.66rem;padding:4px 9px}
+  .shell{padding:12px 12px 178px;gap:12px}
+  .card{padding:14px;margin-bottom:12px}
+  .stat b{font-size:.95rem}
+  .tools input{min-width:100%}.tools .btn{flex:1}
+  .xc{padding:12px}
+  .seg button{font-size:.78rem;padding:10px 4px}
+}
+code{word-break:break-all;white-space:normal}
 </style>
 </head>
 <body>
 <header class="top"><div class="top-in">
   <div class="mark">EL</div>
   <div><h1>Gerador de Propostas</h1><p>Licitações · Word e PDF</p></div>
-  <div class="pill"><i></i>Salvo no navegador</div>
+  <div class="pill"><i></i>Salvo no aparelho</div>
 </div></header>
+<div id="bkBanner" hidden></div>
 
 <div class="shell">
 <nav aria-label="Seções">
  <button data-v="proposta" class="on"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Proposta</span></button>
- <button data-v="dados"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Dados pessoais</span></button>
- <button data-v="importar"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Importar</span></button>
- <button data-v="exportar"><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Exportar</span></button>
+ <button data-v="salvas"><svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg><span>Salvas</span></button>
+ <button data-v="final"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><path d="M4 20h16"/></svg><span>Final</span></button>
+ <button data-v="dados"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Dados</span></button>
+ <button data-v="arquivos"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span>Arquivos</span></button>
 </nav>
 
 <main>
  <!-- PROPOSTA -->
  <section id="v-proposta" class="view active">
+  <div class="card curcard">
+    <div class="cc"><span>Editando</span><b id="curName">—</b></div>
+    <button class="btn sec sm" id="newProp">+ Nova</button>
+  </div>
   <div class="stats">
     <div class="stat"><span>Itens</span><b id="stItems">0</b></div>
     <div class="stat"><span>Precificados</span><b id="stDone">0/0</b><div class="bar"><i id="stBar"></i></div></div>
@@ -165,7 +254,7 @@ footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
   </div>
   <div class="card">
    <h2><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Itens da proposta</h2>
-   <p class="sub">Informe valor unitário, marca e modelo de cada lote.</p>
+   <p class="sub">Deixe o <b>valor unitário em branco</b> para usar o <b>teto do edital</b>. Valor acima do teto não é aceito.</p>
    <div class="tools">
      <input id="search" type="search" placeholder="Buscar item…">
      <button class="btn sec sm" id="add">+ Item</button>
@@ -174,6 +263,29 @@ footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
    </div>
    <div id="items"></div>
   </div>
+ </section>
+
+ <!-- SALVAS -->
+ <section id="v-salvas" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg>Propostas salvas</h2>
+   <p class="sub">Tudo que você digita é salvo sozinho. Toque em <b>Editar</b> para continuar uma proposta.</p>
+   <div class="tools">
+     <input id="savedSearch" type="search" placeholder="Buscar por órgão ou processo…">
+     <button class="btn sm" id="newProp2">+ Nova</button>
+   </div>
+   <div id="savedList"></div>
+  </div>
+ </section>
+
+ <!-- FINAL -->
+ <section id="v-final" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><path d="M4 20h16"/></svg>Proposta final</h2>
+   <p class="sub">Escolha a proposta, marque o que você <b>ganhou</b> e o que <b>perdeu</b> e readeque os valores. A final sai só com os itens ganhos.</p>
+   <label>Proposta de origem<select id="finOrigem"></select></label>
+  </div>
+  <div id="finBody"></div>
  </section>
 
  <!-- DADOS -->
@@ -190,6 +302,37 @@ footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
     <label class="full">Endereço (cada linha vira uma linha do cabeçalho)<textarea data-bind="profile.endereco"></textarea></label>
    </div>
   </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>Cabeçalho (papel timbrado)</h2>
+   <p class="sub">Escolha como o topo da proposta sai no PDF e no Word.</p>
+   <div class="seg" id="hdrMode">
+     <button data-m="dados">Dados da empresa</button>
+     <button data-m="imagem">Imagem</button>
+     <button data-m="ambos">Imagem + dados</button>
+   </div>
+   <div id="imgCtl" hidden>
+     <div class="row" style="margin-bottom:10px"><label class="btn sec" style="text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--ink)">Escolher imagem<input type="file" id="logoFile" accept="image/png,image/jpeg" hidden></label>
+     <button class="btn sec danger" id="logoDel">Remover</button></div>
+     <label class="rng">Tamanho da imagem <b id="logoWv">40 mm</b><input type="range" id="logoW" min="20" max="190" step="5"></label>
+   </div>
+   <div class="paper" id="hdrPrev"></div>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Marca d’água</h2>
+   <p class="sub">Imagem ao fundo de todas as páginas. Ajuste a rotação e a opacidade.</p>
+   <div class="row" style="margin-bottom:10px"><label class="btn sec" style="text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--ink)">Escolher imagem<input type="file" id="wmFile" accept="image/png,image/jpeg" hidden></label>
+   <button class="btn sec danger" id="wmDel">Remover</button></div>
+   <div id="wmCtl" hidden>
+     <label class="sw"><input type="checkbox" id="wmOn"> Usar marca d’água nas propostas</label>
+     <label class="rng">Rotação <b id="wmRotV">0°</b><input type="range" id="wmRot" min="-180" max="180" step="1"></label>
+     <div class="row qk"><button class="btn sec sm" data-rot="0">0°</button><button class="btn sec sm" data-rot="-45">-45°</button><button class="btn sec sm" data-rot="45">45°</button><button class="btn sec sm" data-rot="90">90°</button></div>
+     <label class="rng">Opacidade <b id="wmOpV">15%</b><input type="range" id="wmOp" min="3" max="100" step="1"></label>
+     <div class="wmprev"><img id="wmPrev" alt="Prévia da marca d'água"></div>
+   </div>
+  </div>
+
   <div class="card">
    <h2><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Dados bancários</h2>
    <div class="grid" style="margin-top:12px">
@@ -201,22 +344,26 @@ footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
     <label>CNPJ da empresa<input data-bind="profile.cnpjEmpresa" inputmode="numeric"></label>
    </div>
   </div>
-  <div class="card">
-   <h2><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Logo (opcional)</h2>
-   <p class="sub">PNG ou JPG. Se não enviar, o cabeçalho usa o monograma “EL”.</p>
-   <img id="logoPrev" alt="Logo" hidden>
-   <div class="row"><label class="btn sec" style="text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--ink)">Escolher imagem<input type="file" id="logoFile" accept="image/png,image/jpeg" hidden></label>
-   <button class="btn sec danger" id="logoDel">Remover</button></div>
-  </div>
-  <p class="sub" style="text-align:center">🔒 Os dados ficam apenas neste navegador.</p>
+  <p class="sub" style="text-align:center">🔒 Os dados ficam apenas neste aparelho.</p>
  </section>
 
- <!-- IMPORTAR -->
- <section id="v-importar" class="view">
+ <!-- ARQUIVOS -->
+ <section id="v-arquivos" class="view">
   <div class="card">
-   <h2><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Importar dados</h2>
+   <h2><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Backup</h2>
+   <p class="sub">Salva um arquivo <code>.json</code> com <b>todas as propostas e dados</b>, uma vez por dia, em <b>horário sorteado</b>.</p>
+   <div class="kv"><span>Pasta</span><b id="bkDir">—</b></div>
+   <div class="kv"><span>Último backup</span><b id="bkLast">—</b></div>
+   <div class="kv"><span>Próximo backup</span><b id="bkNext">—</b></div>
+   <label class="sw"><input type="checkbox" id="bkAuto"> Backup automático diário (horário aleatório)</label>
+   <div class="row"><button class="btn sec" id="bkPick">Escolher pasta</button><button class="btn" id="bkNow">Fazer backup agora</button></div>
+   <p class="sub" id="bkNote" style="margin-top:12px"></p>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Importar / restaurar</h2>
    <p class="sub">Aceita <b>.json</b> (backup deste app ou lista de itens) e <b>.csv</b> com as colunas
-    <code>item;descricao;unidade;quantidade;valor_referencia;valor_unitario;marca;modelo</code> (só <code>descricao</code> é obrigatória).</p>
+    <code>item;descricao;unidade;quantidade;valor_referencia;valor_unitario;marca;modelo</code> (só <code>descricao</code> é obrigatória). Proposta em .json entra como <b>nova proposta salva</b>.</p>
    <label class="drop" id="drop"><svg viewBox="0 0 24 24"><path d="M12 15V4m0 0L8 8m4-4l4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
      <b>Toque ou arraste um arquivo</b>.json · .csv
      <input type="file" id="impFile" accept=".json,.csv,.txt,application/json,text/csv" hidden></label>
@@ -225,17 +372,14 @@ footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
      <button class="btn sec" id="tplCsv">Baixar modelo CSV</button>
    </div>
   </div>
- </section>
 
- <!-- EXPORTAR -->
- <section id="v-exportar" class="view">
   <div class="card">
    <h2><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Exportar</h2>
-   <p class="sub">Marca e modelo saem em colunas separadas no Word e no PDF.</p>
+   <p class="sub">Exporta a proposta que está em edição. Marca e modelo saem em colunas separadas.</p>
    <div class="exp">
     <div class="xc"><h3><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Word (.docx)</h3><p>Proposta editável no mesmo layout.</p><button class="btn" id="expDocx">Baixar Word</button></div>
     <div class="xc"><h3><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg>PDF</h3><p>Abre a impressão; escolha “Salvar como PDF”.</p><button class="btn" id="expPdf">Gerar PDF</button></div>
-    <div class="xc"><h3><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Backup (.json)</h3><p>Tudo: dados pessoais, pregão e itens.</p><button class="btn sec" id="expJson">Baixar backup</button></div>
+    <div class="xc"><h3><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Backup (.json)</h3><p>Tudo: dados, imagens e todas as propostas.</p><button class="btn sec" id="expJson">Baixar backup</button></div>
     <div class="xc"><h3><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM3 10h18M9 5v14"/></svg>Itens (.csv)</h3><p>Planilha para abrir no Excel.</p><button class="btn sec" id="expCsv">Baixar CSV</button></div>
    </div>
   </div>
@@ -243,44 +387,85 @@ footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
 </main>
 </div>
 
-<div id="totalbar"><span>Valor global</span><b id="grand2">R$ 0,00</b></div>
+<div id="totalbar" hidden><div class="tb"><span id="barLbl">Valor global</span><b id="grand2">R$ 0,00</b></div><button class="btn" id="barBtn">Gerar proposta</button></div>
+
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-bg" data-close></div>
+  <div class="sheet-box" role="dialog" aria-modal="true">
+    <div class="grab"></div>
+    <h2 id="shTitle">Gerar proposta</h2>
+    <p class="sub" id="shSub"></p>
+    <div id="shBody"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="shPdf">Gerar PDF</button><button class="btn" id="shDocx">Gerar Word</button></div>
+    <button class="btn sec sm" data-close style="width:100%;margin-top:10px">Cancelar</button>
+  </div>
+</div>
+
 <div id="toast" role="status"></div>
 <footer>Gerador de Propostas · funciona offline depois do primeiro acesso</footer>
 
 <script>
 'use strict';
-const LS = 'propostas-pwa-v2';
+const LS = 'propostas-pwa-v3', LS_OLD = ['propostas-pwa-v2', 'propostas-pwa-v1'], LS_BK = 'propostas-backup-cfg';
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 const EXEMPLO = {"proposal":{"orgao":"PREFEITURA MUNICIPAL DE JAPIRA","processo":"Pregão Eletrônico nº 028/2026 – Processo Administrativo nº 123/2026","validade":"60 dias","pagamento":"30 dias úteis","localEntrega":"Unidade de Saúde Dr. Cesar Augusto Luiggi de Oliveira, s/n, Centro – Japira/PR","prazoEntrega":"15 dias","items":[{"n":1,"desc":"Jogo terapeutico para enfrentamento de medos","unid":"UNID","qtd":2,"ref":"120,50","unit":"","marca":"","modelo":""},{"n":2,"desc":"Kit frutinhas com Velcro, brinquedo educativo de plástico atóxico, com frutinhas divididas em partes unidas por velcro, acompanhadas de uma faquinha de plástico e uma tábua, permitindo que a criança finja cortar o alimento de verdade","unid":"UNID","qtd":4,"ref":"73,17","unit":"","marca":"","modelo":""},{"n":3,"desc":"Caixa registradora de brinquedo destinada a atividades de avaliação, intervenção psicológica, ludoterapia e práticas psicopedagógicas, possibilitando a observação e o desenvolvimento de habilidades cognitivas, sociais, emocionais e de comunicação por meio do brincar simbólico. Confeccionada em material resistente, atóxico e de fácil higienização, composta por caixa registradora, teclado funcional ou simulativo, gaveta para dinheiro, moedas, cédulas e demais acessórios compatíveis com atividades de faz de conta.","unid":"UNID","qtd":1,"ref":"96,14","unit":"","marca":"","modelo":""},{"n":4,"desc":"Bola de brinquedo tipo baiacu confeccionada em material PVC, borracha macia ou similar macio, flexível e atóxico, revestida por múltiplas pontas arredondadas e suaves ao toque, proporcionando estímulos táteis e sensoriais. Indicada para atividades recreativas, psicomotoras, terapêuticas e de integração sensorial, auxiliando no desenvolvimento da coordenação motora, percepção tátil, atenção e relaxamento; fácil higienização; cores variadas e atrativas; dimensões adequadas ao manuseio infantil; textura sensorial estimulante; Livre de arestas cortantes e partes pequenas destacáveis.","unid":"UNID","qtd":2,"ref":"74,38","unit":"","marca":"","modelo":""},{"n":5,"desc":"Kit de instrumentos musicais infantis destinados a atividades pedagógicas, recreativas, terapêuticas e de estimulação sensorial. Confeccionado em materiais resistentes, atóxicos e seguros para uso infantil. Especificações mínimas: Conjunto contendo, no mínimo, 5 instrumentos musicais variados (tais como tambor, chocalho, pandeiro, castanhola, maraca, xilofone, triângulo ou similares); Material resistente, atóxico e de fácil higienização; Acabamento seguro, sem arestas cortantes ou pontiagudas; Cores variadas e atrativas; Tamanho adequado ao manuseio infantil; Instrumentos com emissão sonora adequada para atividades educacionais e terapêuticas; Acondicionados em embalagem ou estojo para armazenamento e transporte; Indicado para atividades de musicalização, educação infantil, psicopedagogia, ludoterapia e estimulação precoce.","unid":"KIT","qtd":2,"ref":"253,95","unit":"","marca":"","modelo":""},{"n":6,"desc":"Jogo pedagógico do tipo “Caixa Maluca”, confeccionado em material EVA (etil vinil acetato) de alta densidade, atóxico, lavável e resistente, destinado a atividades lúdicas, psicopedagógicas e terapêuticas. O jogo consiste em peças e formas variadas que podem ser manipuladas, encaixadas, organizadas ou retiradas de uma caixa/estrutura, estimulando a coordenação motora, percepção visual, atenção, raciocínio lógico, criatividade e interação social. Especificações mínimas: confeccionado em EVA colorido, resistente e atóxico; conjunto composto por caixa/estrutura e peças geométricas ou formas variadas; peças de diferentes cores, tamanhos e formatos; superfície macia, leve e segura para uso infantil; bordas arredondadas e sem partes cortantes ou destacáveis pequenas; fácil higienização; utilizável em contextos pedagógicos, psicopedagógicos, ludoterapia e educação infantil.","unid":"UNID","qtd":2,"ref":"109,84","unit":"","marca":"","modelo":""},{"n":7,"desc":"Jogo de pesca de brinquedo. Especificações mínimas: Estrutura em plástico resistente, leve e atóxico; Funcionamento por pilhas; Base com movimento giratório ou mecânico que simula a pesca; peixes ou elementos similares para captura com varinha ou rede; Possuir estímulos visuais e/ou sonoros (luz e/ou som); Acabamento seguro, sem arestas cortantes e sem partes perigosas; Indicado para uso infantil em atividades recreativas, psicopedagógicas e terapêuticas; Estímulo à coordenação motora fina, atenção, percepção visual e socialização; Fácil higienização.","unid":"UNID","qtd":2,"ref":"36,24","unit":"","marca":"","modelo":""},{"n":8,"desc":"Jogo pedagógico de raciocínio lógico com o objetivo de estimular o pensamento lógico, a resolução de problemas, a atenção, a concentração, a memória, a percepção espacial e o desenvolvimento cognitivo por meio de atividades lúdicas. Especificações mínimas: Conjunto de peças e/ou tabuleiro educativo voltado ao desenvolvimento do raciocínio lógico; Material resistente, atóxico e seguro para uso infantil; Pode conter peças de encaixe, sequências, formas geométricas ou cartões de atividades; Cores variadas e atrativas; Superfície e peças com acabamento seguro, sem arestas cortantes e sem partes pequenas destacáveis para faixas etárias inadequadas; Fácil higienização.","unid":"UNID","qtd":2,"ref":"69,02","unit":"","marca":"","modelo":""},{"n":9,"desc":"Jogo de equilíbrio do tipo “Boom”, confeccionado em material plástico resistente, atóxico e seguro, destinado a atividades lúdicas, recreativas e psicopedagógicas. O jogo consiste em uma base de equilíbrio e peças que devem ser posicionadas de forma estratégica, sem que a estrutura perca a estabilidade, promovendo desafios de coordenação motora, raciocínio lógico, planejamento, atenção e percepção espacial. Especificações mínimas: Base de equilíbrio confeccionada em material plástico resistente e atóxico; Conjunto de peças leves, coloridas e de diferentes formatos para empilhamento ou encaixe; Sistema de instabilidade progressiva (jogo de equilíbrio com desafio crescente); Acabamento seguro, sem arestas cortantes ou partes destacáveis perigosas; Fácil higienização.","unid":"UNID","qtd":2,"ref":"45,94","unit":"","marca":"","modelo":""},{"n":10,"desc":"Kit de fantoches das emoções confeccionados em feltro macio, atóxico e resistente, destinado a atividades pedagógicas, psicopedagógicas, psicológicas e terapêuticas. O material tem como finalidade auxiliar na identificação, expressão e compreensão das emoções, favorecendo o desenvolvimento socioemocional, linguagem, comunicação, empatia e interação social por meio de atividades lúdicas e dramatização. Especificações mínimas: Confeccionado em feltro de alta qualidade, macio e atóxico; Conjunto contendo fantoches representando emoções básicas (ex.: alegria, tristeza, raiva, medo, surpresa e outras, conforme kit); Acabamento reforçado e seguro, sem partes cortantes ou destacáveis pequenas; Cores variadas e expressivas, facilitando a identificação das emoções; Tamanho adequado para manipulação por crianças e/ou profissionais; Fácil higienização e conservação.","unid":"KIT","qtd":2,"ref":"140,00","unit":"","marca":"","modelo":""},{"n":11,"desc":"Brinquedo tipo mola destinado a atividades recreativas e lúdicas. O produto possui formato espiral, permitindo movimentos de extensão, compressão e deslocamento, estimulando a coordenação motora, percepção visual, atenção e interação sensorial. Especificações mínimas: Confeccionado em plástico flexível, resistente e atóxico; Estrutura em formato de mola espiral contínua; Cores variadas e atrativas; Superfície lisa, sem rebarbas ou arestas cortantes; Alta flexibilidade e resistência ao uso contínuo; Fácil higienização.","unid":"UNID","qtd":6,"ref":"6,53","unit":"","marca":"","modelo":""},{"n":12,"desc":"Jogo “Quem? O quê? Onde?” em EVA. Jogo pedagógico confeccionado em EVA (etil vinil acetato), atóxico, lavável e resistente, destinado ao desenvolvimento da linguagem oral e escrita, compreensão de estruturas frasais, construção de narrativas e ampliação do vocabulário. O material trabalha, de forma lúdica, a formação de frases e histórias a partir das perguntas “quem?”, “o quê?” e “onde?”, estimulando a criatividade, o raciocínio linguístico e a organização de ideias. Especificações mínimas:Confeccionado em EVA de alta qualidade, colorido, resistente e atóxico; Conjunto composto por cartões ou peças representando pessoas (quem?), ações (o quê?) e lugares (onde?); Peças de fácil manuseio, com imagens claras e de boa visualização; Superfície lavável e de fácil higienização; Bordas arredondadas e acabamento seguro, sem partes cortantes.","unid":"UNID","qtd":2,"ref":"158,00","unit":"","marca":"","modelo":""},{"n":13,"desc":"Brinquedo “Troque e Encaixe as Cores” – Brinquedo pedagógico confeccionado em MDF (fibra de madeira de média densidade), destinado a atividades lúdicas e educativas de associação, classificação e coordenação motora. O material consiste em uma estrutura em formato de casa com peças coloridas removíveis e encaixáveis, permitindo a troca e o encaixe conforme cores correspondentes, estimulando o aprendizado por meio da manipulação e da percepção visual. Especificações mínimas: Estrutura em MDF resistente, com acabamento lixado e seguro; Formato de casa ou painel interativo; Peças coloridas removíveis e encaixáveis para associação por cores; Pintura atóxica e resistente ao uso infantil; Bordas arredondadas e acabamento sem rebarbas ou partes cortantes; Cores variadas e contrastantes para facilitar o aprendizado; Fácil higienização.","unid":"UNID","qtd":2,"ref":"51,51","unit":"","marca":"","modelo":""},{"n":14,"desc":"Kit com Quatro Painéis Psicomotores destinados ao desenvolvimento de habilidades motoras, cognitivas e sensoriais, voltado para atividades pedagógicas, psicopedagógicas, terapêuticas e de estimulação psicomotora. Os painéis permitem diferentes tipos de interação e desafios motores, promovendo coordenação motora fina e grossa, equilíbrio, lateralidade, noção espacial e planejamento motor. Especificações mínimas: Kit contendo 4 (quatro) painéis psicomotores distintos circular, quadrado, labirinto e 4 linhas; Confeccionados em material resistente (MDF, madeira tratada ou equivalente seguro); Superfície com atividades variadas de estimulação psicomotora (ex.: trajetos, encaixes, circuitos, movimentos direcionais); Pintura atóxica, colorida e resistente ao uso infantil; Bordas arredondadas e acabamento seguro, sem rebarbas ou arestas cortantes; Fixação segura para uso em parede ou suporte apropriado; Fácil higienização e manutenção.","unid":"KIT","qtd":2,"ref":"197,77","unit":"","marca":"","modelo":""},{"n":15,"desc":"Kit composto por 6 fantoches de mão confeccionados em feltro e EVA (etil vinil acetato), destinado a atividades pedagógicas, psicopedagógicas, terapêuticas e de inclusão social. Especificações mínimas: Kit contendo mínimo de 6 (seis) fantoches de mão; Confeccionados em feltro macio e EVA atóxico, resistente e seguro; Temática “família e inclusão social”, podendo representar diferentes perfis de pessoas e diversidade social; Acabamento reforçado, sem partes cortantes ou destacáveis de risco; Cores variadas e elementos visuais que favoreçam identificação e interação; Tamanho adequado para uso por crianças e/ou profissionais; Fácil higienização e conservação.","unid":"KIT","qtd":2,"ref":"94,67","unit":"","marca":"","modelo":""},{"n":16,"desc":"Brinquedo Ovos de Encaixe com Velcro – Brinquedo educativo composto por ovos de simulação para encaixe, confeccionados em material plástico resistente, atóxico e seguro, com sistema de fixação por velcro, destinado a atividades de faz de conta em cozinha infantil. O conjunto permite que as partes do ovo sejam separadas e reconectadas, simulando o manuseio de alimentos, promovendo o desenvolvimento da coordenação motora, percepção visual, atenção e habilidades de vida prática. Especificações mínimas: Ovos de brinquedo confeccionados em plástico resistente, leve e atóxico; Sistema de encaixe por velcro ou mecanismo similar seguro; Peças que se separam em duas metades (simulação de corte/abertura); Acabamento seguro, sem arestas cortantes ou partes pequenas destacáveis de risco; Cores e formas realistas ou lúdicas; Fácil higienização","unid":"UNID","qtd":2,"ref":"115,67","unit":"","marca":"","modelo":""},{"n":17,"desc":"Brinquedo Brincar de Falar: recurso terapêutico e pedagógico usado em fonoaudiologia, alfabetização e estimulação da linguagem infantil, caixa em madeira 20x26x12cm, fichas ilustradas laminadas cerca de 6cm, com 42 fichas educativas, para nomeação de sons, músicas infantis, imitação de gestos, partes do rosto, habilidades trabalhadas são linguagem expressiva, linguagem receptiva, percepção acústica, prosódia, atenção auditiva, memoria verbal, coordenação motora oral, imitação de gestos e sons, Marca similar a Materiais para brincar.","unid":"UNID","qtd":2,"ref":"102,78","unit":"","marca":"","modelo":""},{"n":18,"desc":"Jogos de Classificação e Correspondência de Cores – O material deve permitir que a criança agrupe, separe, associe e organize peças de acordo com cores, estimulando a atenção, coordenação motora e noções básicas de organização e seriação. Especificações mínimas: Conjunto de peças coloridas para atividades de classificação e correspondência; Material resistente, atóxico e seguro para uso infantil (plástico ou equivalente); Cores variadas e bem definidas para facilitar a identificação; Peças de tamanhos adequados ao manuseio infantil; Superfície lisa, sem rebarbas, arestas cortantes ou partes pequenas destacáveis de risco; Pode incluir tabuleiros, bases, cartões ou suportes para agrupamento; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"122,25","unit":"","marca":"","modelo":""},{"n":19,"desc":"Brinquedo didático de madeira com formas geométricas e cores para estimular coordenação motora, percepção visual, raciocínio lógico e aprendizagem de formas e cores. brinquedo pedagógico educativo encaixe formas geométricas colorido, material de madeira MDF, tinta atóxica e resistente, acabamentos lixados (pontas arredondadas), formas geométricas (circulo, quadrado, triangulo, retângulo e estrela), peças 3 a 6cm; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"62,21","unit":"","marca":"","modelo":""},{"n":20,"desc":"Alfabeto de madeira (letras para encaixar): Tabuleiro alfabeto letras em madeira MDF didático pedagógico, colorido, 26 letras do alfabeto maiúsculas (A a Z), com base de encaixe e peças soltas, letras cerca de 3 a 6cm, base/tabuleiro 20 a 30cm, cores vivas para facilitar a identificação, habilidades desenvolvidas reconhecimento das letras, consciência fonológica (som das letras), coordenação motora fina, atenção e memoria visual, pré-alfabetização, formação de palavras e vocabulário; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"63,90","unit":"","marca":"","modelo":""},{"n":21,"desc":"Jogo de silabas: Jogo de madeira com silabas e figuras infantil pedagógica, usado a partir de 4 a 7 anos, idioma português, material madeira MDF ou cartão plastificado, tinta atóxica e acabamento seguro, peças resistentes, cartões ou peças com silabas simples (PA, PE, PI, PO,PU), silabas complexas (BR, TR, LH, NH,) e versões avançadas, imagens para associação, peças cerca de 3 a 6 cm, cores diferenciadas por tipo de silaba, alta durabilidade e facil manipulação; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"48,72","unit":"","marca":"","modelo":""},{"n":22,"desc":"Jogo de memória (animais): material educativo de memória animais, em madeira MDF, cartão ou plástico resistente, tinta atóxica e impressão colorida, peças com acabamento arredondado, associação de pares com figuras de animais, 24 peças, cerca de 4 a 6cm, espessura de 3 a 6mm; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"35,85","unit":"","marca":"","modelo":""},{"n":23,"desc":"Blocos de montar: Blocos para montar encaixar com 91 peças grandes, material plástico resistente, peças atóxicas, tipo encaixe tradicional, engrenagens, formas geométricas, peças coloridas, encaixe firme, bordas arredondadas, Fácil higienização e conservação.","unid":"KIT","qtd":2,"ref":"153,03","unit":"","marca":"","modelo":""},{"n":24,"desc":"Quebra-cabeça progressivo: brinquedo educativo, com níveis crescentes de dificuldade, indicado para desenvolvimento cognitivo, e coordenação motora infantil, são vários níveis de dificuldade, Quebra-cabeça infantil de madeira, progressivo 6 em 1, contendo 04 quebra-cabeças; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"46,94","unit":"","marca":"","modelo":""},{"n":25,"desc":"Jogo de Mesa “Lince Alfabeto” – Jogo de mesa educativo do tipo observação e associação, voltado ao reconhecimento das letras do alfabeto, desenvolvimento da atenção, percepção visual, agilidade de resposta e ampliação do vocabulário. O material consiste em um tabuleiro com diversas imagens e/ou letras. Especificações mínimas: Jogo de mesa educativo com temática do alfabeto; Tabuleiro ilustrado contendo letras e/ou figuras representativas; Peças/cartas com letras do alfabeto em formato legível e adequado à educação infantil; Material resistente, atóxico e seguro para uso infantil; Cores variadas e impressão de alta qualidade; Componentes com acabamento seguro, sem arestas cortantes ou peças pequenas destacáveis inadequadas; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"72,08","unit":"","marca":"","modelo":""},{"n":26,"desc":"Lousa magnética: Quadro branco magnético, 90x60, quadro de escrita e aprendizagem infantil, plástico resistente ABS, superfície magnética e apagável, acompanha apagador e 04 canetas próprias, leve e portátil, bordas arredondadas para segurança, formato rectangular.","unid":"UNID","qtd":2,"ref":"652,09","unit":"","marca":"","modelo":""},{"n":27,"desc":"Livro “Escreve e Apaga” – Livro pedagógico reutilizável do tipo “escreve e apaga”, destinado ao desenvolvimento da escrita inicial, coordenação motora fina e reconhecimento de letras, números, formas e traçados básicos. O material permite que a criança pratique atividades diversas com caneta apropriada e apague posteriormente, possibilitando repetição do aprendizado de forma lúdica e interativa. Especificações mínimas: Livro pedagógico reutilizável com páginas plastificadas ou laminadas; Acompanhado de caneta com tinta apagável ou marcador próprio (quando aplicável); Superfície resistente ao uso contínuo e de fácil limpeza; Material atóxico e seguro para uso infantil; Acabamento com cantos arredondados e sem partes cortantes; Fácil higienização e reutilização.","unid":"UNID","qtd":2,"ref":"93,97","unit":"","marca":"","modelo":""},{"n":28,"desc":"Bolha de sabão: brinquedo recreativo e sensorial usado em atividades infantis e terapias para estimular respiração, coordenação e atenção visual. recreativo infantil, usado a partir de 2 anos, sempre com supervisão do adulto, kit 24 bolhas de sabão, frasco plástico com tampa de segurança 60ml, com bastão anel soprador, solução atóxica, desenho variados, colorido, usado na fonoaudiologia para treino de sopro e respiração, marca similar a Babuu brinquedos educativos.","unid":"CX","qtd":30,"ref":"3,99","unit":"","marca":"","modelo":""},{"n":29,"desc":"Tapete colorido infantil de EVA - material educativo e de proteção usado em ambientes infantis para conforto, segurança e atividades pedagógicas no chão. kit tatame infantil, EVA (etileno acetato de vinila) encaixável tipo “puzzle”, pode ser montado e desmontado facilmente, espuma leve, flexível e atóxica, placas 50x50cm, 10mm, 12 peças, coloridos.","unid":"KIT","qtd":2,"ref":"268,03","unit":"","marca":"","modelo":""},{"n":30,"desc":"Inalador Portátil: Inalador Nebulizador usado para umidificação das vias aéreas e voz na fonoaudiologia, tecnologia mesh (rede vibratória) ou ultrassônica, bateria recarregável (USB), e com pilhas, capacidade do reservatório 8 a 15ml, ruido silencioso, adulto e infantil, com máscara e bocal, marca similar a G-tech Nebmesh.","unid":"UNID","qtd":2,"ref":"150,84","unit":"","marca":"","modelo":""},{"n":31,"desc":"Umidificador de ar: Umidificador ultrassônico (mais silencioso), evaporativo, portáteis 220-500ml, vapor quente, luz led noturna, desligamento automático, ajuste de intensidade de nevoa, similar a G-tech Allergy Free Dual – bivolt.","unid":"UNID","qtd":1,"ref":"167,89","unit":"","marca":"","modelo":""},{"n":32,"desc":"Tubo LAX VOX com garrafa de exercício vocal: dispositivo usado em exercícios de trato vocal semiocluído (ETVSO), exercícios como aquecimento, desaquecimento e terapia vocal, Tubo ressonância Lax Vox Etvso; Dimensões 13,00 X 09,00 X 350,00 mm translucido, canudo material de silicone e garrafa de plástico ou vidro.","unid":"UNID","qtd":10,"ref":"31,63","unit":"","marca":"","modelo":""},{"n":33,"desc":"Kit Respiron e New Shaker – Incentivador Respiratório e Treinamento Muscular Respiratório. Kit composto por incentivador inspiratório (tipo Respiron) e dispositivo de treinamento expiratório (tipo New Shaker), destinado ao fortalecimento da musculatura respiratória, treino diafragmático e reeducação ventilatória. Especificações mínimas: Kit composto por incentivador inspiratório e dispositivo de treino expiratório; Níveis de esforço ajustáveis: leve, médio e alto a intenso; Regulagem de resistência graduada de 0 a 3 (ou equivalente); Material: poliestireno cristal de alta resistência; Mangueira em polietileno; Bocal em polipropileno atóxico; Produto lavável e de fácil higienização; Não autoclavável e não reciclável.","unid":"KIT","qtd":6,"ref":"69,82","unit":"","marca":"","modelo":""},{"n":34,"desc":"Massageador facial elétrico portátil, modelo tipo Energy Beauty Bar, destinado ao estímulo sensorial, relaxamento muscular facial e atividades terapêuticas complementares em atendimentos de fonoaudiologia e psicologia. Equipamento com sistema de vibração de alta frequência, cabeça em formato “T” ergonômica para aplicação em regiões faciais e cervicais, proporcionando massagem suave e estimulação tátil. Funciona por meio de 1 (uma) pilha AA, com estrutura leve, portátil e de fácil higienização. Indicado para utilização em exercícios de percepção sensorial, relaxamento da musculatura orofacial e atividades terapêuticas voltadas ao bem-estar e à estimulação facial. Fabricado em material resistente e durável, com acabamento metálico ou similar. Garantia mínima contra defeitos de fabricação conforme legislação vigente.","unid":"UNID","qtd":2,"ref":"181,46","unit":"","marca":"","modelo":""},{"n":35,"desc":"Massageador Cervical Elétrico com Infravermelho – Tipo G-Tech IR-Magnet Plus ou Similar, portátil, destinado ao relaxamento muscular, alívio de tensões e estimulação terapêutica. Especificações mínimas: Alimentação elétrica bivolt automático (127/220 V); Tecnologia de infravermelho para aquecimento terapêutico; Sistema de massagem vibratória; Regulagem variável de potência e velocidade; Controle manual para ajuste da intensidade da massagem; Design ergonômico para aplicação na região cervical, ombros e áreas musculares adjacentes; Estrutura resistente, de fácil higienização e manuseio; Funcionamento silencioso; Cabo elétrico com comprimento adequado para uso clínico; Acompanhado de manual de instruções em português; Certificação de segurança conforme normas vigentes aplicáveis; Garantia mínima de 12 (doze) meses contra defeitos de fabricação.","unid":"UNID","qtd":2,"ref":"160,63","unit":"","marca":"","modelo":""},{"n":36,"desc":"Massageador Manual Tipo Roller 3D em Plástico, confeccionado em plástico resistente de alta durabilidade, indicado para estimulação sensorial, relaxamento muscular, liberação miofascial e drenagem suave em atendimentos terapêuticos de fonoaudiologia, psicologia, fisioterapia e áreas correlatas, com sistema de rotação 360°, com duplo rolo massageador facial e corporal, proporcionando aplicação uniforme e confortável. Especificações mínimas: Material: plástico resistente e atóxico; Comprimento aproximado: 15,5 cm; Largura aproximada: 5 cm; Sistema de rotação dos rolos em 360°; Duplo rolo massageador tipo Roller 3D; Cilindro único com superfície lisa e texturizada; Rolo com esferas massageadoras para estimulação profunda; Textura lisa para drenagem suave e relaxamento; Textura texturizada para massagem profunda e liberação miofascial; Design anatômico e ergonômico; Fácil higienização e manutenção; Leve, portátil e de fácil manuseio; Cor variável conforme disponibilidade do fabricante.","unid":"UNID","qtd":2,"ref":"84,36","unit":"","marca":"","modelo":""},{"n":37,"desc":"Cachimbo de Plástico com Bolinha para Exercícios de Sopro. Dispositivo lúdico para exercícios respiratórios e treinamento da coordenação motora oral, composto por cachimbo plástico e esfera flutuante, indicado para atividades de fonoaudiologia, psicologia, terapia ocupacional, fisioterapia respiratória e ações de estimulação infantil e adulta. Proporciona feedback visual imediato do fluxo expiratório por meio da sustentação da esfera no ar durante o sopro, auxiliando no desenvolvimento do controle respiratório, coordenação pneumofonoarticulatória e fortalecimento da musculatura orofacial. Especificações mínimas: Conjunto/pacote contendo mínimo 10 unidades; Composto por cachimbo plástico e esfera leve flutuante; Material do corpo: PVC, poliestireno ou material equivalente; Esfera confeccionada em material leve e resistente; Bocal com revestimento em silicone ou material macio equivalente; Estrutura transparente ou parcialmente transparente para melhor visualização do exercício; Cores variadas e atrativas; Leve e de fácil manuseio; Fácil higienização e reutilização; Indicado para uso infantil e adulto; Produto atóxico e seguro para utilização terapêutica.","unid":"PCTE","qtd":15,"ref":"21,51","unit":"","marca":"","modelo":""},{"n":38,"desc":"Língua de Sogra para Exercícios de Sopro – Dispositivo lúdico para exercícios de sopro e treinamento da motricidade orofacial, composto por apito com tubo extensível que se desenrola mediante a expiração do usuário. Indicado para atividades de fonoaudiologia, psicologia, terapia ocupacional, educação infantil e demais práticas terapêuticas voltadas ao desenvolvimento do controle respiratório, coordenação motora oral e fortalecimento da musculatura orofacial. Especificações mínimas: Kit contendo 50 (cinquenta) unidades; Estrutura composta por tubo extensível em papel plastificado ou material similar; Bico para sopro confeccionado em plástico resistente; Sistema interno com arame de aço flexível ou material equivalente para sustentação e retorno do tubo; Acionamento por sopro, promovendo o desenrolar do tubo durante a expiração; Cores variadas e atrativas; Material leve, resistente e atóxico; Fácil manuseio e armazenamento.","unid":"PCTE","qtd":10,"ref":"6,34","unit":"","marca":"","modelo":""},{"n":39,"desc":"Pirulito Tipo Cata-Vento para Exercícios de Sopro em formato espiral com dispositivo giratório tipo cata-vento, destinado ao desenvolvimento de exercícios lúdicos de sopro, coordenação motora oral e mobilidade de língua em atividades de fonoaudiologia, psicologia, terapia ocupacional e educação infantil. Especificações mínimas: Caixa contendo mínimo 12 (doze) unidades; Pirulito em formato espiral tipo cata-vento; Dispositivo giratório tipo “ventoinha”, acionado por sopro ou movimentação do ar; Suporte plástico resistente para manuseio; Composição básica: açúcar, glicose e ingredientes alimentícios permitidos pela legislação sanitária vigente; Cores variadas e atrativas; Produto embalado individualmente; Design que permita visualização clara do movimento giratório durante o sopro; Produto dentro do prazo de validade e com registro ou regularização junto aos órgãos competentes, quando aplicável.","unid":"PCTE","qtd":20,"ref":"31,82","unit":"","marca":"","modelo":""},{"n":40,"desc":"Abaixador de Língua Descartável com Sabor, descartável destinado à inspeção da cavidade oral, exames clínicos, avaliações fonoaudiológicas e atividades terapêuticas, especialmente em público infantil. Especificações mínimas: Embalagem contendo 50 (cinquenta) unidades; Confeccionado em plástico resistente, atóxico e seguro para uso clínico; Descartável e de uso individual; Não estéril; Com aroma e sabor artificial incorporados ao material; Cores variadas e atrativas; Superfície lisa, sem rebarbas ou irregularidades; Bordas arredondadas para maior conforto e segurança; Dimensões adequadas para avaliação da cavidade oral de crianças e adultos; Produto livre de substâncias tóxicas e adequado para contato com a mucosa oral; Fácil manuseio pelo profissional de saúde.","unid":"PCTE","qtd":10,"ref":"4,90","unit":"","marca":"","modelo":""},{"n":41,"desc":"Aparelho para Mobilidade Lingual Tipo Exercitador de Língua (Fono Haltere). Dispositivo terapêutico portátil destinado à reabilitação e ao treinamento das funções orofaciais, utilizado em atendimentos de fonoaudiologia para exercícios de mobilidade lingual, fortalecimento muscular e adequação das funções estomatognáticas. Especificações mínimas: Aparelho portátil para exercícios de mobilidade e fortalecimento lingual; Estrutura flexível e resistente; Peça intraoral confeccionada em silicone macio, atóxico e ajustável; Design anatômico para adaptação confortável à cavidade oral; Sistema que permita utilização entre os dentes e os lábios durante os exercícios; Silicone adaptado para minimizar desconforto na região do frênulo labial; Material lavável e de fácil higienização; Livre de arestas cortantes ou superfícies abrasivas; Reutilizável, resistente ao uso terapêutico contínuo; Indicado para pacientes infantis, adolescentes e adultos, conforme avaliação profissional; Acompanha orientações de uso e conservação.","unid":"UNID","qtd":2,"ref":"131,40","unit":"","marca":"","modelo":""},{"n":42,"desc":"Kit de Escovas de Silicone para Treinamento Oral. Kit destinado à estimulação sensorial oral, adaptação à higiene bucal e exercícios de motricidade orofacial, composto por 02 (duas) escovas de treinamento e 01 (um) anel protetor de segurança. Fabricado com materiais atóxicos e livres de BPA, proporcionando segurança e conforto durante a utilização. Especificações mínimas: Kit contendo 02 (duas) escovas de treinamento e 01 (um) anel protetor; Fabricado em polipropileno (PP), elastômero termoplástico (TPE) e nylon nas cerdas, ou materiais equivalentes; Livre de BPA (Bisfenol A); Cabeça pequena e arredondada para maior segurança durante o uso; Cerdas extra macias; Cabo anatômico e antiderrapante; Anel protetor removível para evitar inserção excessiva na cavidade oral; Material resistente, atóxico e de fácil higienização; Acabamento sem rebarbas ou arestas cortantes.","unid":"KIT","qtd":10,"ref":"17,33","unit":"","marca":"","modelo":""},{"n":43,"desc":"Bandagem Elástica Adesiva terapêutica para uso em Fonoterapia (Kinesio Tape), reabilitação orofacial e estimulação proprioceptiva em terapias de fala, deglutição e motricidade orofacial. Especificações mínimas: Fita elástica adesiva tipo kinesio tape para uso terapêutico; Material em tecido de algodão elástico; Adesivo acrílico hipoalergênico; Elasticidade em sentido longitudinal e diagonal, acompanhando o movimento muscular; Dimensões: 2,5 cm x 5 m e/ou 5 cm x 5 m; Cor bege ou similar neutra; Alta respirabilidade e resistência à água; Fixação segura e confortável para uso prolongado de 3 a 7 dias; Elástica e confortável; 100% livre de látex; Segurança assegurada para profissionais e pacientes.","unid":"ROLO","qtd":10,"ref":"24,17","unit":"","marca":"","modelo":""},{"n":44,"desc":"Seringa Descartável 60 ml com Bico Cateter, indicada para procedimentos clínicos e terapêuticos, incluindo treinamento de força respiratória e atividades de fonoaudiologia e fisioterapia respiratória. Especificações mínimas: Capacidade de 60 ml; Bico tipo cateter (longo e fino); Confeccionada em polipropileno transparente de grau médico; Êmbolo com vedação em borracha (anel de vedação); Escala de graduação visível para medição precisa; Uso único e descartável; Produto estéril ou não estéril conforme especificação do fabricante; Atóxica e apirogênica; Embalagem contendo 25 (vinte e cinco) unidades; Livre de látex (quando aplicável).","unid":"CX","qtd":10,"ref":"1,15","unit":"","marca":"","modelo":""}]}};
 
-const DEFAULT = {
-  profile: { nome:'EDUARDO LEMES DE OLIVEIRA', cpf:'062.954.389-54', cnpj:'68.187.471/0001-94',
-    endereco:'Rua Maria Catarina Gerlinger, 265\nLago Azul, Curitiba-PR', email:'', telefone:'43 99957-7957',
-    banco:'077 - INTER', agencia:'0001', conta:'54885070-4', pix:'68.187.471/0001-94',
-    favorecido:'68.187.471 EDUARDO LEMES DE OLIVEIRA', cnpjEmpresa:'68187471000194', logo:null },
-  proposal: { orgao:'', processo:'', validade:'60 dias', pagamento:'30 dias', localEntrega:'', prazoEntrega:'', items:[] }
+const DEFPROF = {
+  nome:'EDUARDO LEMES DE OLIVEIRA', cpf:'062.954.389-54', cnpj:'68.187.471/0001-94',
+  endereco:'Rua Maria Catarina Gerlinger, 265\nLago Azul, Curitiba-PR', email:'', telefone:'43 99957-7957',
+  banco:'077 - INTER', agencia:'0001', conta:'54885070-4', pix:'68.187.471/0001-94',
+  favorecido:'68.187.471 EDUARDO LEMES DE OLIVEIRA', cnpjEmpresa:'68187471000194', logo:null,
+  hdr:{ mode:'dados', logoW:40 },
+  wm:{ data:null, w:0, h:0, rot:-30, op:15, on:true }
 };
-let S, FILTER = '';
-const normItem = x => ({ desc: x.desc ?? x.descricao ?? '', unid: x.unid ?? x.unidade ?? 'UNID', qtd: x.qtd ?? x.quantidade ?? 1,
-  ref: x.ref ?? x.valor_referencia ?? '', unit: x.unit ?? x.valor_unitario ?? '', marca: x.marca ?? '', modelo: x.modelo ?? '' });
-function load() {
-  try { const j = JSON.parse(localStorage.getItem(LS) || localStorage.getItem('propostas-pwa-v1'));
-    S = { profile:{...DEFAULT.profile,...(j?.profile||{})}, proposal:{...DEFAULT.proposal,...(j?.proposal||{})} }; }
-  catch { S = JSON.parse(JSON.stringify(DEFAULT)); }
-  S.proposal.items = (Array.isArray(S.proposal.items) ? S.proposal.items : []).map(normItem);
-}
-const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) { toast('Não foi possível salvar: ' + e.message, true); } };
-let tt; function toast(t, err) { const e = $('#toast'); e.textContent = t; e.className = 'show' + (err ? ' err' : ''); clearTimeout(tt); tt = setTimeout(() => e.className = '', 2800); }
+const DEFPROP = () => ({ orgao:'', processo:'', validade:'60 dias', pagamento:'30 dias', localEntrega:'', prazoEntrega:'', items:[] });
+let S, FILTER = '', VIEW = 'proposta';
 
-/* ---------- dinheiro ---------- */
+const normItem = x => ({ id: x.id || uid(), lote: x.lote ?? x.n ?? '', desc: x.desc ?? x.descricao ?? '', unid: x.unid ?? x.unidade ?? 'UNID', qtd: x.qtd ?? x.quantidade ?? 1,
+  ref: x.ref ?? x.valor_referencia ?? '', unit: x.unit ?? x.valor_unitario ?? '', marca: x.marca ?? '', modelo: x.modelo ?? '' });
+const normProfile = (p, migrate) => {
+  const pr = { ...DEFPROF, ...(p || {}) };
+  pr.hdr = { ...DEFPROF.hdr, ...(p?.hdr || {}) }; pr.wm = { ...DEFPROF.wm, ...(p?.wm || {}) };
+  if (migrate && !p?.hdr) pr.hdr.mode = pr.logo ? 'ambos' : 'dados';
+  return pr;
+};
+const mkRec = (proposal, kind, extra) => ({ id: uid(), kind: kind || 'inicial', origem: null, finalId: null, createdAt: Date.now(), updatedAt: Date.now(),
+  proposal, final: { sel: {}, unit: {} }, ...(extra || {}) });
+const normRec = r => { const o = { ...mkRec(DEFPROP()), ...r };
+  o.proposal = { ...DEFPROP(), ...(r.proposal || {}) };
+  o.proposal.items = (Array.isArray(o.proposal.items) ? o.proposal.items : []).map(normItem);
+  o.final = { sel: {}, unit: {}, ...(r.final || {}) }; return o; };
+const getRec = id => S.props.find(r => r.id === id);
+const curRec = () => getRec(S.cur);
+function setCur(id) { S.cur = id; S.proposal = curRec().proposal; }
+function load() {
+  let j = null; try { j = JSON.parse(localStorage.getItem(LS)); } catch {}
+  if (j && Array.isArray(j.props) && j.props.length) S = { profile: normProfile(j.profile), props: j.props.map(normRec), cur: j.cur };
+  else { let o = null; for (const k of LS_OLD) { try { o = JSON.parse(localStorage.getItem(k)); if (o) break; } catch {} }
+    S = { profile: normProfile(o?.profile, true), props: [normRec({ proposal: o?.proposal || {} })], cur: null }; }
+  setCur(getRec(S.cur) ? S.cur : S.props[0].id);
+}
+const save = () => { try { localStorage.setItem(LS, JSON.stringify({ v: 3, profile: S.profile, props: S.props, cur: S.cur })); } catch (e) { toast('Não foi possível salvar: ' + e.message, true); } };
+const touch = () => { const r = curRec(); if (r) r.updatedAt = Date.now(); save(); };
+let tt; function toast(t, err) { const e = $('#toast'); e.textContent = t; e.className = 'show' + (err ? ' err' : ''); clearTimeout(tt); tt = setTimeout(() => e.className = '', 3200); }
+
+/* ---------- dinheiro (teto do edital) ---------- */
 const toCents = v => { let s = String(v ?? '').replace(/R\$|\s/g, ''); if (!s) return 0;
   if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); const n = parseFloat(s); return isFinite(n) ? Math.round(n * 100) : 0; };
 const fmt = c => (c / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const brl = c => 'R$ ' + fmt(c);
-const lineCents = it => toCents(it.unit) * (Number(it.qtd) || 0);
-const grandCents = () => S.proposal.items.reduce((a, it) => a + lineCents(it), 0);
+const refC = it => toCents(it.ref);                       // teto do edital (unitário)
+const unitC = it => toCents(it.unit);                     // valor digitado
+const usaTeto = it => refC(it) > 0 && unitC(it) <= 0;     // em branco -> usa o teto
+const acimaTeto = it => refC(it) > 0 && unitC(it) > refC(it);
+const effC = it => { const r = refC(it), u = unitC(it); return r > 0 ? Math.min(u > 0 ? u : r, r) : u; };  // nunca passa do teto
+const lineC = it => Math.round(effC(it) * (Number(it.qtd) || 0));
+const grandOf = items => items.reduce((a, it) => a + lineC(it), 0);
+const grandCents = () => grandOf(S.proposal.items);
+const loteN = (it, i) => it.lote || (i + 1);
 
 /* ---------- valor por extenso ---------- */
 const U = ['zero','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
@@ -308,79 +493,264 @@ function extenso(c) {
 const getPath = (o, p) => p.split('.').reduce((a, k) => a?.[k], o);
 const setPath = (o, p, v) => { const k = p.split('.'), l = k.pop(); k.reduce((a, x) => a[x], o)[l] = v; };
 const bindFields = () => $$('[data-bind]').forEach(el => { el.value = getPath(S, el.dataset.bind) ?? ''; });
+const recTitle = r => (r.proposal.orgao || 'Sem órgão') + (r.proposal.processo ? ' — ' + r.proposal.processo : '');
+function updateCur() { const r = curRec(); $('#curName').innerHTML = esc(r.proposal.orgao || 'Proposta sem órgão') + (r.kind === 'final' ? ' <span class="kb fin">FINAL</span>' : ''); }
+
+const hintHtml = it => acimaTeto(it) ? `<span class="bad">Acima do teto (${brl(refC(it))}). Será ajustado ao teto.</span>`
+  : usaTeto(it) ? `Em branco: vai o teto (${brl(refC(it))}).` : (refC(it) <= 0 && unitC(it) <= 0 ? 'Sem teto e sem valor.' : '');
+const tagHtml = it => usaTeto(it) ? '<span class="tag">TETO</span>' : '';
+function refreshItem(i) {
+  const it = S.proposal.items[i], card = $(`.item[data-idx="${i}"]`); if (!it || !card) return;
+  $(`[data-tot="${i}"]`).textContent = brl(lineC(it)); card.classList.toggle('done', effC(it) > 0);
+  const u = $(`[data-i="${i}"][data-f="unit"]`); u.classList.toggle('bad', acimaTeto(it)); u.placeholder = refC(it) ? fmt(refC(it)) + ' (teto)' : '0,00';
+  $(`[data-hint="${i}"]`).innerHTML = hintHtml(it); $(`[data-tag="${i}"]`).innerHTML = tagHtml(it);
+}
 document.addEventListener('input', e => {
-  const b = e.target.dataset?.bind; if (b) { setPath(S, b, e.target.value); save(); return; }
-  const i = e.target.dataset?.i; if (i === undefined) return;
-  const it = S.proposal.items[i], f = e.target.dataset.f;
-  it[f] = f === 'qtd' ? (e.target.value === '' ? '' : Number(e.target.value)) : e.target.value; save();
-  if (f === 'unit' || f === 'qtd') { const t = $(`[data-tot="${i}"]`); if (t) t.textContent = brl(lineCents(it));
-    const card = e.target.closest('.item'); if (card) card.classList.toggle('done', toCents(it.unit) > 0); }
+  const t = e.target, b = t.dataset?.bind;
+  if (b) { setPath(S, b, t.value); b.startsWith('proposal.') ? touch() : save();
+    if (b.startsWith('profile.')) renderHdrPrev(); if (b === 'proposal.orgao') updateCur(); return; }
+  const i = t.dataset?.i; if (i === undefined) return;
+  const it = S.proposal.items[i], f = t.dataset.f; if (!it) return;
+  it[f] = f === 'qtd' ? (t.value === '' ? '' : Number(t.value)) : t.value; touch();
+  if (f === 'unit' || f === 'qtd' || f === 'ref') refreshItem(i);
   if (f === 'desc') { const s = $(`#sum${i}`); if (s) s.textContent = it.desc || '(sem descrição)'; }
   updateStats();
+});
+document.addEventListener('change', e => {      // valor acima do teto não é aceito
+  const t = e.target, i = t.dataset?.i, f = t.dataset?.f; if (i === undefined || (f !== 'unit' && f !== 'ref')) return;
+  const it = S.proposal.items[i]; if (!it || !acimaTeto(it)) return;
+  it.unit = fmt(refC(it)); $(`[data-i="${i}"][data-f="unit"]`).value = it.unit; touch(); refreshItem(i); updateStats();
+  toast('Valor acima do teto do edital: ajustado ao teto.', true);
 });
 $('#search').oninput = e => { FILTER = e.target.value.trim().toLowerCase(); renderItems(); };
 
 /* ---------- itens ---------- */
 function updateStats() {
-  const its = S.proposal.items, done = its.filter(x => toCents(x.unit) > 0).length, g = brl(grandCents());
+  const its = S.proposal.items, done = its.filter(x => effC(x) > 0).length, g = brl(grandCents());
   $('#stItems').textContent = its.length; $('#stDone').textContent = `${done}/${its.length}`;
-  $('#stBar').style.width = its.length ? (done / its.length * 100) + '%' : '0'; $('#grand').textContent = g; $('#grand2').textContent = g;
+  $('#stBar').style.width = its.length ? (done / its.length * 100) + '%' : '0'; $('#grand').textContent = g; setBar();
 }
 function renderItems() {
   const box = $('#items'), its = S.proposal.items;
   const html = its.map((it, i) => {
-    if (FILTER && !((i + 1) + ' ' + it.desc + ' ' + it.marca + ' ' + it.modelo).toLowerCase().includes(FILTER)) return '';
-    return `<div class="item ${toCents(it.unit) > 0 ? 'done' : ''}">
-    <div class="ih"><span class="badge">Lote ${i + 1}</span><span class="chip">${esc(it.qtd)} ${esc(it.unid)}</span>
+    if (FILTER && !((loteN(it, i)) + ' ' + it.desc + ' ' + it.marca + ' ' + it.modelo).toLowerCase().includes(FILTER)) return '';
+    return `<div class="item ${effC(it) > 0 ? 'done' : ''}" data-idx="${i}">
+    <div class="ih"><span class="badge">Lote ${esc(loteN(it, i))}</span><span class="chip">${esc(it.qtd)} ${esc(it.unid)}</span><span data-tag="${i}">${tagHtml(it)}</span>
       <button class="x" data-del="${i}" aria-label="Remover item"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button></div>
     <details><summary id="sum${i}">${esc(it.desc || '(sem descrição)')}</summary>
       <textarea rows="5" data-i="${i}" data-f="desc">${esc(it.desc)}</textarea></details>
     <div class="f4">
       <label>Unid<input data-i="${i}" data-f="unid" value="${esc(it.unid)}"></label>
       <label>Qtd<input type="number" min="0" step="any" inputmode="decimal" data-i="${i}" data-f="qtd" value="${esc(it.qtd)}"></label>
-      <label>Ref. (R$)<input data-i="${i}" data-f="ref" inputmode="decimal" value="${esc(it.ref)}"></label>
-      <label>Valor unit. (R$)<input data-i="${i}" data-f="unit" inputmode="decimal" placeholder="0,00" value="${esc(it.unit)}"></label>
+      <label>Teto do edital (R$)<input data-i="${i}" data-f="ref" inputmode="decimal" value="${esc(it.ref)}"></label>
+      <label>Valor unit. (R$)<input data-i="${i}" data-f="unit" inputmode="decimal" class="${acimaTeto(it) ? 'bad' : ''}" placeholder="${refC(it) ? fmt(refC(it)) + ' (teto)' : '0,00'}" value="${esc(it.unit)}"></label>
+      <div class="hint span2 full2" data-hint="${i}">${hintHtml(it)}</div>
       <label class="span2">Marca<input data-i="${i}" data-f="marca" value="${esc(it.marca)}"></label>
       <label class="span2">Modelo<input data-i="${i}" data-f="modelo" value="${esc(it.modelo)}"></label>
     </div>
-    <div class="tot"><span>Total do lote</span><b data-tot="${i}">${brl(lineCents(it))}</b></div>
+    <div class="tot"><span>Total do lote</span><b data-tot="${i}">${brl(lineC(it))}</b></div>
    </div>`; }).join('');
-  box.innerHTML = html || `<div class="empty">${its.length ? 'Nenhum item encontrado.' : 'Nenhum item ainda. Use “+ Item” ou vá em Importar.'}</div>`;
+  box.innerHTML = html || `<div class="empty">${its.length ? 'Nenhum item encontrado.' : 'Nenhum item ainda. Use “+ Item” ou vá em Arquivos › Importar.'}</div>`;
   updateStats();
 }
-$('#add').onclick = () => { S.proposal.items.push(normItem({ unid: 'UNID', qtd: 1 })); save(); FILTER = ''; $('#search').value = ''; renderItems(); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); };
-$('#clear').onclick = () => { if (confirm('Remover todos os itens?')) { S.proposal.items = []; save(); renderItems(); } };
+$('#add').onclick = () => { S.proposal.items.push(normItem({ unid: 'UNID', qtd: 1 })); touch(); FILTER = ''; $('#search').value = ''; renderItems(); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); };
+$('#clear').onclick = () => { if (confirm('Remover todos os itens desta proposta?')) { S.proposal.items = []; touch(); renderItems(); } };
 $('#items').addEventListener('click', e => { const d = e.target.closest('[data-del]'); if (!d) return;
-  if (confirm('Remover este item?')) { S.proposal.items.splice(+d.dataset.del, 1); save(); renderItems(); } });
+  if (confirm('Remover este item?')) { S.proposal.items.splice(+d.dataset.del, 1); touch(); renderItems(); } });
 $('#disc').onclick = () => {
-  const v = prompt('Desconto % sobre o valor de referência (ex.: 10 ou 7,5):', '0'); if (v === null) return;
+  const v = prompt('Desconto % sobre o teto do edital (ex.: 10 ou 7,5):', '0'); if (v === null) return;
   const d = parseFloat(v.replace(',', '.')); if (!isFinite(d) || d < 0 || d >= 100) return toast('Percentual inválido.', true);
-  let n = 0; S.proposal.items.forEach(it => { const r = toCents(it.ref); if (r) { it.unit = fmt(Math.round(r * (1 - d / 100))); n++; } });
-  save(); renderItems(); toast(`Desconto aplicado em ${n} itens.`);
+  let n = 0; S.proposal.items.forEach(it => { const r = refC(it); if (r) { it.unit = fmt(Math.round(r * (1 - d / 100))); n++; } });
+  touch(); renderItems(); toast(`Desconto aplicado em ${n} itens.`);
 };
 
-/* ---------- navegação ---------- */
-$$('nav button').forEach(b => b.onclick = () => {
-  $$('nav button').forEach(x => x.classList.toggle('on', x === b));
-  $$('.view').forEach(v => v.classList.toggle('active', v.id === 'v-' + b.dataset.v));
-  $('#totalbar').style.display = b.dataset.v === 'proposta' ? '' : 'none'; window.scrollTo({ top: 0 });
+/* ---------- propostas salvas ---------- */
+const when = ts => new Date(ts).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+function refreshAll() { bindFields(); renderItems(); updateCur(); renderSaved(); renderDados(); setBar(); }
+function openRec(id) { setCur(id); save(); refreshAll(); showView('proposta'); }
+function newProposal() {
+  const p = S.proposal, r = mkRec({ ...DEFPROP(), validade: p.validade, pagamento: p.pagamento, prazoEntrega: p.prazoEntrega });
+  S.props.unshift(r); setCur(r.id); save(); refreshAll(); showView('proposta'); toast('Nova proposta criada e salva.');
+}
+$('#newProp').onclick = newProposal; $('#newProp2').onclick = newProposal;
+$('#savedSearch').oninput = renderSaved;
+function renderSaved() {
+  const q = ($('#savedSearch').value || '').trim().toLowerCase();
+  const list = S.props.slice().sort((a, b) => b.updatedAt - a.updatedAt).filter(r => !q || recTitle(r).toLowerCase().includes(q));
+  $('#savedList').innerHTML = list.map(r => { const n = r.proposal.items.length, g = grandOf(r.proposal.items);
+    const org = r.origem && getRec(r.origem) ? ` · origem: ${esc(getRec(r.origem).proposal.orgao || 'proposta')}` : '';
+    return `<div class="sv ${r.id === S.cur ? 'cur' : ''}" data-id="${r.id}">
+      <div class="svh"><b>${esc(r.proposal.orgao || 'Sem órgão')}</b>${r.kind === 'final' ? '<span class="kb fin">FINAL</span>' : '<span class="kb">INICIAL</span>'}${r.id === S.cur ? '<span class="kb now">EM EDIÇÃO</span>' : ''}</div>
+      <div class="svp">${esc(r.proposal.processo || 'Sem processo')}</div>
+      <div class="svm">${n} ${n === 1 ? 'item' : 'itens'} · <b>${brl(g)}</b><br>Atualizada em ${when(r.updatedAt)}${org}</div>
+      <div class="row tight"><button class="btn sm" data-act="edit">Editar</button>${r.kind === 'final' ? '' : '<button class="btn sec sm" data-act="final">Final</button>'}
+        <button class="btn sec sm" data-act="gen">Gerar</button><button class="btn sec sm" data-act="dup">Duplicar</button><button class="btn sec sm danger" data-act="del">Excluir</button></div>
+    </div>`; }).join('') || `<div class="empty">${q ? 'Nada encontrado.' : 'Nenhuma proposta salva.'}</div>`;
+}
+$('#savedList').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return; const id = b.closest('[data-id]').dataset.id, r = getRec(id), a = b.dataset.act;
+  if (a === 'edit') openRec(id);
+  else if (a === 'final') { FIN_ORIGEM = id; showView('final'); }
+  else if (a === 'gen') openSheet(r);
+  else if (a === 'dup') { const c = normRec(JSON.parse(JSON.stringify(r))); c.id = uid(); c.createdAt = c.updatedAt = Date.now(); c.finalId = null; c.final = { sel: {}, unit: {} };
+    c.proposal.items.forEach(x => x.id = uid()); c.proposal.processo = (c.proposal.processo || '') + ' (cópia)'; S.props.unshift(c); save(); renderSaved(); toast('Proposta duplicada.'); }
+  else if (a === 'del') { if (!confirm('Excluir esta proposta salva?')) return;
+    S.props = S.props.filter(x => x.id !== id); S.props.forEach(x => { if (x.finalId === id) x.finalId = null; });
+    if (!S.props.length) S.props.push(mkRec(DEFPROP())); if (!getRec(S.cur)) setCur(S.props[0].id);
+    save(); refreshAll(); toast('Proposta excluída.'); }
 });
 
-/* ---------- logo ---------- */
-function renderLogo() { const i = $('#logoPrev'); i.hidden = !S.profile.logo; if (S.profile.logo) i.src = S.profile.logo.data; }
-$('#logoFile').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader();
-  r.onload = () => { const im = new Image(); im.onload = () => { S.profile.logo = { data: r.result, w: im.naturalWidth, h: im.naturalHeight }; save(); renderLogo(); toast('Logo salvo.'); }; im.src = r.result; };
-  r.readAsDataURL(f); e.target.value = ''; };
-$('#logoDel').onclick = () => { S.profile.logo = null; save(); renderLogo(); };
+/* ---------- guia: proposta final (ganhei / perdi) ---------- */
+let FIN_ORIGEM = null;
+const finUnitC = (it, r) => { const v = toCents(r.final.unit[it.id]), ref = refC(it); let u = v > 0 ? v : effC(it); if (ref > 0) u = Math.min(u, ref); return u; };
+const finLine = (it, r) => Math.round(finUnitC(it, r) * (Number(it.qtd) || 0));
+const finTotal = r => r.proposal.items.filter(it => r.final.sel[it.id] === 'ganho').reduce((a, it) => a + finLine(it, r), 0);
+function renderFinal() {
+  const sel = $('#finSel') || $('#finOrigem'), box = $('#finBody'), cand = S.props.filter(r => r.kind !== 'final');
+  if (!cand.length) { sel.innerHTML = ''; box.innerHTML = '<div class="card"><div class="empty">Salve uma proposta inicial primeiro.</div></div>'; return; }
+  if (!cand.find(r => r.id === FIN_ORIGEM)) { const c = curRec(); FIN_ORIGEM = (c.kind === 'final' && getRec(c.origem) ? c.origem : (cand.find(r => r.id === S.cur) || cand[0]).id); }
+  sel.innerHTML = cand.map(r => `<option value="${r.id}" ${r.id === FIN_ORIGEM ? 'selected' : ''}>${esc(recTitle(r))}</option>`).join('');
+  const r = getRec(FIN_ORIGEM), items = r.proposal.items;
+  const cnt = k => items.filter(it => r.final.sel[it.id] === k).length;
+  const rows = items.map((it, i) => { const st = r.final.sel[it.id] || '';
+    return `<div class="item fi ${st}" data-fid="${it.id}">
+      <div class="ih"><span class="badge">Lote ${esc(loteN(it, i))}</span><span class="chip">${esc(it.qtd)} ${esc(it.unid)}</span>${refC(it) ? `<span class="chip r">Teto ${brl(refC(it))}</span>` : ''}</div>
+      <div class="fdesc">${esc(it.desc || '(sem descrição)')}</div>
+      <div class="seg two"><button data-st="ganho" class="${st === 'ganho' ? 'on g' : ''}">✓ Ganhei</button><button data-st="perdido" class="${st === 'perdido' ? 'on p' : ''}">✕ Perdi</button></div>
+      ${st === 'ganho' ? `<div class="f4" style="margin-top:10px">
+        <label>Valor da proposta (R$)<input readonly tabindex="-1" value="${fmt(effC(it))}"></label>
+        <label>Valor readequado (R$)<input data-fv="${it.id}" inputmode="decimal" placeholder="${fmt(effC(it))}" value="${esc(r.final.unit[it.id] ?? '')}" class="${refC(it) && toCents(r.final.unit[it.id]) > refC(it) ? 'bad' : ''}"></label></div>
+        <div class="tot"><span>Total do lote</span><b data-ftot="${it.id}">${brl(finLine(it, r))}</b></div>` : ''}
+    </div>`; }).join('');
+  box.innerHTML = `<div class="card"><div class="stats fs"><div class="stat"><span>Ganhos</span><b id="fcG">${cnt('ganho')}</b></div><div class="stat"><span>Perdidos</span><b id="fcP">${cnt('perdido')}</b></div><div class="stat hi"><span>Total ganho</span><b id="fcT">${brl(finTotal(r))}</b></div></div>
+    <div class="row"><button class="btn sec sm" data-all="ganho">Todos ganhos</button><button class="btn sec sm" data-all="">Limpar marcações</button></div></div>
+    ${rows || '<div class="card"><div class="empty">Essa proposta não tem itens.</div></div>'}`;
+  setBar();
+}
+$('#finOrigem').onchange = e => { FIN_ORIGEM = e.target.value; renderFinal(); };
+$('#finBody').addEventListener('click', e => {
+  const r = getRec(FIN_ORIGEM); if (!r) return;
+  const all = e.target.closest('[data-all]');
+  if (all) { r.final.sel = {}; if (all.dataset.all) r.proposal.items.forEach(it => r.final.sel[it.id] = 'ganho'); r.updatedAt = Date.now(); save(); renderFinal(); return; }
+  const b = e.target.closest('[data-st]'); if (!b) return; const id = b.closest('[data-fid]').dataset.fid;
+  if (r.final.sel[id] === b.dataset.st) delete r.final.sel[id]; else r.final.sel[id] = b.dataset.st;
+  r.updatedAt = Date.now(); save(); renderFinal();
+});
+$('#finBody').addEventListener('input', e => {
+  const id = e.target.dataset?.fv; if (!id) return; const r = getRec(FIN_ORIGEM), it = r.proposal.items.find(x => x.id === id);
+  r.final.unit[id] = e.target.value; save(); e.target.classList.toggle('bad', refC(it) > 0 && toCents(e.target.value) > refC(it));
+  $(`[data-ftot="${id}"]`).textContent = brl(finLine(it, r)); $('#fcT').textContent = brl(finTotal(r)); setBar();
+});
+$('#finBody').addEventListener('change', e => {      // readequado acima do teto não é aceito
+  const id = e.target.dataset?.fv; if (!id) return; const r = getRec(FIN_ORIGEM), it = r.proposal.items.find(x => x.id === id);
+  if (refC(it) > 0 && toCents(e.target.value) > refC(it)) { r.final.unit[id] = fmt(refC(it)); e.target.value = r.final.unit[id]; e.target.classList.remove('bad');
+    save(); $(`[data-ftot="${id}"]`).textContent = brl(finLine(it, r)); $('#fcT').textContent = brl(finTotal(r)); setBar(); toast('Valor acima do teto do edital: ajustado ao teto.', true); }
+});
+function gerarFinal() {
+  const r = getRec(FIN_ORIGEM); if (!r) return;
+  const won = r.proposal.items.filter(it => r.final.sel[it.id] === 'ganho'); if (!won.length) return toast('Marque ao menos um item como ganho.', true);
+  const items = won.map(it => ({ ...it, id: uid(), lote: loteN(it, r.proposal.items.indexOf(it)), unit: fmt(finUnitC(it, r)) }));
+  const prop = { ...r.proposal, items };
+  let f = r.finalId && getRec(r.finalId);
+  if (f) { if (!confirm('Já existe uma proposta final salva desta proposta. Atualizar com as marcações e valores atuais?')) return;
+    f.proposal = prop; f.updatedAt = Date.now(); if (S.cur === f.id) { S.proposal = f.proposal; }
+  } else { f = mkRec(prop, 'final', { origem: r.id }); S.props.unshift(f); r.finalId = f.id; }
+  save(); refreshAll(); openSheet(f, 'Proposta final');
+}
+
+/* ---------- barra inferior + navegação ---------- */
+function setBar() {
+  const b = $('#totalbar');
+  if (VIEW === 'proposta') { b.hidden = false; $('#barLbl').textContent = 'Valor global'; $('#grand2').textContent = brl(grandCents()); $('#barBtn').textContent = 'Gerar proposta'; }
+  else if (VIEW === 'final' && getRec(FIN_ORIGEM)) { b.hidden = false; $('#barLbl').textContent = 'Total ganho'; $('#grand2').textContent = brl(finTotal(getRec(FIN_ORIGEM))); $('#barBtn').textContent = 'Gerar final'; }
+  else b.hidden = true;
+}
+$('#barBtn').onclick = () => VIEW === 'final' ? gerarFinal() : openSheet(curRec());
+function showView(v) {
+  VIEW = v; $$('nav button').forEach(x => x.classList.toggle('on', x.dataset.v === v));
+  $$('.view').forEach(x => x.classList.toggle('active', x.id === 'v-' + v));
+  if (v === 'salvas') renderSaved(); if (v === 'final') renderFinal(); if (v === 'dados') renderDados(); if (v === 'arquivos') renderBk();
+  setBar(); window.scrollTo({ top: 0 });
+}
+$$('nav button').forEach(b => b.onclick = () => showView(b.dataset.v));
+
+/* ---------- imagens (logo / marca d'água) ---------- */
+function readImage(file, max) {
+  return new Promise((ok, no) => { const r = new FileReader(); r.onerror = no;
+    r.onload = () => { const im = new Image(); im.onerror = no; im.onload = () => {
+      const k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight)), w = Math.round(im.naturalWidth * k), h = Math.round(im.naturalHeight * k);
+      const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d');
+      const png = file.type === 'image/png'; if (!png) { x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); }
+      x.drawImage(im, 0, 0, w, h); ok({ data: c.toDataURL(png ? 'image/png' : 'image/jpeg', .88), w, h }); };
+      im.src = r.result; };
+    r.readAsDataURL(file); });
+}
+const _img = new Map();
+const loadImg = src => { if (!_img.has(src)) _img.set(src, new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; })); return _img.get(src); };
+/* marca d'água já com rotação e opacidade aplicadas (PNG transparente) + tamanho em mm */
+async function renderWm(wm, force) {
+  wm = wm || S.profile.wm; if (!wm || !wm.data || (!wm.on && !force)) return null;
+  const img = await loadImg(wm.data), k = Math.min(1, 900 / Math.max(img.naturalWidth, img.naturalHeight));
+  const w = Math.round(img.naturalWidth * k), h = Math.round(img.naturalHeight * k), a = (Number(wm.rot) || 0) * Math.PI / 180;
+  const cw = Math.ceil(Math.abs(w * Math.cos(a)) + Math.abs(h * Math.sin(a))), ch = Math.ceil(Math.abs(w * Math.sin(a)) + Math.abs(h * Math.cos(a)));
+  const c = document.createElement('canvas'); c.width = cw; c.height = ch; const x = c.getContext('2d');
+  x.globalAlpha = Math.max(0, Math.min(1, (Number(wm.op) || 0) / 100)); x.translate(cw / 2, ch / 2); x.rotate(a); x.drawImage(img, -w / 2, -h / 2, w, h);
+  const mm = Math.min(140 / w, 200 / h); let wmm = cw * mm, hmm = ch * mm; const f = Math.min(1, 190 / wmm, 270 / hmm); wmm *= f; hmm *= f;
+  return { url: c.toDataURL('image/png'), wmm, hmm };
+}
+const HDCSS = `.hd{width:100%;border-collapse:collapse;margin:0 0 10px}.hd td{border:0;padding:0;vertical-align:top}
+.hd .r{text-align:right;font:8pt Georgia,serif;color:#7f7f7f;line-height:1.35}.hd .c{text-align:center}.hd img{display:inline-block;height:auto}
+.hd.d td{text-align:center;padding-bottom:7px;border-bottom:2.2px solid #FFC000}
+.hn{font:700 15pt Georgia,serif;color:#1c1b1f;letter-spacing:.4px;margin-bottom:2px}.hl{font:8.5pt Georgia,serif;color:#6f6f6f;line-height:1.5}
+.mono{font:34pt Georgia,serif;color:#d9b98a;line-height:1}.hd small{display:block;font:8pt Georgia,serif;color:#a6a6a6}`;
+$('head').insertAdjacentHTML('beforeend', `<style>${HDCSS}</style>`);
+const contactLines = P_ => [P_.cnpj, P_.cpf, ...String(P_.endereco || '').split('\n'), P_.email, P_.telefone].filter(x => x && x.trim());
+const dadosLines = P_ => { const addr = String(P_.endereco || '').split('\n').map(s => s.trim()).filter(Boolean);
+  return [[P_.cnpj && 'CNPJ ' + P_.cnpj, P_.cpf && 'CPF ' + P_.cpf].filter(Boolean).join(' · '), ...addr, [P_.telefone && 'Tel. ' + P_.telefone, P_.email].filter(Boolean).join(' · ')].filter(Boolean); };
+const MODES = { dados: 'Dados da empresa', imagem: 'Imagem', ambos: 'Imagem + dados' };
+function headerHTML(P_) {
+  const m = P_.hdr.mode, lg = P_.logo, e = esc, w = P_.hdr.logoW || 40, img = lg ? `<img src="${lg.data}" style="width:${w}mm;max-width:100%">` : '';
+  if (m === 'imagem' && lg) return `<table class="hd"><tr><td class="c">${img}</td></tr></table>`;
+  if (m === 'ambos') return `<table class="hd"><tr><td>${lg ? img : `<div class="mono">EL</div><small>${e(P_.cnpj)}</small><small>${e(P_.nome)}</small>`}</td><td class="r">${contactLines(P_).map(e).join('<br>')}</td></tr></table>`;
+  return `<table class="hd d"><tr><td><div class="hn">${e(P_.nome)}</div>${dadosLines(P_).map(s => `<div class="hl">${e(s)}</div>`).join('')}</td></tr></table>`;
+}
+
+/* ---------- guia Dados: cabeçalho + marca d'água ---------- */
+function renderHdrPrev() { const el = $('#hdrPrev'); if (el) el.innerHTML = headerHTML(S.profile); }
+let wmT;
+function renderWmPrev() { clearTimeout(wmT); wmT = setTimeout(async () => { const im = $('#wmPrev'), w = S.profile.wm; if (!w.data) { im.removeAttribute('src'); return; }
+  const r = await renderWm(w, true); im.src = r.url; im.style.opacity = 1; }, 40); }
+function renderDados() {
+  const P_ = S.profile, h = P_.hdr, w = P_.wm;
+  $$('#hdrMode button').forEach(b => b.classList.toggle('on', b.dataset.m === h.mode));
+  $('#imgCtl').hidden = h.mode === 'dados'; $('#logoW').value = h.logoW; $('#logoWv').textContent = h.logoW + ' mm'; renderHdrPrev();
+  $('#wmCtl').hidden = !w.data; $('#wmOn').checked = !!w.on; $('#wmRot').value = w.rot; $('#wmRotV').textContent = w.rot + '°';
+  $('#wmOp').value = w.op; $('#wmOpV').textContent = w.op + '%'; renderWmPrev();
+}
+$('#hdrMode').onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; S.profile.hdr.mode = b.dataset.m; save(); renderDados();
+  if (b.dataset.m !== 'dados' && !S.profile.logo) toast('Envie a imagem do cabeçalho.'); };
+$('#logoW').oninput = e => { S.profile.hdr.logoW = +e.target.value; $('#logoWv').textContent = e.target.value + ' mm'; save(); renderHdrPrev(); };
+$('#logoFile').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try { S.profile.logo = await readImage(f, 1000); save(); renderDados(); toast('Imagem do cabeçalho salva.'); } catch { toast('Não foi possível ler a imagem.', true); } };
+$('#logoDel').onclick = () => { S.profile.logo = null; save(); renderDados(); };
+$('#wmFile').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try { const im = await readImage(f, 1000); S.profile.wm = { ...S.profile.wm, ...im, on: true }; save(); renderDados(); toast('Marca d’água salva.'); } catch { toast('Não foi possível ler a imagem.', true); } };
+$('#wmDel').onclick = () => { S.profile.wm = { ...S.profile.wm, data: null, w: 0, h: 0 }; save(); renderDados(); };
+$('#wmOn').onchange = e => { S.profile.wm.on = e.target.checked; save(); };
+$('#wmRot').oninput = e => { S.profile.wm.rot = +e.target.value; $('#wmRotV').textContent = e.target.value + '°'; save(); renderWmPrev(); };
+$('#wmOp').oninput = e => { S.profile.wm.op = +e.target.value; $('#wmOpV').textContent = e.target.value + '%'; save(); renderWmPrev(); };
+$('#wmCtl').addEventListener('click', e => { const b = e.target.closest('[data-rot]'); if (!b) return; S.profile.wm.rot = +b.dataset.rot; save(); renderDados(); });
 
 /* ---------- utilidades ---------- */
 function download(name, blob) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
-const slug = s => (s || 'proposta').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 50) || 'proposta';
+const slug = s => (s || 'proposta').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 50) || 'proposta';
+const baseName = r => (r.kind === 'final' ? 'Proposta_FINAL_' : 'Proposta_') + slug(r.proposal.processo || r.proposal.orgao);
+const stamp = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`; };
 
 /* ---------- CSV ---------- */
 function parseCSV(text) {
-  text = text.replace(/^\uFEFF/, ''); const first = text.split(/\r?\n/)[0] || '';
+  text = text.replace(/^﻿/, ''); const first = text.split(/\r?\n/)[0] || '';
   const d = (first.match(/;/g) || []).length >= (first.match(/,/g) || []).length ? ';' : ',';
   const rows = []; let row = [], cur = '', q = false;
   for (let i = 0; i < text.length; i++) { const c = text[i];
@@ -390,7 +760,7 @@ function parseCSV(text) {
     else cur += c; }
   row.push(cur); if (row.some(x => x.trim())) rows.push(row); return rows;
 }
-const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
 function csvToItems(text) {
   const rows = parseCSV(text); if (rows.length < 2) throw new Error('CSV vazio.');
   const h = rows[0].map(norm), col = (...n) => h.findIndex(x => n.includes(x));
@@ -405,20 +775,24 @@ const q = s => /[;"\n\r]/.test(s) ? '"' + String(s).replace(/"/g, '""') + '"' : 
 
 /* ---------- importar ---------- */
 function applyImport(obj) {
+  if (obj && Array.isArray(obj.propostas)) {                       // backup completo (v3)
+    if (!confirm(`Restaurar backup com ${obj.propostas.length} proposta(s)? Os dados atuais serão substituídos.`)) return false;
+    S.profile = normProfile(obj.profile); S.props = obj.propostas.map(normRec); if (!S.props.length) S.props.push(normRec({}));
+    setCur(getRec(obj.atual) ? obj.atual : S.props[0].id); save(); refreshAll(); return 'restore';
+  }
   if (Array.isArray(obj)) obj = { proposal: { items: obj } };
   if (obj.items && !obj.proposal) obj = { proposal: obj };
   if (!obj.proposal && !obj.profile) throw new Error('Formato JSON não reconhecido.');
-  if (obj.profile) S.profile = { ...S.profile, ...obj.profile };
-  if (obj.proposal) { const items = obj.proposal.items;
-    S.proposal = { ...S.proposal, ...obj.proposal, items: (Array.isArray(items) ? items : S.proposal.items).map(normItem) }; }
-  save(); bindFields(); renderItems(); renderLogo();
+  if (obj.profile) S.profile = normProfile({ ...S.profile, ...obj.profile });
+  if (obj.proposal) { const r = normRec({ proposal: obj.proposal }); S.props.unshift(r); setCur(r.id); }
+  save(); refreshAll(); return true;
 }
 async function importFile(f) {
-  try { const t = await f.text();
-    if (/\.json$/i.test(f.name) || /^\s*[\[{]/.test(t)) applyImport(JSON.parse(t));
-    else { const items = csvToItems(t); if (!confirm(`Importar ${items.length} itens? Isso substitui os itens atuais.`)) return;
-      S.proposal.items = items; save(); renderItems(); }
-    toast(`Importado: ${S.proposal.items.length} itens.`);
+  try { const t = await f.text(); let res;
+    if (/\.json$/i.test(f.name) || /^\s*[\[{]/.test(t)) res = applyImport(JSON.parse(t));
+    else { const items = csvToItems(t); if (!confirm(`Importar ${items.length} itens? Isso substitui os itens da proposta em edição.`)) return;
+      S.proposal.items = items.map(normItem); touch(); renderItems(); res = true; }
+    if (!res) return; showView('proposta'); toast(res === 'restore' ? 'Backup restaurado.' : `Importado: ${S.proposal.items.length} itens.`);
   } catch (err) { toast('Erro: ' + err.message, true); }
 }
 $('#impFile').onchange = e => { if (e.target.files[0]) importFile(e.target.files[0]); e.target.value = ''; };
@@ -426,23 +800,50 @@ const dz = $('#drop');
 ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
 ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
 dz.addEventListener('drop', e => { if (e.dataTransfer.files[0]) importFile(e.dataTransfer.files[0]); });
-$('#impEx').onclick = () => { applyImport(JSON.parse(JSON.stringify(EXEMPLO))); toast(`Exemplo carregado: ${S.proposal.items.length} itens.`); };
-$('#tplCsv').onclick = () => download('modelo_itens.csv', new Blob(['\uFEFFitem;descricao;unidade;quantidade;valor_referencia;valor_unitario;marca;modelo\n1;Exemplo de produto;UNID;2;120,50;;;\n'], { type: 'text/csv' }));
+$('#impEx').onclick = () => { applyImport(JSON.parse(JSON.stringify(EXEMPLO))); showView('proposta'); toast(`Exemplo carregado: ${S.proposal.items.length} itens.`); };
+$('#tplCsv').onclick = () => download('modelo_itens.csv', new Blob(['﻿item;descricao;unidade;quantidade;valor_referencia;valor_unitario;marca;modelo\n1;Exemplo de produto;UNID;2;120,50;;;\n'], { type: 'text/csv' }));
 
 /* ---------- exportar ---------- */
-$('#expJson').onclick = () => { download(`backup_propostas_${new Date().toISOString().slice(0, 10)}.json`, new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' })); toast('Backup gerado.'); };
+const backupJson = () => JSON.stringify({ app: 'gerador-propostas', versao: 3, geradoEm: new Date().toISOString(), profile: S.profile, propostas: S.props, atual: S.cur });
+$('#expJson').onclick = () => { download(`backup_propostas_${stamp()}.json`, new Blob([backupJson()], { type: 'application/json' })); toast('Backup gerado.'); };
 $('#expCsv').onclick = () => { const l = ['item;descricao;unidade;quantidade;valor_referencia;valor_unitario;marca;modelo'];
-  S.proposal.items.forEach((it, i) => l.push([i + 1, q(it.desc), it.unid, it.qtd, it.ref, it.unit, q(it.marca), q(it.modelo)].join(';')));
-  download('itens.csv', new Blob(['\uFEFF' + l.join('\r\n')], { type: 'text/csv' })); toast('CSV gerado.'); };
-$('#expDocx').onclick = async () => { try { download(`Proposta_${slug(S.proposal.processo)}.docx`, await buildDocx()); toast('Word gerado.'); }
-  catch (e) { console.error(e); toast('Erro: ' + e.message, true); } };
-$('#expPdf').onclick = () => { try { printPdf(); } catch (e) { console.error(e); toast('Erro: ' + e.message, true); } };
+  S.proposal.items.forEach((it, i) => l.push([loteN(it, i), q(it.desc), it.unid, it.qtd, it.ref, it.unit, q(it.marca), q(it.modelo)].join(';')));
+  download('itens.csv', new Blob(['﻿' + l.join('\r\n')], { type: 'text/csv' })); toast('CSV gerado.'); };
+$('#expDocx').onclick = () => gerarDocx(curRec());
+$('#expPdf').onclick = () => gerarPdf(curRec());
+async function gerarDocx(rec) { try { download(baseName(rec) + '.docx', await buildDocx(rec)); toast('Word gerado.'); } catch (e) { console.error(e); toast('Erro: ' + e.message, true); } }
+async function gerarPdf(rec) { try { await printPdf(rec); } catch (e) { console.error(e); toast('Erro: ' + e.message, true); } }
+
+/* ---------- botão "Gerar proposta" ---------- */
+let SH = null;
+function checkList(PR) {
+  const it = PR.items, n = it.length, teto = it.filter(usaTeto).length, semVal = it.filter(x => effC(x) <= 0).length;
+  const semMM = it.filter(x => !(x.marca || '').trim() || !(x.modelo || '').trim()).length, w = S.profile.wm, rows = [];
+  rows.push(['ok', `${n} ${n === 1 ? 'item' : 'itens'} · valor global <b>${brl(grandOf(it))}</b>`]);
+  if (teto) rows.push(['ok', `${teto} sem valor informado: sairão com o <b>teto do edital</b>`]);
+  if (semVal) rows.push(['warn', `${semVal} sem valor e sem teto: sairão em branco`]);
+  if (semMM) rows.push(['warn', `${semMM} sem marca ou modelo`]);
+  rows.push(['ok', `Cabeçalho: ${MODES[S.profile.hdr.mode]}`]);
+  rows.push([w.data && w.on ? 'ok' : 'info', w.data && w.on ? `Marca d’água: opacidade ${w.op}% · rotação ${w.rot}°` : 'Sem marca d’água']);
+  return rows;
+}
+function openSheet(rec, title) {
+  SH = rec; const PR = rec.proposal, rows = checkList(PR);
+  $('#shTitle').textContent = title || (rec.kind === 'final' ? 'Proposta final' : 'Gerar proposta'); $('#shSub').textContent = recTitle(rec);
+  $('#shBody').innerHTML = rows.map(r => `<div class="ck ${r[0]}"><i>${r[0] === 'ok' ? '✓' : r[0] === 'warn' ? '!' : '•'}</i><span>${r[1]}</span></div>`).join('');
+  $('#shPdf').disabled = $('#shDocx').disabled = !PR.items.length; $('#sheet').hidden = false;
+}
+const closeSheet = () => { $('#sheet').hidden = true; };
+$('#sheet').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheet(); });
+$('#shPdf').onclick = () => { const r = SH; closeSheet(); setTimeout(() => gerarPdf(r), 120); };
+$('#shDocx').onclick = () => { const r = SH; closeSheet(); gerarDocx(r); };
 
 /* ---------- Word ---------- */
-const contactLines = P_ => [P_.cnpj, P_.cpf, ...String(P_.endereco || '').split('\n'), P_.email, P_.telefone].filter(x => x && x.trim());
-async function buildDocx() {
-  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, AlignmentType, ImageRun } = docx;
-  const Y = 'FFC000', F = 'Arial', W = 10500, P_ = S.profile, PR = S.proposal;
+const b64 = d => { const m = d.match(/^data:image\/(png|jpe?g);base64,(.+)$/); return { type: m[1] === 'png' ? 'png' : 'jpg', bin: Uint8Array.from(atob(m[2]), c => c.charCodeAt(0)) }; };
+async function buildDocx(rec) {
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, AlignmentType, ImageRun,
+    Header, HorizontalPositionRelativeFrom, HorizontalPositionAlign, VerticalPositionRelativeFrom, VerticalPositionAlign } = docx;
+  const Y = 'FFC000', F = 'Arial', W = 10500, P_ = S.profile, PR = rec.proposal;
   const yb = { style: BorderStyle.SINGLE, size: 8, color: Y }, borders = { top: yb, bottom: yb, left: yb, right: yb };
   const nb = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, noB = { top: nb, bottom: nb, left: nb, right: nb };
   const run = (t, o = {}) => new TextRun({ text: String(t ?? ''), font: F, size: 22, ...o });
@@ -453,17 +854,21 @@ async function buildDocx() {
   const info = rows => { const cw = [3800, 6700];
     return new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: cw, rows: rows.map(r => new TableRow({ cantSplit: true,
       children: r.map((c, i) => cell(cw[i], [P(c[0], { color: Y }), P(c[1])])) })) }); };
-  let left;
-  if (P_.logo) { const m = P_.logo.data.match(/^data:image\/(png|jpe?g);base64,(.+)$/);
-    const bin = Uint8Array.from(atob(m[2]), c => c.charCodeAt(0)), h = Math.round(150 * P_.logo.h / P_.logo.w);
-    left = [new Paragraph({ children: [new ImageRun({ type: m[1] === 'png' ? 'png' : 'jpg', data: bin, transformation: { width: 150, height: h } })] })];
-  } else left = [new Paragraph({ children: [run('EL', { size: 64, color: 'D9B98A', font: 'Georgia' })] }),
-    P(P_.cnpj, { size: 16, color: 'A6A6A6', font: 'Georgia' }), P(P_.nome, { size: 18, color: 'A6A6A6', font: 'Georgia' })];
-  const hw = [5250, 5250];
-  const header = new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: hw, rows: [new TableRow({ children: [
-    new TableCell({ width: { size: hw[0], type: WidthType.DXA }, borders: noB, children: left }),
-    new TableCell({ width: { size: hw[1], type: WidthType.DXA }, borders: noB,
-      children: contactLines(P_).map(t => P(t, { size: 16, color: '7F7F7F', font: 'Georgia' }, { alignment: AlignmentType.RIGHT })) })] })] });
+  const logoRun = () => { const lg = P_.logo, im = b64(lg.data), w = Math.round((P_.hdr.logoW || 40) * 3.7795), h = Math.round(w * lg.h / lg.w);
+    return new ImageRun({ type: im.type, data: im.bin, transformation: { width: w, height: h } }); };
+  const mode = P_.hdr.mode; let headerEls;
+  if (mode === 'imagem' && P_.logo) headerEls = [new Paragraph({ alignment: C, children: [logoRun()] })];
+  else if (mode === 'ambos') {
+    const left = P_.logo ? [new Paragraph({ children: [logoRun()] })] : [new Paragraph({ children: [run('EL', { size: 64, color: 'D9B98A', font: 'Georgia' })] }),
+      P(P_.cnpj, { size: 16, color: 'A6A6A6', font: 'Georgia' }), P(P_.nome, { size: 18, color: 'A6A6A6', font: 'Georgia' })];
+    const hw = [5250, 5250];
+    headerEls = [new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: hw, rows: [new TableRow({ children: [
+      new TableCell({ width: { size: hw[0], type: WidthType.DXA }, borders: noB, children: left }),
+      new TableCell({ width: { size: hw[1], type: WidthType.DXA }, borders: noB,
+        children: contactLines(P_).map(t => P(t, { size: 16, color: '7F7F7F', font: 'Georgia' }, { alignment: AlignmentType.RIGHT })) })] })] })];
+  } else headerEls = [new Paragraph({ alignment: C, spacing: { after: 40 }, children: [run(P_.nome, { bold: true, size: 30, font: 'Georgia', color: '1C1B1F' })] }),
+    ...dadosLines(P_).map(t => P(t, { size: 17, color: '6F6F6F', font: 'Georgia' }, { alignment: C })),
+    new Paragraph({ spacing: { before: 0, after: 0 }, border: { bottom: { style: BorderStyle.SINGLE, size: 14, color: Y, space: 4 } }, children: [] })];
 
   // LOTE | Descrição | Marca | Modelo | Unid | Qtd | Valor Unit. | Valor Total
   const iw = [1050, 2000, 1250, 1250, 700, 700, 1775, 1775], S2 = { size: 20 };
@@ -471,22 +876,22 @@ async function buildDocx() {
     margins: { top: 40, bottom: 40, left: 60, right: 60 }, children: [P(t, { bold: true, color: 'FFFFFF', ...S2 }, { alignment: al || C, ...kp })] });
   const rows = [];
   PR.items.forEach((it, i) => {
-    const hasU = toCents(it.unit) > 0, c = (k, t, o = {}, al = C) => cell(iw[k], [P(t, { color: Y, ...S2, ...o }, { alignment: al, ...kp })]);
-    rows.push(new TableRow({ cantSplit: true, children: [hc('LOTE ' + (i + 1), iw[0]), hc('Descrição', iw[1], AlignmentType.LEFT), hc('Marca', iw[2]), hc('Modelo', iw[3]),
+    const hasU = effC(it) > 0, c = (k, t, o = {}, al = C) => cell(iw[k], [P(t, { color: Y, ...S2, ...o }, { alignment: al, ...kp })]);
+    rows.push(new TableRow({ cantSplit: true, children: [hc('LOTE ' + loteN(it, i), iw[0]), hc('Descrição', iw[1], AlignmentType.LEFT), hc('Marca', iw[2]), hc('Modelo', iw[3]),
       hc('Unid', iw[4]), hc('Qtd', iw[5]), hc('Valor Unit. (R$)', iw[6]), hc('Valor Total (R$)', iw[7])] }));
     rows.push(new TableRow({ cantSplit: true, children: [c(0, 'ITEM 01'), c(1, 'Ver descrição abaixo', { bold: true }, AlignmentType.LEFT), c(2, it.marca), c(3, it.modelo),
-      c(4, it.unid), c(5, it.qtd), c(6, hasU ? brl(toCents(it.unit)) : 'R$ '), c(7, hasU ? brl(lineCents(it)) : 'R$ ')] }));
+      c(4, it.unid), c(5, it.qtd), c(6, hasU ? brl(effC(it)) : 'R$ '), c(7, hasU ? brl(lineC(it)) : 'R$ ')] }));
     rows.push(new TableRow({ cantSplit: true, children: [cell(iw[0], [P('')]),
       cell(W - iw[0], [P(it.desc, { color: Y, ...S2 }, { alignment: AlignmentType.JUSTIFIED })], { columnSpan: 7 })] }));
     rows.push(new TableRow({ cantSplit: true, height: { value: 120, rule: 'exact' }, children: [new TableCell({ width: { size: W, type: WidthType.DXA }, columnSpan: 8, borders: noB, children: [P('', { size: 4 })] })] }));
   });
   const itemsTable = rows.length ? new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: iw, rows }) : P('');
-  const g = grandCents(), sw = [6500, 4000];
+  const g = grandOf(PR.items), sw = [6500, 4000];
   const summary = new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: sw, rows: [new TableRow({ children: [
     cell(sw[0], [P('Valor global da proposta', { bold: true, color: Y })]),
     cell(sw[1], [P(g ? brl(g) : 'R$ ', { bold: true, color: Y }, { alignment: AlignmentType.RIGHT })])] })] });
-  const doc = new Document({ sections: [{ properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 700, bottom: 700, left: 703, right: 703 } } }, children: [
-    header, gap(120),
+  const sec = { properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 700, bottom: 700, left: 703, right: 703, header: 200 } } }, children: [
+    ...headerEls, gap(120),
     info([[['ÓRGÃO / CLIENTE', PR.orgao], ['PROCESSO', PR.processo]], [['VALIDADE DA PROPOSTA', PR.validade], ['PRAZO DE PAGAMENTO', PR.pagamento]], [['LOCAL DE ENTREGA', PR.localEntrega], ['PRAZO DE ENTREGA', PR.prazoEntrega]]]),
     gap(200), P('DADOS BANCÁRIOS', { size: 24 }, { indent: { left: 100 }, spacing: { after: 60 } }),
     info([[['BANCO', P_.banco], ['AGÊNCIA', P_.agencia]], [['CONTA', P_.conta], ['PIX', P_.pix]], [['FAVORECIDO', P_.favorecido], ['CNPJ DA EMPRESA', P_.cnpjEmpresa]]]),
@@ -497,27 +902,31 @@ async function buildDocx() {
     new Paragraph({ indent: { left: 300 }, spacing: { before: 120, after: 900 }, keepNext: true, children: [run('Valor por extenso: ', { bold: true }), run(g ? extenso(g) : '______________________________')] }),
     new Paragraph({ alignment: C, spacing: { before: 600, after: 0 }, keepNext: true, children: [run('______________________________')] }),
     P(P_.nome, { bold: true }, { alignment: C, keepNext: true }),
-    P(P_.cpf ? 'CPF: ' + P_.cpf : '', { bold: true }, { alignment: C })] }] });
-  return Packer.toBlob(doc);
+    P(P_.cpf ? 'CPF: ' + P_.cpf : '', { bold: true }, { alignment: C })] };
+  const wm = await renderWm();                       // marca d'água atrás do texto, em todas as páginas
+  if (wm) { const im = b64(wm.url);
+    sec.headers = { default: new Header({ children: [new Paragraph({ spacing: { before: 0, after: 0, line: 20 }, children: [new ImageRun({ type: 'png', data: im.bin,
+      transformation: { width: Math.round(wm.wmm * 3.7795), height: Math.round(wm.hmm * 3.7795) },
+      floating: { horizontalPosition: { relative: HorizontalPositionRelativeFrom.PAGE, align: HorizontalPositionAlign.CENTER },
+        verticalPosition: { relative: VerticalPositionRelativeFrom.PAGE, align: VerticalPositionAlign.CENTER }, behindDocument: true, allowOverlap: true } })] })] }) }; }
+  return Packer.toBlob(new Document({ sections: [sec] }));
 }
 
 /* ---------- PDF (impressão do navegador) ---------- */
-function printPdf() {
-  const P_ = S.profile, PR = S.proposal, g = grandCents(), e = esc;
+async function printPdf(rec) {
+  const P_ = S.profile, PR = rec.proposal, g = grandOf(PR.items), e = esc, wm = await renderWm();
   const info = rows => `<table class="info">${rows.map(r => `<tr>${r.map(c => `<td><i>${e(c[0])}</i>${e(c[1])}</td>`).join('')}</tr>`).join('')}</table>`;
-  const logo = P_.logo ? `<img src="${P_.logo.data}" style="max-width:150px;max-height:70px">`
-    : `<div class="mono">EL</div><small>${e(P_.cnpj)}</small><small>${e(P_.nome)}</small>`;
-  const lots = PR.items.map((it, i) => { const hasU = toCents(it.unit) > 0; return `<tbody class="lot">
-    <tr class="h"><th>LOTE ${i + 1}</th><th class="l">Descrição</th><th>Marca</th><th>Modelo</th><th>Unid</th><th>Qtd</th><th>Valor Unit. (R$)</th><th>Valor Total (R$)</th></tr>
+  const lots = PR.items.map((it, i) => { const hasU = effC(it) > 0; return `<tbody class="lot">
+    <tr class="h"><th>LOTE ${e(loteN(it, i))}</th><th class="l">Descrição</th><th>Marca</th><th>Modelo</th><th>Unid</th><th>Qtd</th><th>Valor Unit. (R$)</th><th>Valor Total (R$)</th></tr>
     <tr><td class="c">ITEM 01</td><td><b>Ver descrição abaixo</b></td><td class="c">${e(it.marca)}</td><td class="c">${e(it.modelo)}</td><td class="c">${e(it.unid)}</td><td class="c">${e(it.qtd)}</td>
-      <td class="c">${hasU ? brl(toCents(it.unit)) : 'R$'}</td><td class="c">${hasU ? brl(lineCents(it)) : 'R$'}</td></tr>
+      <td class="c">${hasU ? brl(effC(it)) : 'R$'}</td><td class="c">${hasU ? brl(lineC(it)) : 'R$'}</td></tr>
     <tr><td></td><td colspan="7" class="j">${e(it.desc)}</td></tr><tr class="sp"><td colspan="8"></td></tr></tbody>`; }).join('');
-  const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta_${slug(PR.processo)}</title><style>
+  const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${baseName(rec)}</title><style>
   @page{size:A4;margin:11mm}*{box-sizing:border-box}
   body{font:11pt/1.3 Arial,Helvetica,sans-serif;color:#000;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   table{width:100%;border-collapse:collapse;margin:0}td,th{border:1.2px solid #FFC000;padding:4px 6px;vertical-align:top}
-  .head{width:100%;margin-bottom:10px}.head td{border:0;padding:0}.head .r{text-align:right;font:8pt Georgia,serif;color:#7f7f7f;line-height:1.35}
-  .mono{font:34pt Georgia,serif;color:#d9b98a;line-height:1}small{display:block;font:8pt Georgia,serif;color:#a6a6a6}
+  ${HDCSS}
+  .wm{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:-1}
   .info{margin-bottom:12px}.info td{width:36%}.info td+td{width:64%}.info i{display:block;font-style:normal;color:#FFC000}
   h3{font:400 12pt Arial;margin:12px 0 4px 4px}
   .items{table-layout:fixed;font-size:9.5pt}.items th{background:#FFC000;color:#fff;text-align:center;padding:4px;font-size:9pt}
@@ -527,7 +936,8 @@ function printPdf() {
   .ext{margin:14px 0 40px 14px}.sig{text-align:center;margin-top:50px;font-weight:700;break-inside:avoid}
   h4{color:#d99a00;font:700 12pt Arial;margin:14px 0 4px}
   </style></head><body>
-  <table class="head"><tr><td>${logo}</td><td class="r">${contactLines(P_).map(e).join('<br>')}</td></tr></table>
+  ${wm ? `<img class="wm" src="${wm.url}" style="width:${wm.wmm.toFixed(1)}mm;height:${wm.hmm.toFixed(1)}mm">` : ''}
+  ${headerHTML(P_)}
   ${info([[['ÓRGÃO / CLIENTE', PR.orgao], ['PROCESSO', PR.processo]], [['VALIDADE DA PROPOSTA', PR.validade], ['PRAZO DE PAGAMENTO', PR.pagamento]], [['LOCAL DE ENTREGA', PR.localEntrega], ['PRAZO DE ENTREGA', PR.prazoEntrega]]])}
   <h3>DADOS BANCÁRIOS</h3>
   ${info([[['BANCO', P_.banco], ['AGÊNCIA', P_.agencia]], [['CONTA', P_.conta], ['PIX', P_.pix]], [['FAVORECIDO', P_.favorecido], ['CNPJ DA EMPRESA', P_.cnpjEmpresa]]])}
@@ -544,13 +954,63 @@ function printPdf() {
   document.body.appendChild(fr);
   const d = fr.contentDocument; d.open(); d.write(html); d.close();
   const go = () => { fr.contentWindow.focus(); fr.contentWindow.print(); };
-  const imgs = [...d.images]; if (!imgs.length || imgs.every(i => i.complete)) setTimeout(go, 150);
-  else Promise.all(imgs.map(i => new Promise(r => { i.onload = i.onerror = r; }))).then(() => setTimeout(go, 150));
+  const imgs = [...d.images]; if (!imgs.length || imgs.every(i => i.complete)) setTimeout(go, 200);
+  else Promise.all(imgs.map(i => new Promise(r => { i.onload = i.onerror = r; }))).then(() => setTimeout(go, 200));
   toast('Na janela de impressão, escolha “Salvar como PDF”.');
 }
 
+/* ---------- backup diário em horário aleatório ---------- */
+const FSA = 'showDirectoryPicker' in window;
+const BK = { dir: null, cfg: { auto: false, lastAt: 0, nextAt: 0, lastFile: '', pending: false, dirName: '' } };
+try { Object.assign(BK.cfg, JSON.parse(localStorage.getItem(LS_BK) || '{}')); } catch {}
+const saveBk = () => { try { localStorage.setItem(LS_BK, JSON.stringify(BK.cfg)); } catch {} };
+const idb = () => new Promise((ok, no) => { const r = indexedDB.open('gp-backup', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); });
+const idbGet = async k => { const d = await idb(); return new Promise((ok, no) => { const q = d.transaction('kv').objectStore('kv').get(k); q.onsuccess = () => ok(q.result); q.onerror = () => no(q.error); }); };
+const idbSet = async (k, v) => { const d = await idb(); return new Promise((ok, no) => { const t = d.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = () => ok(); t.onerror = () => no(t.error); }); };
+function scheduleNext(first) {            // 1ª vez: sorteia nas próximas 24 h; depois: horário sorteado do dia seguinte
+  const n = new Date();
+  BK.cfg.nextAt = first ? Date.now() + Math.floor(Math.random() * 864e5) : new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1).getTime() + Math.floor(Math.random() * 864e5);
+}
+function bkDone(name, onde) {
+  BK.cfg.lastAt = Date.now(); BK.cfg.lastFile = name; BK.cfg.pending = false;
+  if (BK.cfg.auto && BK.cfg.nextAt <= Date.now()) scheduleNext(false);
+  saveBk(); renderBk(); toast('Backup salvo: ' + onde);
+}
+async function doBackup(interactive) {
+  const name = `backup_propostas_${stamp()}.json`, text = backupJson();
+  if (FSA && BK.dir) {
+    try {
+      let p = await BK.dir.queryPermission({ mode: 'readwrite' });
+      if (p !== 'granted' && interactive) p = await BK.dir.requestPermission({ mode: 'readwrite' });
+      if (p === 'granted') { const fh = await BK.dir.getFileHandle(name, { create: true }), w = await fh.createWritable(); await w.write(text); await w.close(); bkDone(name, 'pasta “' + BK.dir.name + '”'); return true; }
+    } catch (err) { console.error(err); if (interactive) toast('Falha ao gravar na pasta: ' + err.message, true); }
+  }
+  if (interactive) { download(name, new Blob([text], { type: 'application/json' })); bkDone(name, 'baixado em Downloads/Arquivos');
+    if (FSA && !BK.dir) toast('Dica: escolha uma pasta para salvar direto nela.'); return true; }
+  BK.cfg.pending = true; saveBk(); renderBk(); return false;
+}
+async function bkTick() { const c = BK.cfg; if (!c.auto || c.pending || Date.now() < c.nextAt) return; await doBackup(false); }
+function renderBk() {
+  const c = BK.cfg, f = ts => ts ? when(ts) : '—';
+  $('#bkDir').textContent = FSA ? (BK.dir ? BK.dir.name : 'Nenhuma pasta escolhida') : 'Downloads do aparelho';
+  $('#bkLast').textContent = f(c.lastAt); $('#bkNext').textContent = c.auto ? (c.pending ? 'pendente — toque no aviso' : f(c.nextAt)) : 'automático desligado';
+  $('#bkAuto').checked = !!c.auto; $('#bkPick').hidden = !FSA;
+  $('#bkNote').textContent = (FSA ? 'O arquivo é gravado direto na pasta escolhida (pode pedir autorização uma vez por sessão). ' : 'Este navegador (ex.: Safari no iPhone) não grava em pasta escolhida: o backup é baixado e fica em Downloads/Arquivos, com um toque no aviso. ')
+    + 'O automático roda com o app aberto; se o horário sorteado passar com o app fechado, ele é feito ao abrir.';
+  const bn = $('#bkBanner'); bn.hidden = !(c.auto && c.pending);
+  bn.textContent = FSA && BK.dir ? '⚠ Backup do dia pendente — toque para autorizar e salvar na pasta' : '⚠ Backup do dia pronto — toque para salvar o arquivo';
+}
+$('#bkBanner').onclick = () => doBackup(true);
+$('#bkNow').onclick = () => doBackup(true);
+$('#bkPick').onclick = async () => { try { const h = await showDirectoryPicker({ id: 'gp-backup', mode: 'readwrite' }); BK.dir = h; await idbSet('dir', h); BK.cfg.dirName = h.name; saveBk(); renderBk(); toast('Pasta escolhida: ' + h.name); }
+  catch (err) { if (err.name !== 'AbortError') toast('Erro: ' + err.message, true); } };
+$('#bkAuto').onchange = e => { BK.cfg.auto = e.target.checked; if (BK.cfg.auto && BK.cfg.nextAt <= Date.now()) scheduleNext(true); saveBk(); renderBk();
+  if (BK.cfg.auto && FSA && !BK.dir) toast('Escolha a pasta para o backup automático.'); };
+setInterval(bkTick, 30000); document.addEventListener('visibilitychange', () => { if (!document.hidden) bkTick(); });
+
 /* ---------- início ---------- */
-load(); bindFields(); renderItems(); renderLogo();
+load(); refreshAll(); renderBk();
+idbGet('dir').then(h => { if (h) { BK.dir = h; renderBk(); } bkTick(); }).catch(() => bkTick());
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js').catch(() => {});
 </script>
 <script>var docx=(function(F){Object.defineProperty(F,Symbol.toStringTag,{value:"Module"});var Sl=Object.create,vi=Object.defineProperty,Al=Object.getOwnPropertyDescriptor,xl=Object.getOwnPropertyNames,kl=Object.getPrototypeOf,wi=Object.prototype.hasOwnProperty,gi=(e,t,r)=>()=>{if(r)throw r[0];try{return e&&(t=e(e=0)),t}catch(n){throw r=[n],n}},fe=(e,t)=>()=>(t||(e((t={exports:{}}).exports,t),e=null),t.exports),Rl=(e,t,r,n)=>{if(t&&typeof t=="object"||typeof t=="function")for(var s=xl(t),l=0,a=s.length,i;l<a;l++)i=s[l],!wi.call(e,i)&&i!==r&&vi(e,i,{get:(c=>t[c]).bind(null,i),enumerable:!(n=Al(t,i))||n.enumerable});return e},$r=(e,t,r)=>(r=e!=null?Sl(kl(e)):{},Rl(t||!e||!e.__esModule||!wi.call(e,"default")?vi(r,"default",{value:e,enumerable:!0}):r,e));function Wt(e){"@babel/helpers - typeof";return Wt=typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?function(t){return typeof t}:function(t){return t&&typeof Symbol=="function"&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},Wt(e)}function Il(e,t){if(Wt(e)!="object"||!e)return e;var r=e[Symbol.toPrimitive];if(r!==void 0){var n=r.call(e,t||"default");if(Wt(n)!="object")return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return(t==="string"?String:Number)(e)}function Cl(e){var t=Il(e,"string");return Wt(t)=="symbol"?t:t+""}function Y(e,t,r){return(t=Cl(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var Tt=class{constructor(e){Y(this,"rootKey",void 0),this.rootKey=e}get writtenAs(){}},yi=Object.seal({}),ee=class extends Tt{constructor(e){super(e),Y(this,"root",void 0),this.root=new Array}prepForXml(e){var t;e.stack.push(this);const r=this.root.flatMap(n=>{if(n instanceof Tt){const s=n.writtenAs;return s?s.map(l=>l.prepForXml(e)):n.prepForXml(e)}return n}).filter(n=>n!==void 0);return e.stack.pop(),{[this.rootKey]:r.length?r.length===1&&(!((t=r[0])===null||t===void 0)&&t._attr)?r[0]:r:yi}}addChildElement(e){return this.root.push(e),this}},Je=class extends ee{constructor(e,t){super(e),Y(this,"includeIfEmpty",void 0),this.includeIfEmpty=t}prepForXml(e){const t=super.prepForXml(e);return this.includeIfEmpty||t&&(typeof t[this.rootKey]!="object"||Object.keys(t[this.rootKey]).length)?t:void 0}};function bi(e,t){var r=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter(function(s){return Object.getOwnPropertyDescriptor(e,s).enumerable})),r.push.apply(r,n)}return r}function ce(e){for(var t=1;t<arguments.length;t++){var r=arguments[t]!=null?arguments[t]:{};t%2?bi(Object(r),!0).forEach(function(n){Y(e,n,r[n])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):bi(Object(r)).forEach(function(n){Object.defineProperty(e,n,Object.getOwnPropertyDescriptor(r,n))})}return e}var ve=class extends Tt{constructor(e){super("_attr"),Y(this,"root",void 0),Y(this,"xmlKeys",void 0),this.root=e}prepForXml(e){const t={};return Object.entries(this.root).forEach(([r,n])=>{if(n!==void 0){const s=this.xmlKeys&&this.xmlKeys[r]||r;t[s]=n}}),{_attr:t}}},jt=class extends Tt{constructor(e){super("_attr"),Y(this,"root",void 0),this.root=e}prepForXml(e){return{_attr:Object.values(this.root).filter(({value:t})=>t!==void 0).reduce((t,{key:r,value:n})=>ce(ce({},t),{},{[r]:n}),{})}}},Ie=class extends ve{constructor(...e){super(...e),Y(this,"xmlKeys",{val:"w:val",color:"w:color",fill:"w:fill",space:"w:space",sz:"w:sz",type:"w:type",rsidR:"w:rsidR",rsidRPr:"w:rsidRPr",rsidSect:"w:rsidSect",w:"w:w",h:"w:h",top:"w:top",right:"w:right",bottom:"w:bottom",left:"w:left",header:"w:header",footer:"w:footer",gutter:"w:gutter",linePitch:"w:linePitch",pos:"w:pos"})}},Kr=fe(((e,t)=>{var r=typeof Reflect=="object"?Reflect:null,n=r&&typeof r.apply=="function"?r.apply:function(N,M,E){return Function.prototype.apply.call(N,M,E)},s;r&&typeof r.ownKeys=="function"?s=r.ownKeys:Object.getOwnPropertySymbols?s=function(N){return Object.getOwnPropertyNames(N).concat(Object.getOwnPropertySymbols(N))}:s=function(N){return Object.getOwnPropertyNames(N)};function l(d){console&&console.warn&&console.warn(d)}var a=Number.isNaN||function(N){return N!==N};function i(){i.init.call(this)}t.exports=i,t.exports.once=O,i.EventEmitter=i,i.prototype._events=void 0,i.prototype._eventsCount=0,i.prototype._maxListeners=void 0;var c=10;function m(d){if(typeof d!="function")throw new TypeError('The "listener" argument must be of type Function. Received type '+typeof d)}Object.defineProperty(i,"defaultMaxListeners",{enumerable:!0,get:function(){return c},set:function(d){if(typeof d!="number"||d<0||a(d))throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received '+d+".");c=d}}),i.init=function(){(this._events===void 0||this._events===Object.getPrototypeOf(this)._events)&&(this._events=Object.create(null),this._eventsCount=0),this._maxListeners=this._maxListeners||void 0},i.prototype.setMaxListeners=function(N){if(typeof N!="number"||N<0||a(N))throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received '+N+".");return this._maxListeners=N,this};function _(d){return d._maxListeners===void 0?i.defaultMaxListeners:d._maxListeners}i.prototype.getMaxListeners=function(){return _(this)},i.prototype.emit=function(N){for(var M=[],E=1;E<arguments.length;E++)M.push(arguments[E]);var G=N==="error",te=this._events;if(te!==void 0)G=G&&te.error===void 0;else if(!G)return!1;if(G){var C;if(M.length>0&&(C=M[0]),C instanceof Error)throw C;var z=new Error("Unhandled error."+(C?" ("+C.message+")":""));throw z.context=C,z}var x=te[N];if(x===void 0)return!1;if(typeof x=="function")n(x,this,M);else for(var $=x.length,re=S(x,$),E=0;E<$;++E)n(re[E],this,M);return!0};function f(d,N,M,E){var G,te,C;if(m(M),te=d._events,te===void 0?(te=d._events=Object.create(null),d._eventsCount=0):(te.newListener!==void 0&&(d.emit("newListener",N,M.listener?M.listener:M),te=d._events),C=te[N]),C===void 0)C=te[N]=M,++d._eventsCount;else if(typeof C=="function"?C=te[N]=E?[M,C]:[C,M]:E?C.unshift(M):C.push(M),G=_(d),G>0&&C.length>G&&!C.warned){C.warned=!0;var z=new Error("Possible EventEmitter memory leak detected. "+C.length+" "+String(N)+" listeners added. Use emitter.setMaxListeners() to increase limit");z.name="MaxListenersExceededWarning",z.emitter=d,z.type=N,z.count=C.length,l(z)}return d}i.prototype.addListener=function(N,M){return f(this,N,M,!1)},i.prototype.on=i.prototype.addListener,i.prototype.prependListener=function(N,M){return f(this,N,M,!0)};function T(){if(!this.fired)return this.target.removeListener(this.type,this.wrapFn),this.fired=!0,arguments.length===0?this.listener.call(this.target):this.listener.apply(this.target,arguments)}function v(d,N,M){var E={fired:!1,wrapFn:void 0,target:d,type:N,listener:M},G=T.bind(E);return G.listener=M,E.wrapFn=G,G}i.prototype.once=function(N,M){return m(M),this.on(N,v(this,N,M)),this},i.prototype.prependOnceListener=function(N,M){return m(M),this.prependListener(N,v(this,N,M)),this},i.prototype.removeListener=function(N,M){var E,G,te,C,z;if(m(M),G=this._events,G===void 0)return this;if(E=G[N],E===void 0)return this;if(E===M||E.listener===M)--this._eventsCount===0?this._events=Object.create(null):(delete G[N],G.removeListener&&this.emit("removeListener",N,E.listener||M));else if(typeof E!="function"){for(te=-1,C=E.length-1;C>=0;C--)if(E[C]===M||E[C].listener===M){z=E[C].listener,te=C;break}if(te<0)return this;te===0?E.shift():R(E,te),E.length===1&&(G[N]=E[0]),G.removeListener!==void 0&&this.emit("removeListener",N,z||M)}return this},i.prototype.off=i.prototype.removeListener,i.prototype.removeAllListeners=function(N){var M,E=this._events,G;if(E===void 0)return this;if(E.removeListener===void 0)return arguments.length===0?(this._events=Object.create(null),this._eventsCount=0):E[N]!==void 0&&(--this._eventsCount===0?this._events=Object.create(null):delete E[N]),this;if(arguments.length===0){var te=Object.keys(E),C;for(G=0;G<te.length;++G)C=te[G],C!=="removeListener"&&this.removeAllListeners(C);return this.removeAllListeners("removeListener"),this._events=Object.create(null),this._eventsCount=0,this}if(M=E[N],typeof M=="function")this.removeListener(N,M);else if(M!==void 0)for(G=M.length-1;G>=0;G--)this.removeListener(N,M[G]);return this};function w(d,N,M){var E=d._events;if(E===void 0)return[];var G=E[N];return G===void 0?[]:typeof G=="function"?M?[G.listener||G]:[G]:M?A(G):S(G,G.length)}i.prototype.listeners=function(N){return w(this,N,!0)},i.prototype.rawListeners=function(N){return w(this,N,!1)},i.listenerCount=function(d,N){return typeof d.listenerCount=="function"?d.listenerCount(N):y.call(d,N)},i.prototype.listenerCount=y;function y(d){var N=this._events;if(N!==void 0){var M=N[d];if(typeof M=="function")return 1;if(M!==void 0)return M.length}return 0}i.prototype.eventNames=function(){return this._eventsCount>0?s(this._events):[]};function S(d,N){for(var M=new Array(N),E=0;E<N;++E)M[E]=d[E];return M}function R(d,N){for(;N+1<d.length;N++)d[N]=d[N+1];d.pop()}function A(d){for(var N=new Array(d.length),M=0;M<N.length;++M)N[M]=d[M].listener||d[M];return N}function O(d,N){return new Promise(function(M,E){function G(C){d.removeListener(N,te),E(C)}function te(){typeof d.removeListener=="function"&&d.removeListener("error",G),M([].slice.call(arguments))}b(d,N,te,{once:!0}),N!=="error"&&P(d,G,{once:!0})})}function P(d,N,M){typeof d.on=="function"&&b(d,"error",N,M)}function b(d,N,M,E){if(typeof d.on=="function")E.once?d.once(N,M):d.on(N,M);else if(typeof d.addEventListener=="function")d.addEventListener(N,function G(te){E.once&&d.removeEventListener(N,G),M(te)});else throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type '+typeof d)}})),it=fe(((e,t)=>{typeof Object.create=="function"?t.exports=function(n,s){s&&(n.super_=s,n.prototype=Object.create(s.prototype,{constructor:{value:n,enumerable:!1,writable:!0,configurable:!0}}))}:t.exports=function(n,s){if(s){n.super_=s;var l=function(){};l.prototype=s.prototype,n.prototype=new l,n.prototype.constructor=n}}})),Ne,St=gi((()=>{Ne=globalThis||self}));function Nl(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}function Vr(){throw new Error("setTimeout has not been defined")}function qr(){throw new Error("clearTimeout has not been defined")}function _i(e){if(We===setTimeout)return setTimeout(e,0);if((We===Vr||!We)&&setTimeout)return We=setTimeout,setTimeout(e,0);try{return We(e,0)}catch(t){try{return We.call(null,e,0)}catch(r){return We.call(this,e,0)}}}function Pl(e){if(je===clearTimeout)return clearTimeout(e);if((je===qr||!je)&&clearTimeout)return je=clearTimeout,clearTimeout(e);try{return je(e)}catch(t){try{return je.call(null,e)}catch(r){return je.call(this,e)}}}function Ol(){!ft||!pt||(ft=!1,pt.length?Ge=pt.concat(Ge):Gt=-1,Ge.length&&Ei())}function Ei(){if(!ft){var e=_i(Ol);ft=!0;for(var t=Ge.length;t;){for(pt=Ge,Ge=[];++Gt<t;)pt&&pt[Gt].run();Gt=-1,t=Ge.length}pt=null,ft=!1,Pl(e)}}function Ti(e,t){this.fun=e,this.array=t}function Qe(){}var Xr,Ee,We,je,Ge,ft,pt,Gt,Si,ye,at=gi((()=>{Xr={exports:{}},Ee=Xr.exports={},(function(){try{typeof setTimeout=="function"?We=setTimeout:We=Vr}catch(e){We=Vr}try{typeof clearTimeout=="function"?je=clearTimeout:je=qr}catch(e){je=qr}})(),Ge=[],ft=!1,Gt=-1,Ee.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var r=1;r<arguments.length;r++)t[r-1]=arguments[r];Ge.push(new Ti(e,t)),Ge.length===1&&!ft&&_i(Ei)},Ti.prototype.run=function(){this.fun.apply(null,this.array)},Ee.title="browser",Ee.browser=!0,Ee.env={},Ee.argv=[],Ee.version="",Ee.versions={},Ee.on=Qe,Ee.addListener=Qe,Ee.once=Qe,Ee.off=Qe,Ee.removeListener=Qe,Ee.removeAllListeners=Qe,Ee.emit=Qe,Ee.prependListener=Qe,Ee.prependOnceListener=Qe,Ee.listeners=function(e){return[]},Ee.binding=function(e){throw new Error("process.binding is not supported")},Ee.cwd=function(){return"/"},Ee.chdir=function(e){throw new Error("process.chdir is not supported")},Ee.umask=function(){return 0},Si=Xr.exports,ye=Nl(Si)})),Ai=fe(((e,t)=>{t.exports=Kr().EventEmitter})),Dl=fe((e=>{e.byteLength=c,e.toByteArray=_,e.fromByteArray=v;for(var t=[],r=[],n=typeof Uint8Array!="undefined"?Uint8Array:Array,s="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",l=0,a=s.length;l<a;++l)t[l]=s[l],r[s.charCodeAt(l)]=l;r[45]=62,r[95]=63;function i(w){var y=w.length;if(y%4>0)throw new Error("Invalid string. Length must be a multiple of 4");var S=w.indexOf("=");S===-1&&(S=y);var R=S===y?0:4-S%4;return[S,R]}function c(w){var y=i(w),S=y[0],R=y[1];return(S+R)*3/4-R}function m(w,y,S){return(y+S)*3/4-S}function _(w){for(var y,S=i(w),R=S[0],A=S[1],O=new n(m(w,R,A)),P=0,b=A>0?R-4:R,d=0;d<b;d+=4)y=r[w.charCodeAt(d)]<<18|r[w.charCodeAt(d+1)]<<12|r[w.charCodeAt(d+2)]<<6|r[w.charCodeAt(d+3)],O[P++]=y>>16&255,O[P++]=y>>8&255,O[P++]=y&255;return A===2&&(y=r[w.charCodeAt(d)]<<2|r[w.charCodeAt(d+1)]>>4,O[P++]=y&255),A===1&&(y=r[w.charCodeAt(d)]<<10|r[w.charCodeAt(d+1)]<<4|r[w.charCodeAt(d+2)]>>2,O[P++]=y>>8&255,O[P++]=y&255),O}function f(w){return t[w>>18&63]+t[w>>12&63]+t[w>>6&63]+t[w&63]}function T(w,y,S){for(var R,A=[],O=y;O<S;O+=3)R=(w[O]<<16&16711680)+(w[O+1]<<8&65280)+(w[O+2]&255),A.push(f(R));return A.join("")}function v(w){for(var y,S=w.length,R=S%3,A=[],O=16383,P=0,b=S-R;P<b;P+=O)A.push(T(w,P,P+O>b?b:P+O));return R===1?(y=w[S-1],A.push(t[y>>2]+t[y<<4&63]+"==")):R===2&&(y=(w[S-2]<<8)+w[S-1],A.push(t[y>>10]+t[y>>4&63]+t[y<<2&63]+"=")),A.join("")}})),Ll=fe((e=>{/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */e.read=function(t,r,n,s,l){var a,i,c=l*8-s-1,m=(1<<c)-1,_=m>>1,f=-7,T=n?l-1:0,v=n?-1:1,w=t[r+T];for(T+=v,a=w&(1<<-f)-1,w>>=-f,f+=c;f>0;a=a*256+t[r+T],T+=v,f-=8);for(i=a&(1<<-f)-1,a>>=-f,f+=s;f>0;i=i*256+t[r+T],T+=v,f-=8);if(a===0)a=1-_;else{if(a===m)return i?NaN:(w?-1:1)*(1/0);i=i+Math.pow(2,s),a=a-_}return(w?-1:1)*i*Math.pow(2,a-s)},e.write=function(t,r,n,s,l,a){var i,c,m,_=a*8-l-1,f=(1<<_)-1,T=f>>1,v=l===23?Math.pow(2,-24)-Math.pow(2,-77):0,w=s?0:a-1,y=s?1:-1,S=r<0||r===0&&1/r<0?1:0;for(r=Math.abs(r),isNaN(r)||r===1/0?(c=isNaN(r)?1:0,i=f):(i=Math.floor(Math.log(r)/Math.LN2),r*(m=Math.pow(2,-i))<1&&(i--,m*=2),i+T>=1?r+=v/m:r+=v*Math.pow(2,1-T),r*m>=2&&(i++,m/=2),i+T>=f?(c=0,i=f):i+T>=1?(c=(r*m-1)*Math.pow(2,l),i=i+T):(c=r*Math.pow(2,T-1)*Math.pow(2,l),i=0));l>=8;t[n+w]=c&255,w+=y,c/=256,l-=8);for(i=i<<l|c,_+=l;_>0;t[n+w]=i&255,w+=y,i/=256,_-=8);t[n+w-y]|=S*128}}));/*!
