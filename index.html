@@ -840,6 +840,7 @@ $('#shDocx').onclick = () => { const r = SH; closeSheet(); gerarDocx(r); };
 
 /* ---------- Word ---------- */
 const b64 = d => { const m = d.match(/^data:image\/(png|jpe?g);base64,(.+)$/); return { type: m[1] === 'png' ? 'png' : 'jpg', bin: Uint8Array.from(atob(m[2]), c => c.charCodeAt(0)) }; };
+const DECL_EDITAL = 'Declaramos que os produtos/serviços cotados atendem as características mínimas exigidas em Edital, estando ciente das penalidades impostas no caso de inexecução contratual.';
 async function buildDocx(rec) {
   const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, AlignmentType, ImageRun,
     Header, HorizontalPositionRelativeFrom, HorizontalPositionAlign, VerticalPositionRelativeFrom, VerticalPositionAlign } = docx;
@@ -899,7 +900,8 @@ async function buildDocx(rec) {
     itemsTable, gap(160),
     new Paragraph({ keepNext: true, spacing: { after: 60 }, children: [run('Resumo Comercial', { bold: true, color: Y, size: 24 })] }),
     summary, gap(200),
-    new Paragraph({ indent: { left: 300 }, spacing: { before: 120, after: 900 }, keepNext: true, children: [run('Valor por extenso: ', { bold: true }), run(g ? extenso(g) : '______________________________')] }),
+    new Paragraph({ indent: { left: 300 }, spacing: { before: 120, after: 240 }, keepNext: true, children: [run('Valor por extenso: ', { bold: true }), run(g ? extenso(g) : '______________________________')] }),
+    new Paragraph({ alignment: AlignmentType.JUSTIFIED, indent: { left: 300, right: 300 }, spacing: { before: 0, after: 700 }, keepNext: true, children: [run(DECL_EDITAL)] }),
     new Paragraph({ alignment: C, spacing: { before: 600, after: 0 }, keepNext: true, children: [run('______________________________')] }),
     P(P_.nome, { bold: true }, { alignment: C, keepNext: true }),
     P(P_.cpf ? 'CPF: ' + P_.cpf : '', { bold: true }, { alignment: C })] };
@@ -933,7 +935,7 @@ async function printPdf(rec) {
   .items th.l{text-align:left}.items td{color:#d99a00;word-wrap:break-word}.items .c{text-align:center}.items .j{text-align:justify}
   .items col.a{width:11%}.items .lot{break-inside:avoid;page-break-inside:avoid}.items tr.sp td{border:0;height:8px;padding:0}
   .sum td{color:#d99a00;font-weight:700}.sum td+td{text-align:right}
-  .ext{margin:14px 0 40px 14px}.sig{text-align:center;margin-top:50px;font-weight:700;break-inside:avoid}
+  .ext{margin:14px 0 12px 14px}.decl{margin:0 14px 40px 14px;text-align:justify;break-inside:avoid}.sig{text-align:center;margin-top:50px;font-weight:700;break-inside:avoid}
   h4{color:#d99a00;font:700 12pt Arial;margin:14px 0 4px}
   </style></head><body>
   ${wm ? `<img class="wm" src="${wm.url}" style="width:${wm.wmm.toFixed(1)}mm;height:${wm.hmm.toFixed(1)}mm">` : ''}
@@ -946,6 +948,7 @@ async function printPdf(rec) {
   <h4>Resumo Comercial</h4>
   <table class="sum"><tr><td>Valor global da proposta</td><td>${g ? brl(g) : 'R$'}</td></tr></table>
   <p class="ext"><b>Valor por extenso:</b> ${g ? e(extenso(g)) : '______________________________'}</p>
+  <p class="decl">${e(DECL_EDITAL)}</p>
   <div class="sig">______________________________<br>${e(P_.nome)}<br>${P_.cpf ? 'CPF: ' + e(P_.cpf) : ''}</div>
   </body></html>`;
   const old = $('#pf'); if (old) old.remove();
