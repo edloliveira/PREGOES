@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FFC000">
+<meta name="description" content="Gerador de propostas comerciais para licitações – Word e PDF, 100% no navegador.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Gerador de Propostas</title>
+<style>
+:root{
+  --brand:#FFC000;--brand-d:#e6a700;--brand-soft:#fff6d6;
+  --ink:#1c1b1f;--mut:#6c6a72;--bg:#f5f4f0;--card:#ffffff;--line:#e8e6df;--field:#fbfaf7;
+  --ok:#1f9d63;--danger:#d64545;--shadow:0 1px 2px rgba(20,20,20,.05),0 8px 24px rgba(20,20,20,.06);
+  --r:16px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --ink:#f3f2f5;--mut:#a3a1ab;--bg:#121214;--card:#1b1b1f;--line:#2d2d33;--field:#222227;--brand-soft:#2b2410;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+svg{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* topo */
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#FFC000 0%,#ffb000 60%,#ff9d00 100%);
+  padding:calc(12px + env(safe-area-inset-top)) 18px 12px;box-shadow:0 2px 14px rgba(255,160,0,.35)}
+.top-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.mark{width:40px;height:40px;border-radius:12px;background:#1c1b1f;color:#FFC000;display:grid;place-items:center;font:700 17px Georgia,serif;letter-spacing:.5px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.top h1{margin:0;font-size:1.05rem;line-height:1.1;color:#1c1b1f}
+.top p{margin:2px 0 0;font-size:.74rem;color:rgba(28,27,31,.72)}
+.pill{margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.55);color:#1c1b1f;border-radius:99px;padding:5px 11px;font-size:.72rem;font-weight:600}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--ok);display:block}
+
+/* estrutura */
+.shell{max-width:1120px;margin:0 auto;padding:16px 14px 190px;display:grid;gap:16px}
+@media(min-width:900px){.shell{grid-template-columns:230px 1fr;padding:24px 20px 60px;align-items:start}}
+
+/* navegação */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--card);border-top:1px solid var(--line);
+  padding:6px 6px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px rgba(0,0,0,.07)}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:var(--mut);font-family:inherit;font-weight:600;font-size:.68rem;padding:7px 2px;border-radius:12px;cursor:pointer;transition:.15s}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--ink);background:var(--brand-soft)}
+nav button.on svg{color:var(--brand-d)}
+@media(min-width:900px){
+  nav{position:sticky;top:92px;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px;box-shadow:var(--shadow)}
+  nav button{flex-direction:row;gap:12px;font-size:.92rem;padding:12px 14px;justify-content:flex-start}
+  nav button:hover{background:var(--field)}nav button.on{background:var(--brand);color:#1c1b1f}nav button.on svg{color:#1c1b1f}
+}
+
+/* cartões */
+.view{display:none;animation:in .25s ease}.view.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:1.05rem;display:flex;align-items:center;gap:8px}
+.card h2 svg{color:var(--brand-d)}
+.sub{margin:0 0 14px;color:var(--mut);font-size:.85rem}
+.grid{display:grid;gap:12px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}.grid .full{grid-column:1/-1}}
+label{display:flex;flex-direction:column;gap:5px;font-size:.74rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--mut)}
+input,textarea{font-family:inherit;font-weight:400;font-size:.95rem;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;width:100%;transition:.15s}
+input:focus,textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 4px rgba(255,192,0,.22);background:var(--card)}
+textarea{resize:vertical;min-height:92px}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:.9rem;border:0;border-radius:12px;padding:12px 16px;background:var(--brand);color:#1c1b1f;cursor:pointer;transition:.15s;box-shadow:0 2px 0 var(--brand-d)}
+.btn:active{transform:translateY(1px);box-shadow:none}
+.btn.sec{background:var(--card);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.btn.sec:hover{border-color:var(--brand)}
+.btn.danger{color:var(--danger)}
+.btn.sm{padding:8px 12px;font-size:.8rem}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row .btn{flex:1;min-width:110px}
+
+/* estatísticas */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.stat span{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.stat b{font-size:1.15rem}
+.stat.hi{background:#1c1b1f;color:#fff;border-color:#1c1b1f}.stat.hi span{color:#b9b6c1}.stat.hi b{color:var(--brand)}
+@media(max-width:520px){.stat b{font-size:.98rem}.stats{grid-template-columns:1fr 1fr 1fr;gap:8px}.stat{padding:10px}}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),#ff9d00);border-radius:99px;transition:width .3s}
+
+/* itens */
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tools input{flex:1;min-width:160px}
+.item{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brand)}
+.item.done::before{background:var(--ok)}
+.ih{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.badge{background:var(--brand);color:#1c1b1f;font-weight:800;font-size:.75rem;border-radius:8px;padding:4px 9px}
+.chip{font-size:.78rem;color:var(--mut);font-weight:600}
+.x{margin-left:auto;background:none;border:0;color:var(--mut);cursor:pointer;padding:6px;border-radius:8px}.x:hover{color:var(--danger);background:var(--field)}
+.item details{margin:0 0 12px}
+.item summary{cursor:pointer;color:var(--mut);font-size:.86rem;list-style:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item summary::-webkit-details-marker{display:none}
+.item details[open] summary{display:block;margin-bottom:8px;color:var(--ink);font-weight:600}
+.f4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:640px){.f4{grid-template-columns:repeat(4,1fr)}}
+.f4 .span2{grid-column:span 2}
+.tot{margin-top:12px;display:flex;justify-content:space-between;align-items:center;background:var(--field);border-radius:11px;padding:9px 12px;font-size:.85rem;color:var(--mut);font-weight:600}
+.tot b{color:var(--ink);font-size:1.02rem}
+.empty{text-align:center;color:var(--mut);padding:26px 10px;border:2px dashed var(--line);border-radius:14px}
+
+/* importar/exportar */
+.drop{display:block;text-align:center;border:2px dashed var(--line);border-radius:14px;padding:28px 14px;cursor:pointer;color:var(--mut);transition:.15s;margin-bottom:12px}
+.drop:hover,.drop.over{border-color:var(--brand);background:var(--brand-soft);color:var(--ink)}
+.drop svg{width:34px;height:34px;color:var(--brand-d);display:block;margin:0 auto 6px}
+.drop b{display:block;color:var(--ink)}
+.exp{display:grid;gap:12px}
+@media(min-width:640px){.exp{grid-template-columns:1fr 1fr}}
+.xc{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--field)}
+.xc h3{margin:0;font-size:.98rem;display:flex;gap:8px;align-items:center}.xc h3 svg{color:var(--brand-d)}
+.xc p{margin:0 0 8px;color:var(--mut);font-size:.82rem;flex:1}
+code{background:var(--field);border:1px solid var(--line);padding:1px 6px;border-radius:6px;font-size:.8em}
+#logoPrev{max-height:64px;max-width:180px;border:1px solid var(--line);border-radius:10px;padding:6px;background:#fff;display:block;margin-bottom:10px}
+
+
+/* aviso */
+#toast{position:fixed;left:50%;top:calc(72px + env(safe-area-inset-top));transform:translate(-50%,-20px);opacity:0;pointer-events:none;z-index:60;background:#1c1b1f;color:#fff;padding:11px 18px;border-radius:12px;font-size:.88rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:.25s;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}#toast.err{background:var(--danger)}
+footer{text-align:center;color:var(--mut);font-size:.75rem;padding:10px}
+
+/* ===== v3: celular de tela média, propostas salvas, final, backup ===== */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+.shell>*,main,.card,.grid>*,.f4>*{min-width:0}
+input,textarea,select{font-size:16px}
+select{font-family:inherit;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;width:100%;text-transform:none;letter-spacing:0}
+select:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 4px rgba(255,192,0,.22)}
+input.bad{border-color:var(--danger);background:#fff1f1;color:#7a1f1f}
+.hint{font-size:.76rem;color:var(--mut);min-height:1.1em;margin-top:-4px;text-transform:none;letter-spacing:0;font-weight:500}
+.hint .bad,.bad{color:var(--danger)}
+.f4 .full2{grid-column:1/-1}
+.tag{font-size:.64rem;font-weight:800;letter-spacing:.05em;background:var(--brand-soft);color:#8a5d00;border:1px solid var(--brand);border-radius:6px;padding:2px 6px}
+.row.tight{gap:6px}.row.tight .btn{min-width:0;padding:9px 6px;font-size:.78rem}
+#bkBanner{position:sticky;top:64px;z-index:19;background:#fff3cd;color:#5c4300;border-bottom:1px solid #ffd966;padding:9px 14px;font-size:.84rem;font-weight:600;text-align:center;cursor:pointer}
+#bkBanner[hidden]{display:none}
+
+/* barra inferior com botão Gerar */
+#totalbar{position:fixed;left:10px;right:10px;bottom:calc(70px + env(safe-area-inset-bottom));z-index:25;background:#1c1b1f;color:#fff;border-radius:16px;padding:8px 8px 8px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 8px 26px rgba(0,0,0,.3)}
+#totalbar[hidden]{display:none}
+#totalbar .tb span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:#b9b6c1;font-weight:700}
+#totalbar b{color:var(--brand);font-size:1.08rem}
+#totalbar .btn{padding:12px 16px;white-space:nowrap}
+@media(min-width:900px){#totalbar{left:auto;right:24px;bottom:20px;min-width:440px}}
+
+/* atual + salvas */
+.curcard{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.cc span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}
+.cc b{display:block;font-size:.98rem;overflow-wrap:anywhere}
+.kb{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.06em;border-radius:6px;padding:2px 6px;background:var(--field);border:1px solid var(--line);color:var(--mut);vertical-align:middle;margin-left:4px}
+.kb.fin{background:var(--ok);border-color:var(--ok);color:#fff}.kb.now{background:var(--brand);border-color:var(--brand);color:#1c1b1f}
+.sv{border:1.5px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:var(--card)}
+.sv.cur{border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,192,0,.2)}
+.svh{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.svh b{font-size:.98rem;margin-right:2px;overflow-wrap:anywhere}
+.svp{color:var(--mut);font-size:.84rem;margin:2px 0 6px;overflow-wrap:anywhere}
+.svm{font-size:.8rem;color:var(--mut);margin-bottom:10px}.svm b{color:var(--ink)}
+
+/* guia final */
+.fs{margin-bottom:12px}
+.fi{padding:12px}.fi.ganho::before{background:var(--ok)}.fi.perdido::before{background:var(--danger)}.fi.perdido{opacity:.75}
+.fdesc{font-size:.86rem;color:var(--mut);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.chip.r{margin-left:auto}
+.seg{display:flex;gap:6px;margin-bottom:12px}
+.seg button{flex:1;font:700 .84rem system-ui,sans-serif;font-family:inherit;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:11px;padding:11px 6px;cursor:pointer}
+.seg button.on{background:var(--brand);border-color:var(--brand-d);color:#1c1b1f}
+.seg.two{margin-bottom:0}.seg.two button.g.on{background:var(--ok);border-color:var(--ok);color:#fff}.seg.two button.p.on{background:var(--danger);border-color:var(--danger);color:#fff}
+input[readonly]{background:var(--line);color:var(--mut)}
+
+/* cabeçalho / marca d'água */
+.paper{background:#fff;color:#000;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px;box-shadow:inset 0 0 0 1px #fff;overflow:hidden}
+.rng{margin:12px 0 4px;flex-direction:column}.rng b{float:right;color:var(--ink);text-transform:none}
+.rng input[type=range],input[type=range]{padding:0;border:0;background:none;height:30px;accent-color:var(--brand-d);box-shadow:none}
+.qk{margin:2px 0 6px}.qk .btn{min-width:0}
+.sw{flex-direction:row;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-size:.9rem;font-weight:600;color:var(--ink);margin:6px 0 4px}
+.sw input{width:20px;height:20px;accent-color:var(--brand-d);flex:none}
+.wmprev{background:#fff;border:1px solid var(--line);border-radius:10px;margin-top:8px;height:210px;display:grid;place-items:center;overflow:hidden}
+.wmprev img{max-width:90%;max-height:96%}.wmprev img:not([src]){display:none}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:.88rem}
+.kv span{color:var(--mut)}.kv b{text-align:right;overflow-wrap:anywhere}
+
+/* folha "Gerar proposta" */
+.sheet{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.sheet-box{position:relative;width:100%;max-width:520px;background:var(--card);border-radius:22px 22px 0 0;padding:10px 18px calc(16px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.grab{width:42px;height:4px;border-radius:9px;background:var(--line);margin:0 auto 12px}
+.sheet-box h2{margin:0;font-size:1.15rem}
+.sheet-box .sub{margin:2px 0 10px;overflow-wrap:anywhere}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;padding:8px 0;border-bottom:1px dashed var(--line)}
+.ck i{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.8rem;background:var(--field);color:var(--mut)}
+.ck.ok i{background:var(--ok);color:#fff}.ck.warn i{background:var(--brand);color:#1c1b1f}
+.btn:disabled{opacity:.45;pointer-events:none}
+@media(min-width:640px){.sheet{align-items:center}.sheet-box{border-radius:22px}}
+
+/* celular de tela média (≈ 360–430 px) */
+@media(max-width:480px){
+  .top{padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+  .top h1{font-size:1rem}.pill{font-size:.66rem;padding:4px 9px}
+  .shell{padding:12px 12px 178px;gap:12px}
+  .card{padding:14px;margin-bottom:12px}
+  .stat b{font-size:.95rem}
+  .tools input{min-width:100%}.tools .btn{flex:1}
+  .xc{padding:12px}
+  .seg button{font-size:.78rem;padding:10px 4px}
+}
+code{word-break:break-all;white-space:normal}
+
+/* ---------- financeiro ---------- */
+.fx-cards{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);margin-bottom:16px}
+@media(min-width:640px){.fx-cards{grid-template-columns:repeat(3,1fr)}}
+.fx-win{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;min-width:0}
+.fx-win::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--c)}
+.fx-win.main{grid-column:1/-1;background:#1c1b1f;border-color:#1c1b1f;color:#fff}
+.fx-win.main .fx-lb,.fx-win.main .fx-sb{color:#b9b6c1}
+.fx-ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:color-mix(in srgb,var(--c) 18%,transparent)}
+.fx-lb{margin-top:10px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.fx-vl{font-size:1.3rem;font-weight:800;margin-top:2px;color:var(--c);word-break:break-word}
+.fx-win.main .fx-vl{font-size:1.75rem}
+.fx-sb{font-size:.74rem;color:var(--mut);margin-top:3px}
+.fx-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:flex-end}
+.fx-top label{flex:1;min-width:150px}
+.fx-split{height:10px;border-radius:99px;background:var(--line);overflow:hidden;display:flex;margin:4px 0 8px}
+.fx-split i{display:block;height:100%}
+.fx-leg{display:flex;gap:6px 16px;flex-wrap:wrap;color:var(--mut);font-size:.8rem}
+.fx-leg b{color:var(--ink)}
+.fx-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.fx-tabs .btn.on{background:var(--brand);color:#1c1b1f;border-color:var(--brand)}
+.fx-tbl{overflow-x:auto}
+.fx-tbl table{width:100%;border-collapse:collapse;min-width:560px;font-size:.88rem}
+.fx-tbl th{text-align:left;color:var(--mut);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:8px 6px;border-bottom:1px solid var(--line)}
+.fx-tbl td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.fx-tbl .n{text-align:right;white-space:nowrap}
+.fx-tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.72rem;font-weight:700}
+.fx-ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.fx-out{background:color-mix(in srgb,var(--danger) 16%,transparent);color:var(--danger)}
+.fx-late{background:color-mix(in srgb,#ee7a14 20%,transparent);color:#ee7a14}
+.fx-open{background:color-mix(in srgb,#7c5cff 16%,transparent);color:#7c5cff}
+.fx-pos{color:var(--ok)}.fx-neg{color:var(--danger)}
+.fx-form{display:grid;gap:10px;grid-template-columns:repeat(2,1fr);align-items:end}
+@media(min-width:640px){.fx-form{grid-template-columns:repeat(3,1fr)}}
+.fx-form .full{grid-column:1/-1}
+.fx-note{color:var(--mut);font-size:.78rem;margin:10px 0 0}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="mark">EL</div>
+  <div><h1>Gerador de Propostas</h1><p>Licitações · Word e PDF</p></div>
+  <div class="pill"><i></i>Salvo no aparelho</div>
+</div></header>
+<div id="bkBanner" hidden></div>
+
+<div class="shell">
+<nav aria-label="Seções">
+ <button data-v="proposta" class="on"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Proposta</span></button>
+ <button data-v="salvas"><svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg><span>Salvas</span></button>
+ <button data-v="final"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><path d="M4 20h16"/></svg><span>Final</span></button>
+ <button data-v="dados"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Dados</span></button>
+ <button data-v="arquivos"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span>Arquivos</span></button>
+ <button data-v="financeiro"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><circle cx="16.5" cy="14" r="1.2"/></svg><span>Financeiro</span></button>
+</nav>
+
+<main>
+ <!-- PROPOSTA -->
+ <section id="v-proposta" class="view active">
+  <div class="card curcard">
+    <div class="cc"><span>Editando</span><b id="curName">—</b></div>
+    <button class="btn sec sm" id="newProp">+ Nova</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><span>Itens</span><b id="stItems">0</b></div>
+    <div class="stat"><span>Precificados</span><b id="stDone">0/0</b><div class="bar"><i id="stBar"></i></div></div>
+    <div class="stat hi"><span>Valor global</span><b id="grand">R$ 0,00</b></div>
+  </div>
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>Dados do pregão</h2>
+   <p class="sub">Informações do órgão e condições da proposta.</p>
+   <div class="grid">
+    <label>Órgão / Cliente<input data-bind="proposal.orgao"></label>
+    <label>Processo<input data-bind="proposal.processo"></label>
+    <label>Validade da proposta<input data-bind="proposal.validade"></label>
+    <label>Prazo de pagamento<input data-bind="proposal.pagamento"></label>
+    <label>Local de entrega<input data-bind="proposal.localEntrega"></label>
+    <label>Prazo de entrega<input data-bind="proposal.prazoEntrega"></label>
+   </div>
+  </div>
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Itens da proposta</h2>
+   <p class="sub">Deixe o <b>valor unitário em branco</b> para usar o <b>teto do edital</b>. Valor acima do teto não é aceito.</p>
+   <div class="tools">
+     <input id="search" type="search" placeholder="Buscar item…">
+     <button class="btn sec sm" id="add">+ Item</button>
+     <button class="btn sec sm" id="disc">Desconto %</button>
+     <button class="btn sec sm danger" id="clear">Limpar</button>
+   </div>
+   <div id="items"></div>
+  </div>
+ </section>
+
+ <!-- SALVAS -->
+ <section id="v-salvas" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg>Propostas salvas</h2>
+   <p class="sub">Tudo que você digita é salvo sozinho. Toque em <b>Editar</b> para continuar uma proposta.</p>
+   <div class="tools">
+     <input id="savedSearch" type="search" placeholder="Buscar por órgão ou processo…">
+     <button class="btn sm" id="newProp2">+ Nova</button>
+   </div>
+   <div id="savedList"></div>
+  </div>
+ </section>
+
+ <!-- FINAL -->
+ <section id="v-final" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><path d="M4 20h16"/></svg>Proposta final</h2>
+   <p class="sub">Escolha a proposta, marque o que você <b>ganhou</b> e o que <b>perdeu</b> e readeque os valores. A final sai só com os itens ganhos.</p>
+   <label>Proposta de origem<select id="finOrigem"></select></label>
+  </div>
+  <div id="finBody"></div>
+ </section>
+
+ <!-- DADOS -->
+ <section id="v-dados" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Dados pessoais / empresa</h2>
+   <p class="sub">Aparecem no cabeçalho e na assinatura.</p>
+   <div class="grid">
+    <label>Nome / Razão social<input data-bind="profile.nome"></label>
+    <label>CPF<input data-bind="profile.cpf" inputmode="numeric"></label>
+    <label>CNPJ<input data-bind="profile.cnpj" inputmode="numeric"></label>
+    <label>Telefone<input type="tel" data-bind="profile.telefone"></label>
+    <label>E-mail<input type="email" data-bind="profile.email"></label>
+    <label class="full">Endereço (cada linha vira uma linha do cabeçalho)<textarea data-bind="profile.endereco"></textarea></label>
+   </div>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>Cabeçalho (papel timbrado)</h2>
+   <p class="sub">Escolha como o topo da proposta sai no PDF e no Word.</p>
+   <div class="seg" id="hdrMode">
+     <button data-m="dados">Dados da empresa</button>
+     <button data-m="imagem">Imagem</button>
+     <button data-m="ambos">Imagem + dados</button>
+   </div>
+   <div id="imgCtl" hidden>
+     <div class="row" style="margin-bottom:10px"><label class="btn sec" style="text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--ink)">Escolher imagem<input type="file" id="logoFile" accept="image/png,image/jpeg" hidden></label>
+     <button class="btn sec danger" id="logoDel">Remover</button></div>
+     <label class="rng">Tamanho da imagem <b id="logoWv">40 mm</b><input type="range" id="logoW" min="20" max="190" step="5"></label>
+   </div>
+   <div class="paper" id="hdrPrev"></div>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Marca d’água</h2>
+   <p class="sub">Imagem ao fundo de todas as páginas. Ajuste a rotação e a opacidade.</p>
+   <div class="row" style="margin-bottom:10px"><label class="btn sec" style="text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--ink)">Escolher imagem<input type="file" id="wmFile" accept="image/png,image/jpeg" hidden></label>
+   <button class="btn sec danger" id="wmDel">Remover</button></div>
+   <div id="wmCtl" hidden>
+     <label class="sw"><input type="checkbox" id="wmOn"> Usar marca d’água nas propostas</label>
+     <label class="rng">Rotação <b id="wmRotV">0°</b><input type="range" id="wmRot" min="-180" max="180" step="1"></label>
+     <div class="row qk"><button class="btn sec sm" data-rot="0">0°</button><button class="btn sec sm" data-rot="-45">-45°</button><button class="btn sec sm" data-rot="45">45°</button><button class="btn sec sm" data-rot="90">90°</button></div>
+     <label class="rng">Opacidade <b id="wmOpV">15%</b><input type="range" id="wmOp" min="3" max="100" step="1"></label>
+     <div class="wmprev"><img id="wmPrev" alt="Prévia da marca d'água"></div>
+   </div>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Dados bancários</h2>
+   <div class="grid" style="margin-top:12px">
+    <label>Banco<input data-bind="profile.banco"></label>
+    <label>Agência<input data-bind="profile.agencia"></label>
+    <label>Conta<input data-bind="profile.conta"></label>
+    <label>PIX<input data-bind="profile.pix"></label>
+    <label>Favorecido<input data-bind="profile.favorecido"></label>
+    <label>CNPJ da empresa<input data-bind="profile.cnpjEmpresa" inputmode="numeric"></label>
+   </div>
+  </div>
+  <p class="sub" style="text-align:center">🔒 Os dados ficam apenas neste aparelho.</p>
+ </section>
+
+ <!-- ARQUIVOS -->
+ <section id="v-arquivos" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Backup</h2>
+   <p class="sub">Salva um arquivo <code>.json</code> com <b>todas as propostas e dados</b>, uma vez por dia, em <b>horário sorteado</b>.</p>
+   <div class="kv"><span>Pasta</span><b id="bkDir">—</b></div>
+   <div class="kv"><span>Último backup</span><b id="bkLast">—</b></div>
+   <div class="kv"><span>Próximo backup</span><b id="bkNext">—</b></div>
+   <label class="sw"><input type="checkbox" id="bkAuto"> Backup automático diário (horário aleatório)</label>
+   <div class="row"><button class="btn sec" id="bkPick">Escolher pasta</button><button class="btn" id="bkNow">Fazer backup agora</button></div>
+   <p class="sub" id="bkNote" style="margin-top:12px"></p>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Importar / restaurar</h2>
+   <p class="sub">Aceita <b>.json</b> (backup deste app ou lista de itens) e <b>.csv</b> com as colunas
+    <code>item;descricao;unidade;quantidade;valor_referencia;valor_unitario;marca;modelo</code> (só <code>descricao</code> é obrigatória). Proposta em .json entra como <b>nova proposta salva</b>.</p>
+   <label class="drop" id="drop"><svg viewBox="0 0 24 24"><path d="M12 15V4m0 0L8 8m4-4l4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+     <b>Toque ou arraste um arquivo</b>.json · .csv
+     <input type="file" id="impFile" accept=".json,.csv,.txt,application/json,text/csv" hidden></label>
+   <div class="row">
+     <button class="btn" id="impEx">Carregar exemplo (Japira 028/2026)</button>
+     <button class="btn sec" id="tplCsv">Baixar modelo CSV</button>
+   </div>
+  </div>
+
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Exportar</h2>
+   <p class="sub">Exporta a proposta que está em edição. Marca e modelo saem em colunas separadas.</p>
+   <div class="exp">
+    <div class="xc"><h3><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Word (.docx)</h3><p>Proposta editável no mesmo layout.</p><button class="btn" id="expDocx">Baixar Word</button></div>
+    <div class="xc"><h3><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg>PDF</h3><p>Abre a impressão; escolha “Salvar como PDF”.</p><button class="btn" id="expPdf">Gerar PDF</button></div>
+    <div class="xc"><h3><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Backup (.json)</h3><p>Tudo: dados, imagens e todas as propostas.</p><button class="btn sec" id="expJson">Baixar backup</button></div>
+    <div class="xc"><h3><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM3 10h18M9 5v14"/></svg>Itens (.csv)</h3><p>Planilha para abrir no Excel.</p><button class="btn sec" id="expCsv">Baixar CSV</button></div>
+   </div>
+  </div>
+ </section>
+
+ <!-- FINANCEIRO -->
+ <section id="v-financeiro" class="view">
+  <div class="card">
+   <h2><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><circle cx="16.5" cy="14" r="1.2"/></svg>Financeiro</h2>
+   <p class="sub">Caixa, entradas, saídas, contas a receber e a pagar. Salvo neste aparelho.</p>
+   <div class="fx-top">
+    <label>Período<select id="fxMes"></select></label>
+    <label>Saldo inicial (R$)<input id="fxSaldo" inputmode="decimal" placeholder="0,00"></label>
+   </div>
+   <div class="row"><button class="btn sec sm" id="fxImp">Abrir JSON</button><button class="btn sec sm" id="fxExp">Salvar JSON</button></div>
+   <input type="file" id="fxFile" accept=".json,application/json" hidden>
+  </div>
+  <div class="fx-cards" id="fxCards"></div>
+  <div class="card">
+   <div class="fx-split" id="fxSplit"></div>
+   <div class="fx-leg" id="fxLeg"></div>
+  </div>
+  <div class="card">
+   <div class="fx-tabs" id="fxTabs"></div>
+   <div class="fx-tbl" id="fxTbl"></div>
+  </div>
+  <div class="card">
+   <h2>Novo lançamento</h2>
+   <form id="fxForm" class="fx-form" style="margin-top:10px">
+    <label>Tipo<select id="fxTipo"><option value="entrada">Entrada (caixa)</option><option value="saida">Saída (caixa)</option><option value="receber">A receber</option><option value="pagar">A pagar</option></select></label>
+    <label><span id="fxDataL">Data</span><input type="date" id="fxData" required></label>
+    <label>Valor (R$)<input id="fxVal" inputmode="decimal" required placeholder="0,00"></label>
+    <label class="full">Descrição<input id="fxDesc" required placeholder="Ex.: Pagamento de fornecedor"></label>
+    <label class="full"><span id="fxParteL">Categoria</span><input id="fxParte" placeholder="Ex.: Vendas"></label>
+    <button type="submit" class="btn full">Adicionar</button>
+   </form>
+   <p class="fx-note">Os dados do financeiro ficam salvos neste aparelho, separados das propostas. Use “Salvar JSON” para guardar uma cópia.</p>
+  </div>
+ </section>
+</main>
+</div>
+
+<div id="totalbar" hidden><div class="tb"><span id="barLbl">Valor global</span><b id="grand2">R$ 0,00</b></div><button class="btn" id="barBtn">Gerar proposta</button></div>
+
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-bg" data-close></div>
+  <div class="sheet-box" role="dialog" aria-modal="true">
+    <div class="grab"></div>
+    <h2 id="shTitle">Gerar proposta</h2>
+    <p class="sub" id="shSub"></p>
+    <div id="shBody"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="shPdf">Gerar PDF</button><button class="btn" id="shDocx">Gerar Word</button></div>
+    <button class="btn sec sm" data-close style="width:100%;margin-top:10px">Cancelar</button>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<footer>Gerador de Propostas · funciona offline depois do primeiro acesso</footer>
+
+<script>
+'use strict';
+const LS = 'propostas-pwa-v3', LS_OLD = ['propostas-pwa-v2', 'propostas-pwa-v1'], LS_BK = 'propostas-backup-cfg';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const EXEMPLO = {"proposal":{"orgao":"PREFEITURA MUNICIPAL DE JAPIRA","processo":"Pregão Eletrônico nº 028/2026 – Processo Administrativo nº 123/2026","validade":"60 dias","pagamento":"30 dias úteis","localEntrega":"Unidade de Saúde Dr. Cesar Augusto Luiggi de Oliveira, s/n, Centro – Japira/PR","prazoEntrega":"15 dias","items":[{"n":1,"desc":"Jogo terapeutico para enfrentamento de medos","unid":"UNID","qtd":2,"ref":"120,50","unit":"","marca":"","modelo":""},{"n":2,"desc":"Kit frutinhas com Velcro, brinquedo educativo de plástico atóxico, com frutinhas divididas em partes unidas por velcro, acompanhadas de uma faquinha de plástico e uma tábua, permitindo que a criança finja cortar o alimento de verdade","unid":"UNID","qtd":4,"ref":"73,17","unit":"","marca":"","modelo":""},{"n":3,"desc":"Caixa registradora de brinquedo destinada a atividades de avaliação, intervenção psicológica, ludoterapia e práticas psicopedagógicas, possibilitando a observação e o desenvolvimento de habilidades cognitivas, sociais, emocionais e de comunicação por meio do brincar simbólico. Confeccionada em material resistente, atóxico e de fácil higienização, composta por caixa registradora, teclado funcional ou simulativo, gaveta para dinheiro, moedas, cédulas e demais acessórios compatíveis com atividades de faz de conta.","unid":"UNID","qtd":1,"ref":"96,14","unit":"","marca":"","modelo":""},{"n":4,"desc":"Bola de brinquedo tipo baiacu confeccionada em material PVC, borracha macia ou similar macio, flexível e atóxico, revestida por múltiplas pontas arredondadas e suaves ao toque, proporcionando estímulos táteis e sensoriais. Indicada para atividades recreativas, psicomotoras, terapêuticas e de integração sensorial, auxiliando no desenvolvimento da coordenação motora, percepção tátil, atenção e relaxamento; fácil higienização; cores variadas e atrativas; dimensões adequadas ao manuseio infantil; textura sensorial estimulante; Livre de arestas cortantes e partes pequenas destacáveis.","unid":"UNID","qtd":2,"ref":"74,38","unit":"","marca":"","modelo":""},{"n":5,"desc":"Kit de instrumentos musicais infantis destinados a atividades pedagógicas, recreativas, terapêuticas e de estimulação sensorial. Confeccionado em materiais resistentes, atóxicos e seguros para uso infantil. Especificações mínimas: Conjunto contendo, no mínimo, 5 instrumentos musicais variados (tais como tambor, chocalho, pandeiro, castanhola, maraca, xilofone, triângulo ou similares); Material resistente, atóxico e de fácil higienização; Acabamento seguro, sem arestas cortantes ou pontiagudas; Cores variadas e atrativas; Tamanho adequado ao manuseio infantil; Instrumentos com emissão sonora adequada para atividades educacionais e terapêuticas; Acondicionados em embalagem ou estojo para armazenamento e transporte; Indicado para atividades de musicalização, educação infantil, psicopedagogia, ludoterapia e estimulação precoce.","unid":"KIT","qtd":2,"ref":"253,95","unit":"","marca":"","modelo":""},{"n":6,"desc":"Jogo pedagógico do tipo “Caixa Maluca”, confeccionado em material EVA (etil vinil acetato) de alta densidade, atóxico, lavável e resistente, destinado a atividades lúdicas, psicopedagógicas e terapêuticas. O jogo consiste em peças e formas variadas que podem ser manipuladas, encaixadas, organizadas ou retiradas de uma caixa/estrutura, estimulando a coordenação motora, percepção visual, atenção, raciocínio lógico, criatividade e interação social. Especificações mínimas: confeccionado em EVA colorido, resistente e atóxico; conjunto composto por caixa/estrutura e peças geométricas ou formas variadas; peças de diferentes cores, tamanhos e formatos; superfície macia, leve e segura para uso infantil; bordas arredondadas e sem partes cortantes ou destacáveis pequenas; fácil higienização; utilizável em contextos pedagógicos, psicopedagógicos, ludoterapia e educação infantil.","unid":"UNID","qtd":2,"ref":"109,84","unit":"","marca":"","modelo":""},{"n":7,"desc":"Jogo de pesca de brinquedo. Especificações mínimas: Estrutura em plástico resistente, leve e atóxico; Funcionamento por pilhas; Base com movimento giratório ou mecânico que simula a pesca; peixes ou elementos similares para captura com varinha ou rede; Possuir estímulos visuais e/ou sonoros (luz e/ou som); Acabamento seguro, sem arestas cortantes e sem partes perigosas; Indicado para uso infantil em atividades recreativas, psicopedagógicas e terapêuticas; Estímulo à coordenação motora fina, atenção, percepção visual e socialização; Fácil higienização.","unid":"UNID","qtd":2,"ref":"36,24","unit":"","marca":"","modelo":""},{"n":8,"desc":"Jogo pedagógico de raciocínio lógico com o objetivo de estimular o pensamento lógico, a resolução de problemas, a atenção, a concentração, a memória, a percepção espacial e o desenvolvimento cognitivo por meio de atividades lúdicas. Especificações mínimas: Conjunto de peças e/ou tabuleiro educativo voltado ao desenvolvimento do raciocínio lógico; Material resistente, atóxico e seguro para uso infantil; Pode conter peças de encaixe, sequências, formas geométricas ou cartões de atividades; Cores variadas e atrativas; Superfície e peças com acabamento seguro, sem arestas cortantes e sem partes pequenas destacáveis para faixas etárias inadequadas; Fácil higienização.","unid":"UNID","qtd":2,"ref":"69,02","unit":"","marca":"","modelo":""},{"n":9,"desc":"Jogo de equilíbrio do tipo “Boom”, confeccionado em material plástico resistente, atóxico e seguro, destinado a atividades lúdicas, recreativas e psicopedagógicas. O jogo consiste em uma base de equilíbrio e peças que devem ser posicionadas de forma estratégica, sem que a estrutura perca a estabilidade, promovendo desafios de coordenação motora, raciocínio lógico, planejamento, atenção e percepção espacial. Especificações mínimas: Base de equilíbrio confeccionada em material plástico resistente e atóxico; Conjunto de peças leves, coloridas e de diferentes formatos para empilhamento ou encaixe; Sistema de instabilidade progressiva (jogo de equilíbrio com desafio crescente); Acabamento seguro, sem arestas cortantes ou partes destacáveis perigosas; Fácil higienização.","unid":"UNID","qtd":2,"ref":"45,94","unit":"","marca":"","modelo":""},{"n":10,"desc":"Kit de fantoches das emoções confeccionados em feltro macio, atóxico e resistente, destinado a atividades pedagógicas, psicopedagógicas, psicológicas e terapêuticas. O material tem como finalidade auxiliar na identificação, expressão e compreensão das emoções, favorecendo o desenvolvimento socioemocional, linguagem, comunicação, empatia e interação social por meio de atividades lúdicas e dramatização. Especificações mínimas: Confeccionado em feltro de alta qualidade, macio e atóxico; Conjunto contendo fantoches representando emoções básicas (ex.: alegria, tristeza, raiva, medo, surpresa e outras, conforme kit); Acabamento reforçado e seguro, sem partes cortantes ou destacáveis pequenas; Cores variadas e expressivas, facilitando a identificação das emoções; Tamanho adequado para manipulação por crianças e/ou profissionais; Fácil higienização e conservação.","unid":"KIT","qtd":2,"ref":"140,00","unit":"","marca":"","modelo":""},{"n":11,"desc":"Brinquedo tipo mola destinado a atividades recreativas e lúdicas. O produto possui formato espiral, permitindo movimentos de extensão, compressão e deslocamento, estimulando a coordenação motora, percepção visual, atenção e interação sensorial. Especificações mínimas: Confeccionado em plástico flexível, resistente e atóxico; Estrutura em formato de mola espiral contínua; Cores variadas e atrativas; Superfície lisa, sem rebarbas ou arestas cortantes; Alta flexibilidade e resistência ao uso contínuo; Fácil higienização.","unid":"UNID","qtd":6,"ref":"6,53","unit":"","marca":"","modelo":""},{"n":12,"desc":"Jogo “Quem? O quê? Onde?” em EVA. Jogo pedagógico confeccionado em EVA (etil vinil acetato), atóxico, lavável e resistente, destinado ao desenvolvimento da linguagem oral e escrita, compreensão de estruturas frasais, construção de narrativas e ampliação do vocabulário. O material trabalha, de forma lúdica, a formação de frases e histórias a partir das perguntas “quem?”, “o quê?” e “onde?”, estimulando a criatividade, o raciocínio linguístico e a organização de ideias. Especificações mínimas:Confeccionado em EVA de alta qualidade, colorido, resistente e atóxico; Conjunto composto por cartões ou peças representando pessoas (quem?), ações (o quê?) e lugares (onde?); Peças de fácil manuseio, com imagens claras e de boa visualização; Superfície lavável e de fácil higienização; Bordas arredondadas e acabamento seguro, sem partes cortantes.","unid":"UNID","qtd":2,"ref":"158,00","unit":"","marca":"","modelo":""},{"n":13,"desc":"Brinquedo “Troque e Encaixe as Cores” – Brinquedo pedagógico confeccionado em MDF (fibra de madeira de média densidade), destinado a atividades lúdicas e educativas de associação, classificação e coordenação motora. O material consiste em uma estrutura em formato de casa com peças coloridas removíveis e encaixáveis, permitindo a troca e o encaixe conforme cores correspondentes, estimulando o aprendizado por meio da manipulação e da percepção visual. Especificações mínimas: Estrutura em MDF resistente, com acabamento lixado e seguro; Formato de casa ou painel interativo; Peças coloridas removíveis e encaixáveis para associação por cores; Pintura atóxica e resistente ao uso infantil; Bordas arredondadas e acabamento sem rebarbas ou partes cortantes; Cores variadas e contrastantes para facilitar o aprendizado; Fácil higienização.","unid":"UNID","qtd":2,"ref":"51,51","unit":"","marca":"","modelo":""},{"n":14,"desc":"Kit com Quatro Painéis Psicomotores destinados ao desenvolvimento de habilidades motoras, cognitivas e sensoriais, voltado para atividades pedagógicas, psicopedagógicas, terapêuticas e de estimulação psicomotora. Os painéis permitem diferentes tipos de interação e desafios motores, promovendo coordenação motora fina e grossa, equilíbrio, lateralidade, noção espacial e planejamento motor. Especificações mínimas: Kit contendo 4 (quatro) painéis psicomotores distintos circular, quadrado, labirinto e 4 linhas; Confeccionados em material resistente (MDF, madeira tratada ou equivalente seguro); Superfície com atividades variadas de estimulação psicomotora (ex.: trajetos, encaixes, circuitos, movimentos direcionais); Pintura atóxica, colorida e resistente ao uso infantil; Bordas arredondadas e acabamento seguro, sem rebarbas ou arestas cortantes; Fixação segura para uso em parede ou suporte apropriado; Fácil higienização e manutenção.","unid":"KIT","qtd":2,"ref":"197,77","unit":"","marca":"","modelo":""},{"n":15,"desc":"Kit composto por 6 fantoches de mão confeccionados em feltro e EVA (etil vinil acetato), destinado a atividades pedagógicas, psicopedagógicas, terapêuticas e de inclusão social. Especificações mínimas: Kit contendo mínimo de 6 (seis) fantoches de mão; Confeccionados em feltro macio e EVA atóxico, resistente e seguro; Temática “família e inclusão social”, podendo representar diferentes perfis de pessoas e diversidade social; Acabamento reforçado, sem partes cortantes ou destacáveis de risco; Cores variadas e elementos visuais que favoreçam identificação e interação; Tamanho adequado para uso por crianças e/ou profissionais; Fácil higienização e conservação.","unid":"KIT","qtd":2,"ref":"94,67","unit":"","marca":"","modelo":""},{"n":16,"desc":"Brinquedo Ovos de Encaixe com Velcro – Brinquedo educativo composto por ovos de simulação para encaixe, confeccionados em material plástico resistente, atóxico e seguro, com sistema de fixação por velcro, destinado a atividades de faz de conta em cozinha infantil. O conjunto permite que as partes do ovo sejam separadas e reconectadas, simulando o manuseio de alimentos, promovendo o desenvolvimento da coordenação motora, percepção visual, atenção e habilidades de vida prática. Especificações mínimas: Ovos de brinquedo confeccionados em plástico resistente, leve e atóxico; Sistema de encaixe por velcro ou mecanismo similar seguro; Peças que se separam em duas metades (simulação de corte/abertura); Acabamento seguro, sem arestas cortantes ou partes pequenas destacáveis de risco; Cores e formas realistas ou lúdicas; Fácil higienização","unid":"UNID","qtd":2,"ref":"115,67","unit":"","marca":"","modelo":""},{"n":17,"desc":"Brinquedo Brincar de Falar: recurso terapêutico e pedagógico usado em fonoaudiologia, alfabetização e estimulação da linguagem infantil, caixa em madeira 20x26x12cm, fichas ilustradas laminadas cerca de 6cm, com 42 fichas educativas, para nomeação de sons, músicas infantis, imitação de gestos, partes do rosto, habilidades trabalhadas são linguagem expressiva, linguagem receptiva, percepção acústica, prosódia, atenção auditiva, memoria verbal, coordenação motora oral, imitação de gestos e sons, Marca similar a Materiais para brincar.","unid":"UNID","qtd":2,"ref":"102,78","unit":"","marca":"","modelo":""},{"n":18,"desc":"Jogos de Classificação e Correspondência de Cores – O material deve permitir que a criança agrupe, separe, associe e organize peças de acordo com cores, estimulando a atenção, coordenação motora e noções básicas de organização e seriação. Especificações mínimas: Conjunto de peças coloridas para atividades de classificação e correspondência; Material resistente, atóxico e seguro para uso infantil (plástico ou equivalente); Cores variadas e bem definidas para facilitar a identificação; Peças de tamanhos adequados ao manuseio infantil; Superfície lisa, sem rebarbas, arestas cortantes ou partes pequenas destacáveis de risco; Pode incluir tabuleiros, bases, cartões ou suportes para agrupamento; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"122,25","unit":"","marca":"","modelo":""},{"n":19,"desc":"Brinquedo didático de madeira com formas geométricas e cores para estimular coordenação motora, percepção visual, raciocínio lógico e aprendizagem de formas e cores. brinquedo pedagógico educativo encaixe formas geométricas colorido, material de madeira MDF, tinta atóxica e resistente, acabamentos lixados (pontas arredondadas), formas geométricas (circulo, quadrado, triangulo, retângulo e estrela), peças 3 a 6cm; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"62,21","unit":"","marca":"","modelo":""},{"n":20,"desc":"Alfabeto de madeira (letras para encaixar): Tabuleiro alfabeto letras em madeira MDF didático pedagógico, colorido, 26 letras do alfabeto maiúsculas (A a Z), com base de encaixe e peças soltas, letras cerca de 3 a 6cm, base/tabuleiro 20 a 30cm, cores vivas para facilitar a identificação, habilidades desenvolvidas reconhecimento das letras, consciência fonológica (som das letras), coordenação motora fina, atenção e memoria visual, pré-alfabetização, formação de palavras e vocabulário; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"63,90","unit":"","marca":"","modelo":""},{"n":21,"desc":"Jogo de silabas: Jogo de madeira com silabas e figuras infantil pedagógica, usado a partir de 4 a 7 anos, idioma português, material madeira MDF ou cartão plastificado, tinta atóxica e acabamento seguro, peças resistentes, cartões ou peças com silabas simples (PA, PE, PI, PO,PU), silabas complexas (BR, TR, LH, NH,) e versões avançadas, imagens para associação, peças cerca de 3 a 6 cm, cores diferenciadas por tipo de silaba, alta durabilidade e facil manipulação; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"48,72","unit":"","marca":"","modelo":""},{"n":22,"desc":"Jogo de memória (animais): material educativo de memória animais, em madeira MDF, cartão ou plástico resistente, tinta atóxica e impressão colorida, peças com acabamento arredondado, associação de pares com figuras de animais, 24 peças, cerca de 4 a 6cm, espessura de 3 a 6mm; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"35,85","unit":"","marca":"","modelo":""},{"n":23,"desc":"Blocos de montar: Blocos para montar encaixar com 91 peças grandes, material plástico resistente, peças atóxicas, tipo encaixe tradicional, engrenagens, formas geométricas, peças coloridas, encaixe firme, bordas arredondadas, Fácil higienização e conservação.","unid":"KIT","qtd":2,"ref":"153,03","unit":"","marca":"","modelo":""},{"n":24,"desc":"Quebra-cabeça progressivo: brinquedo educativo, com níveis crescentes de dificuldade, indicado para desenvolvimento cognitivo, e coordenação motora infantil, são vários níveis de dificuldade, Quebra-cabeça infantil de madeira, progressivo 6 em 1, contendo 04 quebra-cabeças; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"46,94","unit":"","marca":"","modelo":""},{"n":25,"desc":"Jogo de Mesa “Lince Alfabeto” – Jogo de mesa educativo do tipo observação e associação, voltado ao reconhecimento das letras do alfabeto, desenvolvimento da atenção, percepção visual, agilidade de resposta e ampliação do vocabulário. O material consiste em um tabuleiro com diversas imagens e/ou letras. Especificações mínimas: Jogo de mesa educativo com temática do alfabeto; Tabuleiro ilustrado contendo letras e/ou figuras representativas; Peças/cartas com letras do alfabeto em formato legível e adequado à educação infantil; Material resistente, atóxico e seguro para uso infantil; Cores variadas e impressão de alta qualidade; Componentes com acabamento seguro, sem arestas cortantes ou peças pequenas destacáveis inadequadas; Fácil higienização e conservação.","unid":"UNID","qtd":2,"ref":"72,08","unit":"","marca":"","modelo":""},{"n":26,"desc":"Lousa magnética: Quadro branco magnético, 90x60, quadro de escrita e aprendizagem infantil, plástico resistente ABS, superfície magnética e apagável, acompanha apagador e 04 canetas próprias, leve e portátil, bordas arredondadas para segurança, formato rectangular.","unid":"UNID","qtd":2,"ref":"652,09","unit":"","marca":"","modelo":""},{"n":27,"desc":"Livro “Escreve e Apaga” – Livro pedagógico reutilizável do tipo “escreve e apaga”, destinado ao desenvolvimento da escrita inicial, coordenação motora fina e reconhecimento de letras, números, formas e traçados básicos. O material permite que a criança pratique atividades diversas com caneta apropriada e apague posteriormente, possibilitando repetição do aprendizado de forma lúdica e interativa. Especificações mínimas: Livro pedagógico reutilizável com páginas plastificadas ou laminadas; Acompanhado de caneta com tinta apagável ou marcador próprio (quando aplicável); Superfície resistente ao uso contínuo e de fácil limpeza; Material atóxico e seguro para uso infantil; Acabamento com cantos arredondados e sem partes cortantes; Fácil higienização e reutilização.","unid":"UNID","qtd":2,"ref":"93,97","unit":"","marca":"","modelo":""},{"n":28,"desc":"Bolha de sabão: brinquedo recreativo e sensorial usado em atividades infantis e terapias para estimular respiração, coordenação e atenção visual. recreativo infantil, usado a partir de 2 anos, sempre com supervisão do adulto, kit 24 bolhas de sabão, frasco plástico com tampa de segurança 60ml, com bastão anel soprador, solução atóxica, desenho variados, colorido, usado na fonoaudiologia para treino de sopro e respiração, marca similar a Babuu brinquedos educativos.","unid":"CX","qtd":30,"ref":"3,99","unit":"","marca":"","modelo":""},{"n":29,"desc":"Tapete colorido infantil de EVA - material educativo e de proteção usado em ambientes infantis para conforto, segurança e atividades pedagógicas no chão. kit tatame infantil, EVA (etileno acetato de vinila) encaixável tipo “puzzle”, pode ser montado e desmontado facilmente, espuma leve, flexível e atóxica, placas 50x50cm, 10mm, 12 peças, coloridos.","unid":"KIT","qtd":2,"ref":"268,03","unit":"","marca":"","modelo":""},{"n":30,"desc":"Inalador Portátil: Inalador Nebulizador usado para umidificação das vias aéreas e voz na fonoaudiologia, tecnologia mesh (rede vibratória) ou ultrassônica, bateria recarregável (USB), e com pilhas, capacidade do reservatório 8 a 15ml, ruido silencioso, adulto e infantil, com máscara e bocal, marca similar a G-tech Nebmesh.","unid":"UNID","qtd":2,"ref":"150,84","unit":"","marca":"","modelo":""},{"n":31,"desc":"Umidificador de ar: Umidificador ultrassônico (mais silencioso), evaporativo, portáteis 220-500ml, vapor quente, luz led noturna, desligamento automático, ajuste de intensidade de nevoa, similar a G-tech Allergy Free Dual – bivolt.","unid":"UNID","qtd":1,"ref":"167,89","unit":"","marca":"","modelo":""},{"n":32,"desc":"Tubo LAX VOX com garrafa de exercício vocal: dispositivo usado em exercícios de trato vocal semiocluído (ETVSO), exercícios como aquecimento, desaquecimento e terapia vocal, Tubo ressonância Lax Vox Etvso; Dimensões 13,00 X 09,00 X 350,00 mm translucido, canudo material de silicone e garrafa de plástico ou vidro.","unid":"UNID","qtd":10,"ref":"31,63","unit":"","marca":"","modelo":""},{"n":33,"desc":"Kit Respiron e New Shaker – Incentivador Respiratório e Treinamento Muscular Respiratório. Kit composto por incentivador inspiratório (tipo Respiron) e dispositivo de treinamento expiratório (tipo New Shaker), destinado ao fortalecimento da musculatura respiratória, treino diafragmático e reeducação ventilatória. Especificações mínimas: Kit composto por incentivador inspiratório e dispositivo de treino expiratório; Níveis de esforço ajustáveis: leve, médio e alto a intenso; Regulagem de resistência graduada de 0 a 3 (ou equivalente); Material: poliestireno cristal de alta resistência; Mangueira em polietileno; Bocal em polipropileno atóxico; Produto lavável e de fácil higienização; Não autoclavável e não reciclável.","unid":"KIT","qtd":6,"ref":"69,82","unit":"","marca":"","modelo":""},{"n":34,"desc":"Massageador facial elétrico portátil, modelo tipo Energy Beauty Bar, destinado ao estímulo sensorial, relaxamento muscular facial e atividades terapêuticas complementares em atendimentos de fonoaudiologia e psicologia. Equipamento com sistema de vibração de alta frequência, cabeça em formato “T” ergonômica para aplicação em regiões faciais e cervicais, proporcionando massagem suave e estimulação tátil. Funciona por meio de 1 (uma) pilha AA, com estrutura leve, portátil e de fácil higienização. Indicado para utilização em exercícios de percepção sensorial, relaxamento da musculatura orofacial e atividades terapêuticas voltadas ao bem-estar e à estimulação facial. Fabricado em material resistente e durável, com acabamento metálico ou similar. Garantia mínima contra defeitos de fabricação conforme legislação vigente.","unid":"UNID","qtd":2,"ref":"181,46","unit":"","marca":"","modelo":""},{"n":35,"desc":"Massageador Cervical Elétrico com Infravermelho – Tipo G-Tech IR-Magnet Plus ou Similar, portátil, destinado ao relaxamento muscular, alívio de tensões e estimulação terapêutica. Especificações mínimas: Alimentação elétrica bivolt automático (127/220 V); Tecnologia de infravermelho para aquecimento terapêutico; Sistema de massagem vibratória; Regulagem variável de potência e velocidade; Controle manual para ajuste da intensidade da massagem; Design ergonômico para aplicação na região cervical, ombros e áreas musculares adjacentes; Estrutura resistente, de fácil higienização e manuseio; Funcionamento silencioso; Cabo elétrico com comprimento adequado para uso clínico; Acompanhado de manual de instruções em português; Certificação de segurança conforme normas vigentes aplicáveis; Garantia mínima de 12 (doze) meses contra defeitos de fabricação.","unid":"UNID","qtd":2,"ref":"160,63","unit":"","marca":"","modelo":""},{"n":36,"desc":"Massageador Manual Tipo Roller 3D em Plástico, confeccionado em plástico resistente de alta durabilidade, indicado para estimulação sensorial, relaxamento muscular, liberação miofascial e drenagem suave em atendimentos terapêuticos de fonoaudiologia, psicologia, fisioterapia e áreas correlatas, com sistema de rotação 360°, com duplo rolo massageador facial e corporal, proporcionando aplicação uniforme e confortável. Especificações mínimas: Material: plástico resistente e atóxico; Comprimento aproximado: 15,5 cm; Largura aproximada: 5 cm; Sistema de rotação dos rolos em 360°; Duplo rolo massageador tipo Roller 3D; Cilindro único com superfície lisa e texturizada; Rolo com esferas massageadoras para estimulação profunda; Textura lisa para drenagem suave e relaxamento; Textura texturizada para massagem profunda e liberação miofascial; Design anatômico e ergonômico; Fácil higienização e manutenção; Leve, portátil e de fácil manuseio; Cor variável conforme disponibilidade do fabricante.","unid":"UNID","qtd":2,"ref":"84,36","unit":"","marca":"","modelo":""},{"n":37,"desc":"Cachimbo de Plástico com Bolinha para Exercícios de Sopro. Dispositivo lúdico para exercícios respiratórios e treinamento da coordenação motora oral, composto por cachimbo plástico e esfera flutuante, indicado para atividades de fonoaudiologia, psicologia, terapia ocupacional, fisioterapia respiratória e ações de estimulação infantil e adulta. Proporciona feedback visual imediato do fluxo expiratório por meio da sustentação da esfera no ar durante o sopro, auxiliando no desenvolvimento do controle respiratório, coordenação pneumofonoarticulatória e fortalecimento da musculatura orofacial. Especificações mínimas: Conjunto/pacote contendo mínimo 10 unidades; Composto por cachimbo plástico e esfera leve flutuante; Material do corpo: PVC, poliestireno ou material equivalente; Esfera confeccionada em material leve e resistente; Bocal com revestimento em silicone ou material macio equivalente; Estrutura transparente ou parcialmente transparente para melhor visualização do exercício; Cores variadas e atrativas; Leve e de fácil manuseio; Fácil higienização e reutilização; Indicado para uso infantil e adulto; Produto atóxico e seguro para utilização terapêutica.","unid":"PCTE","qtd":15,"ref":"21,51","unit":"","marca":"","modelo":""},{"n":38,"desc":"Língua de Sogra para Exercícios de Sopro – Dispositivo lúdico para exercícios de sopro e treinamento da motricidade orofacial, composto por apito com tubo extensível que se desenrola mediante a expiração do usuário. Indicado para atividades de fonoaudiologia, psicologia, terapia ocupacional, educação infantil e demais práticas terapêuticas voltadas ao desenvolvimento do controle respiratório, coordenação motora oral e fortalecimento da musculatura orofacial. Especificações mínimas: Kit contendo 50 (cinquenta) unidades; Estrutura composta por tubo extensível em papel plastificado ou material similar; Bico para sopro confeccionado em plástico resistente; Sistema interno com arame de aço flexível ou material equivalente para sustentação e retorno do tubo; Acionamento por sopro, promovendo o desenrolar do tubo durante a expiração; Cores variadas e atrativas; Material leve, resistente e atóxico; Fácil manuseio e armazenamento.","unid":"PCTE","qtd":10,"ref":"6,34","unit":"","marca":"","modelo":""},{"n":39,"desc":"Pirulito Tipo Cata-Vento para Exercícios de Sopro em formato espiral com dispositivo giratório tipo cata-vento, destinado ao desenvolvimento de exercícios lúdicos de sopro, coordenação motora oral e mobilidade de língua em atividades de fonoaudiologia, psicologia, terapia ocupacional e educação infantil. Especificações mínimas: Caixa contendo mínimo 12 (doze) unidades; Pirulito em formato espiral tipo cata-vento; Dispositivo giratório tipo “ventoinha”, acionado por sopro ou movimentação do ar; Suporte plástico resistente para manuseio; Composição básica: açúcar, glicose e ingredientes alimentícios permitidos pela legislação sanitária vigente; Cores variadas e atrativas; Produto embalado individualmente; Design que permita visualização clara do movimento giratório durante o sopro; Produto dentro do prazo de validade e com registro ou regularização junto aos órgãos competentes, quando aplicável.","unid":"PCTE","qtd":20,"ref":"31,82","unit":"","marca":"","modelo":""},{"n":40,"desc":"Abaixador de Língua Descartável com Sabor, descartável destinado à inspeção da cavidade oral, exames clínicos, avaliações fonoaudiológicas e atividades terapêuticas, especialmente em público infantil. Especificações mínimas: Embalagem contendo 50 (cinquenta) unidades; Confeccionado em plástico resistente, atóxico e seguro para uso clínico; Descartável e de uso individual; Não estéril; Com aroma e sabor artificial incorporados ao material; Cores variadas e atrativas; Superfície lisa, sem rebarbas ou irregularidades; Bordas arredondadas para maior conforto e segurança; Dimensões adequadas para avaliação da cavidade oral de crianças e adultos; Produto livre de substâncias tóxicas e adequado para contato com a mucosa oral; Fácil manuseio pelo profissional de saúde.","unid":"PCTE","qtd":10,"ref":"4,90","unit":"","marca":"","modelo":""},{"n":41,"desc":"Aparelho para Mobilidade Lingual Tipo Exercitador de Língua (Fono Haltere). Dispositivo terapêutico portátil destinado à reabilitação e ao treinamento das funções orofaciais, utilizado em atendimentos de fonoaudiologia para exercícios de mobilidade lingual, fortalecimento muscular e adequação das funções estomatognáticas. Especificações mínimas: Aparelho portátil para exercícios de mobilidade e fortalecimento lingual; Estrutura flexível e resistente; Peça intraoral confeccionada em silicone macio, atóxico e ajustável; Design anatômico para adaptação confortável à cavidade oral; Sistema que permita utilização entre os dentes e os lábios durante os exercícios; Silicone adaptado para minimizar desconforto na região do frênulo labial; Material lavável e de fácil higienização; Livre de arestas cortantes ou superfícies abrasivas; Reutilizável, resistente ao uso terapêutico contínuo; Indicado para pacientes infantis, adolescentes e adultos, conforme avaliação profissional; Acompanha orientações de uso e conservação.","unid":"UNID","qtd":2,"ref":"131,40","unit":"","marca":"","modelo":""},{"n":42,"desc":"Kit de Escovas de Silicone para Treinamento Oral. Kit destinado à estimulação sensorial oral, adaptação à higiene bucal e exercícios de motricidade orofacial, composto por 02 (duas) escovas de treinamento e 01 (um) anel protetor de segurança. Fabricado com materiais atóxicos e livres de BPA, proporcionando segurança e conforto durante a utilização. Especificações mínimas: Kit contendo 02 (duas) escovas de treinamento e 01 (um) anel protetor; Fabricado em polipropileno (PP), elastômero termoplástico (TPE) e nylon nas cerdas, ou materiais equivalentes; Livre de BPA (Bisfenol A); Cabeça pequena e arredondada para maior segurança durante o uso; Cerdas extra macias; Cabo anatômico e antiderrapante; Anel protetor removível para evitar inserção excessiva na cavidade oral; Material resistente, atóxico e de fácil higienização; Acabamento sem rebarbas ou arestas cortantes.","unid":"KIT","qtd":10,"ref":"17,33","unit":"","marca":"","modelo":""},{"n":43,"desc":"Bandagem Elástica Adesiva terapêutica para uso em Fonoterapia (Kinesio Tape), reabilitação orofacial e estimulação proprioceptiva em terapias de fala, deglutição e motricidade orofacial. Especificações mínimas: Fita elástica adesiva tipo kinesio tape para uso terapêutico; Material em tecido de algodão elástico; Adesivo acrílico hipoalergênico; Elasticidade em sentido longitudinal e diagonal, acompanhando o movimento muscular; Dimensões: 2,5 cm x 5 m e/ou 5 cm x 5 m; Cor bege ou similar neutra; Alta respirabilidade e resistência à água; Fixação segura e confortável para uso prolongado de 3 a 7 dias; Elástica e confortável; 100% livre de látex; Segurança assegurada para profissionais e pacientes.","unid":"ROLO","qtd":10,"ref":"24,17","unit":"","marca":"","modelo":""},{"n":44,"desc":"Seringa Descartável 60 ml com Bico Cateter, indicada para procedimentos clínicos e terapêuticos, incluindo treinamento de força respiratória e atividades de fonoaudiologia e fisioterapia respiratória. Especificações mínimas: Capacidade de 60 ml; Bico tipo cateter (longo e fino); Confeccionada em polipropileno transparente de grau médico; Êmbolo com vedação em borracha (anel de vedação); Escala de graduação visível para medição precisa; Uso único e descartável; Produto estéril ou não estéril conforme especificação do fabricante; Atóxica e apirogênica; Embalagem contendo 25 (vinte e cinco) unidades; Livre de látex (quando aplicável).","unid":"CX","qtd":10,"ref":"1,15","unit":"","marca":"","modelo":""}]}};
+
+const DEFPROF = {
+  nome:'EDUARDO LEMES DE OLIVEIRA', cpf:'062.954.389-54', cnpj:'68.187.471/0001-94',
+  endereco:'Rua Maria Catarina Gerlinger, 265\nLago Azul, Curitiba-PR', email:'', telefone:'43 99957-7957',
+  banco:'077 - INTER', agencia:'0001', conta:'54885070-4', pix:'68.187.471/0001-94',
+  favorecido:'68.187.471 EDUARDO LEMES DE OLIVEIRA', cnpjEmpresa:'68187471000194', logo:null,
+  hdr:{ mode:'dados', logoW:40 },
+  wm:{ data:null, w:0, h:0, rot:-30, op:15, on:true }
+};
+const DEFPROP = () => ({ orgao:'', processo:'', validade:'60 dias', pagamento:'30 dias', localEntrega:'', prazoEntrega:'', items:[] });
+let S, FILTER = '', VIEW = 'proposta';
+
+const normItem = x => ({ id: x.id || uid(), lote: x.lote ?? x.n ?? '', desc: x.desc ?? x.descricao ?? '', unid: x.unid ?? x.unidade ?? 'UNID', qtd: x.qtd ?? x.quantidade ?? 1,
+  ref: x.ref ?? x.valor_referencia ?? '', unit: x.unit ?? x.valor_unitario ?? '', marca: x.marca ?? '', modelo: x.modelo ?? '' });
+const normProfile = (p, migrate) => {
+  const pr = { ...DEFPROF, ...(p || {}) };
+  pr.hdr = { ...DEFPROF.hdr, ...(p?.hdr || {}) }; pr.wm = { ...DEFPROF.wm, ...(p?.wm || {}) };
+  if (migrate && !p?.hdr) pr.hdr.mode = pr.logo ? 'ambos' : 'dados';
+  return pr;
+};
+const mkRec = (proposal, kind, extra) => ({ id: uid(), kind: kind || 'inicial', origem: null, finalId: null, createdAt: Date.now(), updatedAt: Date.now(),
+  proposal, final: { sel: {}, unit: {} }, ...(extra || {}) });
+const normRec = r => { const o = { ...mkRec(DEFPROP()), ...r };
+  o.proposal = { ...DEFPROP(), ...(r.proposal || {}) };
+  o.proposal.items = (Array.isArray(o.proposal.items) ? o.proposal.items : []).map(normItem);
+  o.final = { sel: {}, unit: {}, ...(r.final || {}) }; return o; };
+const getRec = id => S.props.find(r => r.id === id);
+const curRec = () => getRec(S.cur);
+function setCur(id) { S.cur = id; S.proposal = curRec().proposal; }
+/* ---------- propostas pré-carregadas (PE 87, 85 e 53/2026) — entram uma única vez ---------- */
+const SEED = [{"orgao":"PREFEITURA DE TELÊMACO BORBA","processo":"Pregão Eletrônico nº 87/2026 – Processo Licitatório nº 26458/2026","validade":"90 (noventa) dias","pagamento":"Até 15 (quinze) dias contados da apresentação da Nota Fiscal","localEntrega":"Endereços indicados nos formulários dos requisitantes (SME, SMF, SMAS e SMA), conforme requisições","prazoEntrega":"Até 15 (quinze) dias corridos, após o recebimento da nota de empenho","items":[{"n":1,"desc":"Acendedor para fogão a gás nas seguintes especificações mínimas: Confeccionado em resina termoplástica e metal; Com botão de acionamento; Ergonômico; Não recarregável.","unid":"UNIDADE","qtd":55,"ref":"14,07","unit":"","marca":"","modelo":""},{"n":2,"desc":"Açucareiro de mesa nas seguintes especificações mínimas: Confeccionado em aço inox; Polido por dentro e por fora; Capacidade de 250 g; Tampa com dobradiça fixa ao açucareiro e apoio para levantar a tampa; Com alça; Com colher ou pá em aço inox para servir.","unid":"UNIDADE","qtd":16,"ref":"21,83","unit":"","marca":"","modelo":""},{"n":3,"desc":"Açucareiro nas seguintes especificações mínimas: Material: cristal ecológico; Formato: redondo; Cor: transparente; Acompanha uma colher no mesmo material; Altura: 7 cm; Com tampa; Capacidade de 200 ml.","unid":"UNIDADE","qtd":5,"ref":"34,15","unit":"","marca":"","modelo":""},{"n":4,"desc":"Afiador de facas com as seguintes especificações mínimas: Dimensões (CxLxA) 190 x 50 x 65 mm; Corpo confeccionado em ABS; Rebolos uniformes em alumina; Com pés em borracha.","unid":"UNIDADE","qtd":1,"ref":"15,89","unit":"","marca":"","modelo":""},{"n":5,"desc":"Assadeira oval nas seguintes especificações mínimas: Material: Vidro temperado; Cor: branco; Acabamento: Liso; Formato: Oval; Capacidade: 1 litro; Com abas laterais; Resistente ao calor.","unid":"UNIDADE","qtd":9,"ref":"59,17","unit":"","marca":"","modelo":""},{"n":6,"desc":"Assadeira para pizza nas seguintes especificações mínimas:: Antiaderente; Material: alumínio; Diâmetro: 36cm; Altura: 1,50cm; Suporta alta temperatura em torno de 250° C.","unid":"UNIDADE","qtd":71,"ref":"60,81","unit":"","marca":"","modelo":""},{"n":7,"desc":"Assadeira retangular funda nas seguintes especificações mínimas: Em alumínio; Com revestimento interno e externo e antiaderente Teflon; Espessura de 0,80 mm; Litros: 6; Com bordas laterais; Sem alças; Dimensões(CxLxA): 45 x 32 x 6 cm.","unid":"UNIDADE","qtd":70,"ref":"79,02","unit":"","marca":"","modelo":""},{"n":8,"desc":"Bacia com as seguintes especificações mínimas: Capacidade de 11 litros;","unid":"UNIDADE","qtd":5,"ref":"42,82","unit":"","marca":"","modelo":""},{"n":9,"desc":"Bacia redonda com as seguintes especificações mínimas: Capacidade de 5 litros; Graduada; Confeccionada em polipropileno atóxico; Cor branca ou transparente; Com virola.","unid":"UNIDADE","qtd":10,"ref":"19,42","unit":"","marca":"","modelo":""},{"n":10,"desc":"Bacia redonda com as seguintes especificações mínimas: Branca ou transparente; Confeccionada em Plástico; Formato: redondo; Capacidade: 19 litros; Com alças.","unid":"UNIDADE","qtd":2,"ref":"46,37","unit":"","marca":"","modelo":""},{"n":11,"desc":"Balde graduado nas seguintes especificações mínimas: Confeccionado em polipropileno; Transparente; Capacidade total para 20 litros; Capacidade de marcação externa: 18 litros; Com 1 bico vertedor; Alça de metal; Resistente a impacto; Paredes e fundo reforçados;","unid":"UNIDADE","qtd":7,"ref":"78,93","unit":"","marca":"","modelo":""},{"n":12,"desc":"Bandeja clássica retangular nas seguintes especificações mínimas: Confeccionada em aço inox; Acabamento em alto brilho; Com bordas levantadas; Com cantos arredondados; Com alças; Nas medidas (CxLxA) 23 x 34 x 1,5 cm.","unid":"UNIDADE","qtd":6,"ref":"76,62","unit":"","marca":"","modelo":""},{"n":13,"desc":"Bandeja com as seguintes especificações mínimas: Confeccionada em aço inox; Acabamento polido; Com bordas levantadas; Com cantos arredondados; Sem alças; Nas medidas (CxLxA) 45 x 35 x 2 cm; Espessura das paredes 0,7 mm.","unid":"UNIDADE","qtd":4,"ref":"49,61","unit":"","marca":"","modelo":""},{"n":14,"desc":"Bandeja formato retangular nas seguintes especificações mínimas: Cor branca; Acabamento em polietileno de alta densidade; Com alças; Dimensões (LxCxA): 32 x 45 x 2,5cm; Inquebrável e resistente; Liso nas partes internas e externas.","unid":"UNIDADE","qtd":10,"ref":"24,84","unit":"","marca":"","modelo":""},{"n":15,"desc":"Boleira de vidro com pé nas seguintes especificações mínimas: Material: Vidro; Com tampa em plástico ou acrílico; Transparente; Formato: redondo; Diâmetro: 29cm.","unid":"UNIDADE","qtd":3,"ref":"129,06","unit":"","marca":"","modelo":""},{"n":16,"desc":"Bomboniere de vidro com pé nas seguintes especificações mínimas: Material: vidro ou cristal;","unid":"UNIDADE","qtd":6,"ref":"66,55","unit":"","marca":"","modelo":""},{"n":17,"desc":"Bomboniere de vidro nas seguintes especificações mínimas: Material: vidro; Transparente; Formato: Taça redonda; Capacidade: 1.200ml; Medidas (AxL): 18 x 18cm.","unid":"UNIDADE","qtd":6,"ref":"68,84","unit":"","marca":"","modelo":""},{"n":18,"desc":"Bule com tampa, capacidade para 3 litros, nas seguintes especificações mínimas: Totalmente confeccionado em alumínio, reforçado; Com cabo de baquelite anatômico e antitérmico; Tampa com pegador em baquelite; Espessura das paredes entre 1,5 a 2,0 mm.","unid":"UNIDADE","qtd":5,"ref":"151,67","unit":"","marca":"","modelo":""},{"n":19,"desc":"Caçarola com tampa com as seguintes especificações mínimas: Tipo hotel; Confeccionada em alumínio; Com 34 cm de diâmetro; Altura de 16 cm; Capacidade 14 litros; Tampa com pegador; Espessura das paredes entre 1,9 a 3,0 mm; Caçarola com pegadores de alumínio.","unid":"UNIDADE","qtd":15,"ref":"196,63","unit":"","marca":"","modelo":""},{"n":20,"desc":"Caçarola com tampa com as seguintes especificações mínimas: Tipo hotel; Confeccionada em alumínio; Com 38 cm de diâmetro; Altura de 18 cm; Capacidade 20 litros; Tampa com pegador; Espessura das paredes entre 2,0 a 3,0 mm; Caçarola com pegadores de alumínio.","unid":"UNIDADE","qtd":20,"ref":"258,10","unit":"","marca":"","modelo":""},{"n":21,"desc":"Caçarola com tampa com as seguintes especificações mínimas: Tipo hotel; Confeccionada em alumínio; Com 50 cm de diâmetro; Altura de 21 cm; Capacidade 41 litros; Tampa com pegador; Espessura das paredes de de 1,8 a 4,0 mm; Caçarola com pegadores de alumínio.","unid":"UNIDADE","qtd":2,"ref":"552,19","unit":"","marca":"","modelo":""},{"n":22,"desc":"Caçarola com Tampa, nº 30, tipo hotel, nas seguintes especificações mínimas: Inteiramente em alumínio e sem virola; Com alças de alumínio; Tampa com pegador de alumínio; Capacidade para 9,5 litros; Diâmetro de 30 cm; Altura de 14 cm; Espessura entre 1,7 a 5,0 mm.","unid":"UNIDADE","qtd":15,"ref":"135,79","unit":"","marca":"","modelo":""},{"n":23,"desc":"Caçarola com tampa, nº 45, Tipo hotel; com as seguintes especificações mínimas:","unid":"UNIDADE","qtd":5,"ref":"339,22","unit":"","marca":"","modelo":""},{"n":24,"desc":"Caixa organizadora 20 litros nas seguintes especificações mínimas: Transparente; Confeccionada em polipropileno ou polietileno atóxico; Dimensões (AxCxL) 24x40x23 cm; Com capacidade para 20 litros; Resistente; Inodoro; Liso nas partes internas e externas; Com tampa encaixável; Com travas laterais sob pressão.","unid":"UNIDADE","qtd":13,"ref":"55,15","unit":"","marca":"","modelo":""},{"n":25,"desc":"Caixa organizadora 29 litros nas seguintes especificações mínimas: Transparente; Confeccionada em polipropileno ou polietileno atóxico; Dimensões (AxCxL) 24x41x32 cm; Com capacidade para 29 litros; Resistente; Inodoro; Liso nas partes internas e externas; Com tampa encaixável; Com travas laterais sob pressão.","unid":"UNIDADE","qtd":3,"ref":"81,97","unit":"","marca":"","modelo":""},{"n":26,"desc":"Caixa organizadora 50 litros nas seguintes especificações mínimas: Transparente; Confeccionada em polipropileno ou polietileno atóxico; Dimensões (AxCxL) 31x56x38 cm; Com capacidade para 50 litros; Resistente; Inodoro; Liso nas partes internas e externas; Com tampa encaixável; Com travas laterais sob pressão.","unid":"UNIDADE","qtd":3,"ref":"89,95","unit":"","marca":"","modelo":""},{"n":27,"desc":"Caixa retangular com as seguintes especificações mínimas: Corpo e tampa transparente; Caixa confeccionada em polipropileno Medidas (AxCxL) 13x39x28cm Capacidade para 11 litros Tampa confeccionada em polietileno; Produto resistente, atóxico, inquebrável, inodoro, liso nas partes internas e externas.","unid":"UNIDADE","qtd":6,"ref":"36,75","unit":"","marca":"","modelo":""},{"n":28,"desc":"Caneca em aço inox com as seguintes especificações mínimas: Aço inox ; Cilíndrica com alça; Capacidade de 250 ml; Diâmetro de 7 cm; Borda com virola.","unid":"UNIDADE","qtd":20,"ref":"12,89","unit":"","marca":"","modelo":""},{"n":29,"desc":"Canecão tipo hotel, nas seguintes especificações mínimas: Inteiramente em alumínio;","unid":"UNIDADE","qtd":10,"ref":"87,00","unit":"","marca":"","modelo":""},{"n":30,"desc":"Coador para café nas seguintes especificações mínimas: Tecido em 100% algodão; Diâmetro da boca 14 cm Altura 20 cm Estrutura em arame galvanizado nº 14 com cabo de madeira torneada, lixada e polida.","unid":"UNIDADE","qtd":20,"ref":"22,25","unit":"","marca":"","modelo":""},{"n":31,"desc":"Colher de chá nas seguintes especificações mínimas: Confeccionada totalmente em aço inox; Acabamento polido; Sem emendas; Medidas aproximadas: (CxLxA) 11,50x2,50x1 cm; Espessura de 1 mm; Deverá estar gravado na colher o nome do fabricante.","unid":"UNIDADE","qtd":30,"ref":"5,02","unit":"","marca":"","modelo":""},{"n":32,"desc":"Colher de mesa nas seguintes especificações mínimas: Inteiramente em aço inox; Comprimento 185mm; Largura 43 mm; Espessura 1,5 mm.","unid":"UNIDADE","qtd":29,"ref":"7,98","unit":"","marca":"","modelo":""},{"n":33,"desc":"Colher em silicone reta, com as seguintes especificações mínimas: Confeccionada totalmente em silicone; Formato retangular; Suporta temperaturas de até 240 °C; Cabo com furo passante Medidas: 27 cm de comprimento x 05 cm de largura","unid":"UNIDADE","qtd":5,"ref":"20,22","unit":"","marca":"","modelo":""},{"n":34,"desc":"Colher para arroz com as seguintes especificações mínimas: Inteiramente em aço inox; Comprimento 240 mm; Largura 55 mm; Espessura 2 mm;","unid":"UNIDADE","qtd":11,"ref":"28,15","unit":"","marca":"","modelo":""},{"n":35,"desc":"Colher para caldeirão côncava com as seguintes especificações mínimas Cor Branca 60 cm de comprimento x 7,5 cm de largura; Confeccionada em polipropileno ou polietileno; Material atóxico; Suportar temperatura de 160 graus Celsius;","unid":"UNIDADE","qtd":2,"ref":"71,83","unit":"","marca":"","modelo":""},{"n":36,"desc":"Concha para alimentos líquidos, nas seguintes especificações mínimas: Aço Inoxidável; Cabo em aço inox; Acabamento com brilho; Cabo com furo passante. Dimensões (AxØ): 30 x 8,5cm.","unid":"UNIDADE","qtd":11,"ref":"18,22","unit":"","marca":"","modelo":""},{"n":37,"desc":"Conjunto de espátulas para manteiga nas seguintes especificações mínimas: Material: aço inox e cabo em polipropileno; Número de peças: 6; Cor do cabo: branco; Medindo: 10cm.","unid":"CONJUNTO","qtd":2,"ref":"33,40","unit":"","marca":"","modelo":""},{"n":38,"desc":"Conjunto de panelas composto por 7 peças, nas seguintes especificações mínimas: Em alumínio com revestimento interno e externo antiaderente;","unid":"UNIDADE","qtd":4,"ref":"558,58","unit":"","marca":"","modelo":""},{"n":39,"desc":"Conjunto Refresco 07 Peças com as seguintes especificações mínimas: Sendo: Com 6 copos; 1 jarra de vidro; Confeccionado em vidro; Capacidade do copo de 300 a 390 ml; Jarra de 1500 a 1740 ml. Conteúdo da embalagem: 1 Jarra com 6 copos.","unid":"CONJUNTO","qtd":3,"ref":"123,80","unit":"","marca":"","modelo":""},{"n":40,"desc":"Copo antivazamento para bebê, com alça, nas seguintes especificações mínimas: Capacidade para 200ml; Tipo treinamento; Atóxico; Inodoro; Com tampa protetora; Bico de silicone; Livre de BPA; Válvula ou furo de ventilação; Alça anatômica removível.","unid":"UNIDADE","qtd":6,"ref":"26,98","unit":"","marca":"","modelo":""},{"n":41,"desc":"Copo plástico medidor nas seguintes especificações mínimas: Material: plástico resistente ou polipropileno; 100% atóxico; Livre de BPA; Capacidade 500 ml; Graduado; Dosador; Transparente; Com indicador de medidas líquidas e ingredientes secos.","unid":"UNIDADE","qtd":5,"ref":"12,76","unit":"","marca":"","modelo":""},{"n":42,"desc":"Cortador de legumes (cabrita) nas seguintes especificações mínimas: Tamanho grande; Manual; Corpo em alumínio fundido; Macho em plástico rígido; Facas em aço inox; Malha de corte padrão 10 mm; Pintura eletrostática (a pó); Pés tripé - tubo de aço 5/8 - soldado, protegido com borracha; Altura: 120 cm. Deve atender as normas técnicas de referência relativas à fabricação de utensílios em alumínio e demais materiais utilizados.","unid":"UNIDADE","qtd":5,"ref":"255,92","unit":"","marca":"","modelo":""},{"n":43,"desc":"Cortador de legumes (cabrita) nas seguintes especificações mínimas: Tamanho pequeno; Manual;","unid":"UNIDADE","qtd":2,"ref":"176,33","unit":"","marca":"","modelo":""},{"n":44,"desc":"Cortador de pizza nas seguintes especificações mínimas: Manual; Material aço inox; Tipo carretilha; Cabo em polipropileno ou plástico; Cabo com furo passante para pendurar o utensílio.","unid":"UNIDADE","qtd":20,"ref":"15,15","unit":"","marca":"","modelo":""},{"n":45,"desc":"Cortador e ralador de legumes dupla face com as seguintes especificações mínimas: Material: Plástico PS atóxico e lâminas em aço inox; Com dois tipos de corte; Cor branca; Acompanha protetor de dedos.","unid":"UNIDADE","qtd":4,"ref":"27,76","unit":"","marca":"","modelo":""},{"n":46,"desc":"Cumbuca para sobremesa em aço inox com as seguintes especificações mínimas: Diâmetro 10 cm Profundidade 5 cm; Capacidade: 220 ml; Confeccionada em aço inox 430, sem pé; Espessura 0,5 mm; Borda lisa acabamento externo sem fio,","unid":"UNIDADE","qtd":40,"ref":"15,87","unit":"","marca":"","modelo":""},{"n":47,"desc":"Dispenser para papel toalha interfolhado Nas seguintes especificações mínimas: Material termoplástico; Cor branca; Frente com visor; Para papel toalha interfolhado de 2 ou 3 dobras; Saída de papel ''folha a folha''; Dimensões (AxLxP) 28 x 25 x 11 cm. Acompanha kit para fixação.","unid":"UNIDADE","qtd":6,"ref":"45,38","unit":"","marca":"","modelo":""},{"n":48,"desc":"Escorredor para massa, nas seguintes especificações mínimas: Capacidade para 14 litros; Diâmetro da boca 40 cm; Altura de 17 cm. Confeccionado em alumínio com espessura entre 0,8 a 2mm; Com alça e pé em alumínio.","unid":"UNIDADE","qtd":4,"ref":"153,87","unit":"","marca":"","modelo":""},{"n":49,"desc":"Escova para limpeza de mamadeiras e bicos nas seguintes especificações mínimas: Cerdas e cabo em polipropileno; Corpo em fio de aço ou polipropileno; Para todos tipos de mamadeira e bicos.","unid":"UNIDADE","qtd":2,"ref":"17,87","unit":"","marca":"","modelo":""},{"n":50,"desc":"Espátula raspador nas seguintes especificações mínimas: Lâmina em aço inox; Cabo ergonômico em polipropileno; Comprimento: 10 cm; Cabo injetado diretamente sobre a espiga da própria","unid":"UNIDADE","qtd":5,"ref":"23,06","unit":"","marca":"","modelo":""},{"n":51,"desc":"Estrado plástico retangular nas seguintes especificações mínimas: Cor preta; Material: polietileno de alta densidade (PEAD)ou polipropileno; Injetado; Placas moduláveis com encaixe macho e fêmea; Superfície antiderrapante; Medidas (AxLxC): 13 x 41 x 82 cm. Produto deverá atender as normas da ANVISA.","unid":"UNIDADE","qtd":8,"ref":"85,19","unit":"","marca":"","modelo":""},{"n":52,"desc":"Faca para pão com as seguintes especificações mínimas: Lamina em aço inox; Fio serrilhado; Comprimento 29 cm; Espessura 1 mm; Cabo Branco; Cabo anatômico em polipropileno, injetado diretamente sobre a lâmina.","unid":"UNIDADE","qtd":11,"ref":"16,18","unit":"","marca":"","modelo":""},{"n":53,"desc":"Faca de mesa nas seguintes especificações mínimas: Inteiramente em aço inox; Comprimento total de 200 mm; Comprimento da lâmina 102 mm Espessura 2mm;","unid":"UNIDADE","qtd":31,"ref":"16,10","unit":"","marca":"","modelo":""},{"n":54,"desc":"Faca para carne 6 polegadas nas seguintes especificações mínimas: Lâmina em aço inox; Fio liso; Comprimento 26 cm; Espessura de 1,2 a 2 mm; Cabo Branco; Cabo anatômico em polipropileno, injetado diretamente sobre a lâmina.","unid":"UNIDADE","qtd":12,"ref":"35,32","unit":"","marca":"","modelo":""},{"n":55,"desc":"Faca para desossar 6 polegadas nas seguintes especificações mínimas: Lâmina em aço inox; Profissional; Categoria; açougue; Cabo anatômico e ergonômico em polipropileno, injetado diretamente sobre a lâmina; Cabo Branco; Comprimento da lâmina 15 cm; Comprimento do cabo 12 cm; Largura 1,5 cm.","unid":"UNIDADE","qtd":2,"ref":"112,23","unit":"","marca":"","modelo":""},{"n":56,"desc":"Faqueiro nas seguintes especificações mínimas: Jogo com 24 peças; Confeccionado em aço inox e cabo em polipropileno; 6 colheres de mesa; 6 colheres de chá; 6 garfos de mesa; 6 facas de churrasco; Deverá acompanhar pote plástico para armazenamento.","unid":"JOGO","qtd":6,"ref":"89,60","unit":"","marca":"","modelo":""},{"n":57,"desc":"Faqueiro nas seguintes especificações mínimas: Jogo com 72 peças; Confeccionado inteiro em aço inox; Com cabo arredondado; Com brilho;","unid":"UNIDADE","qtd":2,"ref":"601,49","unit":"","marca":"","modelo":""},{"n":58,"desc":"Frigideira com as seguintes especificações mínimas: Tipo hotel; Confeccionada em alumínio; Com revestimento em antiaderente starflon interno ; Com 28 cm de diâmetro; Espessura das paredes de 3,0 mm. Cabo em baquelite antitérmico; Com guarnição metálica fixada por 3 rebites.","unid":"UNIDADE","qtd":6,"ref":"170,20","unit":"","marca":"","modelo":""},{"n":59,"desc":"Garfo de mesa com as seguintes especificações mínimas: Inteiramente em aço inox; Comprimento de 190 mm; Largura 22 mm Dentes longos Espessura 1,5 mm;","unid":"UNIDADE","qtd":29,"ref":"7,49","unit":"","marca":"","modelo":""},{"n":60,"desc":"Garrafa térmica, com alça, com as seguintes especificações mínimas: Capacidade de 1,8 litros; Sistema de servir por pressão; Tampa de rosca; Ampola de vidro; Com corpo revestido em aço inox fosco; Jato direcional; Com sistema que evita pingos.","unid":"UNIDADE","qtd":24,"ref":"97,28","unit":"","marca":"","modelo":""},{"n":61,"desc":"Garrafa térmica com as seguintes especificações mínimas: corpo externo em aço inox, ampola de vidro com capacidade para 1000 ml, com botão de pressão na parte superior,alça móvel em polipropileno.","unid":"UNIDADE","qtd":12,"ref":"94,62","unit":"","marca":"","modelo":""},{"n":62,"desc":"Garrafa térmica, corpo em aço inox, nas seguintes especificações mínimas: Capacidade para 1,8 litros; Ampola em aço inox; Sistema de servir por pressão; Tampa rosqueável; Com alça; Jato direcional; Com sistema que evita pingos.","unid":"UNIDADE","qtd":12,"ref":"107,97","unit":"","marca":"","modelo":""},{"n":63,"desc":"Garrafa térmica nas seguintes especificações mínimas: Capacidade para 1 litro; Com tampa interna e externa rosqueável; Tampa externa com alça; Ampola de vidro; Material externo da garrafa confeccionado em polipropileno ou inox; Formato cilíndrico com alça fixa.","unid":"UNIDADE","qtd":2,"ref":"41,65","unit":"","marca":"","modelo":""},{"n":64,"desc":"Garrafa térmica personalizada nas seguintes especificações mínimas: Confeccionada toda em aço inox interno e externo da garrafa; Com capacidade para 500 ml; Na cor prata; Com tampa de rosquear, acionada por botão fast click, antivazamento;","unid":"UNIDADE","qtd":1000,"ref":"54,11","unit":"","marca":"","modelo":""},{"n":65,"desc":"Garrafa térmica plástica, tipo botijão, nas seguintes especificações mínimas: Capacidade para 8 litros; Com isolamento térmico; Espuma de poliuretano; Com alça; Pés retráteis; Com torneira plástica tipo trava ou rosca; Com tampas giratórias e de proteção.","unid":"UNIDADE","qtd":10,"ref":"256,62","unit":"","marca":"","modelo":""},{"n":66,"desc":"Jarra com tampa nas seguintes especificações mínimas: Com alça; Material:polipropileno; Capacidade para 4 litros; Atóxica; Com retentor de gelo e bico direcionador; Design redondo; Transparente.","unid":"UNIDADE","qtd":20,"ref":"29,48","unit":"","marca":"","modelo":""},{"n":67,"desc":"Jarra medidora em pp (plástico) nas seguintes especificações mínimas: Capacidade para 1 litro; Subdivisões de 50ml; Régua externa; Graduações na cor preta; Plástico opaco transparente.","unid":"UNIDADE","qtd":4,"ref":"20,70","unit":"","marca":"","modelo":""},{"n":68,"desc":"Jarra nas seguintes especificações mínimas: Confeccionada totalmente em vidro; Capacidade para 1500ml; Com bico para servir; Com alça lateral; Vidro transparente; Sem lascas; Sem fissuras; Sem rachaduras; Sem reentrâncias; Sem tampa.","unid":"UNIDADE","qtd":9,"ref":"31,62","unit":"","marca":"","modelo":""},{"n":69,"desc":"Jogo de copos de vidro nas seguintes especificações mínimas: Capacidade de 310 ml; Transparente; Incolor; Liso; Copo totalmente cilíndrico; Com aparência em cristal; Jogo com 6 unidades. Embalagem em caixa protegendo cada copo individualmente.","unid":"JOGO","qtd":14,"ref":"37,90","unit":"","marca":"","modelo":""},{"n":70,"desc":"Jogo de taças nas seguintes especificações mínimas: Material: vidro; Cor: transparente; Número de peças: 6;","unid":"JOGO","qtd":10,"ref":"186,97","unit":"","marca":"","modelo":""},{"n":71,"desc":"Mamadeira com as seguintes especificações mínimas: Capacidade de 250ml, Graduada; Esterilizável; Livre de BPA; Com bico redondo de silicone; Antialérgico; Atóxico; Com tampa.","unid":"UNIDADE","qtd":179,"ref":"15,97","unit":"","marca":"","modelo":""},{"n":72,"desc":"Panela de pressão, capacidade para 6 litros nas seguintes especificações mínimas: Material: alumínio polido; Espessura de 2 mm; Válvula de segurança; Fechamento externo; Asa ergonômica; Cabo e asa em baquelite com material antitérmico. Produto certificado pelo INMETRO.","unid":"UNIDADE","qtd":3,"ref":"193,77","unit":"","marca":"","modelo":""},{"n":73,"desc":"Panela de pressão nas seguintes especificações mínimas: Confeccionada em alumínio polido; Com capacidade para 20 litros; Espessura das paredes de 3 mm; Com fechamento externo; Com 5 sistemas de segurança - Válvula Controladora de Pressão/ Válvula de Segurança Repetitiva/ Travas de Segurança/ Janela de Segurança e Mola de Segurança; Com 2 alças.","unid":"UNIDADE","qtd":3,"ref":"482,94","unit":"","marca":"","modelo":""},{"n":74,"desc":"Pegador para salada/massa com as seguintes especificações mínimas: Confeccionado inteiramente em aço inox; Comprimento de 20cm.","unid":"UNIDADE","qtd":9,"ref":"18,47","unit":"","marca":"","modelo":""},{"n":75,"desc":"Porta guardanapo nas seguintes especificações mínimas: Material: Bambu e aço inox; Haste em metal antivento; Cor: bambu; Estilo: rústico; Dimensões (CxLxA) 18 x 18 x 6cm.","unid":"UNIDADE","qtd":5,"ref":"89,93","unit":"","marca":"","modelo":""},{"n":76,"desc":"Pote de vidro nas seguintes especificações mínimas: Material: Vidro transparente; Com tampa; Capacidade: 600ml.","unid":"UNIDADE","qtd":14,"ref":"26,10","unit":"","marca":"","modelo":""},{"n":77,"desc":"Pote Plástico com tampa com as seguintes especificações mínimas: Capacidade: 1300ml; Quadrado; Transparente; Confeccionado Poliprolpileno; Tampa com vedação em borracha; Hermético; Dimensões: 7cmx16cmx16cm.","unid":"UNIDADE","qtd":40,"ref":"28,95","unit":"","marca":"","modelo":""},{"n":78,"desc":"Pote plástico com tampa, nas seguintes especificações mínimas: Capacidade para 2,5 litros; Quadrado; Transparente; Confeccionado Polipropileno; Tampa com vedação em borracha;","unid":"UNIDADE","qtd":31,"ref":"34,57","unit":"","marca":"","modelo":""},{"n":79,"desc":"Pote plástico com tampa, nas seguintes especificações mínimas: Capacidade para 700ml; Quadrado; Transparente; Confeccionado Poliprolpileno; Tampa com vedação em borracha; Hermético; Dimensões: 16cmx16cmx6cm(LxPxA); Com válvula manual.","unid":"UNIDADE","qtd":60,"ref":"18,98","unit":"","marca":"","modelo":""},{"n":80,"desc":"Prato fundo com as seguintes especificações mínimas: Totalmente produzido em vidro temperado; Transparente; Liso; Medindo: 22 cm de diâmetro, 3 cm de profundidade.","unid":"UNIDADE","qtd":12,"ref":"11,24","unit":"","marca":"","modelo":""},{"n":81,"desc":"Prato infantil redondo nas seguintes especificações mínimas: Material: aço inox; Medidas 21 cm de diâmetro; Com abas; Borda com virola.","unid":"UNIDADE","qtd":45,"ref":"19,63","unit":"","marca":"","modelo":""},{"n":82,"desc":"Prato liso para sobremesa, nas seguintes especificações mínimas: Em vidro temperado transparente; Formato redondo; Medidas (DxA) 19,0x1,7 cm; Com borda; O produto totalmente sem avaria.","unid":"UNIDADE","qtd":14,"ref":"10,87","unit":"","marca":"","modelo":""},{"n":83,"desc":"Ralador com as seguintes especificações mínimas: Com 4 faces; Confeccionado em aço inox; Com 20 cm de comprimento e 8\"; Ergonômico; Com alça; Cada face do ralador para diferente corte.","unid":"UNIDADE","qtd":4,"ref":"26,55","unit":"","marca":"","modelo":""},{"n":84,"desc":"Suporte organizador para copo descartável e colher nas seguintes especificações mínimas: Material: polipropileno e aço cromado; Cor: preto com cromado; Capacidade: 50 copos de 50/80ml e 40 copos de 180/200ml; Pote redondo para colheres.","unid":"UNIDADE","qtd":2,"ref":"54,49","unit":"","marca":"","modelo":""},{"n":85,"desc":"Suporte para coador de papel, com as seguintes especificações mínimas: Confeccionado em plástico atóxico; Com alça; Medindo 150 x 135 x 130 mm.","unid":"UNIDADE","qtd":6,"ref":"13,42","unit":"","marca":"","modelo":""},{"n":86,"desc":"Suqueira de vidro com pé nas seguintes especificações mínimas: Material: vidro cristal e plástico; Com tampa; Transparente; Torneira de plástico e borracha de silicone; Formato: redondo; Capacidade: 5 litros; Diâmetro da peça: 19cm.","unid":"UNIDADE","qtd":5,"ref":"231,26","unit":"","marca":"","modelo":""},{"n":87,"desc":"Tábua para corte de alimentos nas seguintes especificações mínimas: Dimensões (AxLxE) 45 x 25 x 1 cm; Cor branca; Confeccionada em polipropileno; Atóxica com aditivo antibacteriano; Antiderrapante; Bordas arredondadas; Fácil higienização e resistente a produtos químicos; Produto embalado em plástico descartável; O produto deverá atender às especificações técnicas e normas relativas a fabricação de utensílios plásticos para contato com alimentos. Deverá seguir padrão internacional de cores.","unid":"UNIDADE","qtd":8,"ref":"82,47","unit":"","marca":"","modelo":""},{"n":88,"desc":"Tigela pote ramequin nas seguintes especificações mínimas: Material: Porcelana; Cor: branco; Acabamento: Liso; Formato: Canelada; Capacidade: 180 ml; Diâmetro: 10cm; Resistente ao calor.","unid":"UNIDADE","qtd":8,"ref":"29,50","unit":"","marca":"","modelo":""},{"n":89,"desc":"Vaso de mesa nas seguintes especificações mínimas: Composição: cerâmica; Formatos: diversos; Dimensões (AxLxP): 28 x 12 x 10cm; Cores: branco.","unid":"UNIDADE","qtd":16,"ref":"81,09","unit":"","marca":"","modelo":""},{"n":90,"desc":"Vaso de planta com suporte nas seguintes especificações mínimas: Composição: polietileno; Capacidade: 45 litros; Diâmetro da base: 22cm; Dimensões (AxL): 50 x 37cm; Formato: Redondo; Suporte com rodízios; Possui furo central para drenagem; Cores: diversas.","unid":"UNIDADE","qtd":16,"ref":"235,83","unit":"","marca":"","modelo":""},{"n":91,"desc":"Vaso de planta com suporte nas seguintes especificações mínimas: Composição: polietileno; Capacidade:53 litros; Diâmetro da base: 26cm; Dimensões (AxL): 65 x 40cm; Redondo; Suporte com rodízios; Possui furo central para drenagem; Cores: diversas.","unid":"UNIDADE","qtd":16,"ref":"248,01","unit":"","marca":"","modelo":""},{"n":92,"desc":"Xícara de café com pires personalizados nas seguintes especificações mínimas: Confeccionados em porcelana; Cor branca; Xícara com alça, interior liso; Capacidade de 75 a 80 ml; Xícara com 6,1 cm de diâmetro e 4,9 cm de altura; Pires com 10 a 11 cm de diâmetro personalizada com brasão e slogan da Prefeitura Municipal de Telêmaco Borba, colorido, serigrafia proporcional com o tamanho da","unid":"UNIDADE","qtd":100,"ref":"41,48","unit":"","marca":"","modelo":""},{"n":93,"desc":"Xícara de chá com pires personalizados nas seguintes especificações mínimas: Confeccionados em porcelana; Cor branca; Xícara com alça, interior liso; Capacidade 180 a 200 ml; Com 7,7 a 8,3 cm de diâmetro e 6,0 a 7,0 cm de altura; Pires com 14,4 cm de diâmetro personalizada com brasão e slogan da Prefeitura Municipal de Telêmaco Borba, colorido, serigrafia proporcional com o tamanho da xícara. Conforme Termo de Referência.","unid":"UNIDADE","qtd":100,"ref":"57,50","unit":"","marca":"","modelo":""},{"n":94,"desc":"Xícara para chá com pires com as seguintes especificações mínimas: Vidro temperado transparente; Xícara com alça; Interior liso; Capacidade de 150ml.","unid":"UNIDADE","qtd":170,"ref":"18,85","unit":"","marca":"","modelo":""}]},{"orgao":"PREFEITURA DE TELÊMACO BORBA","processo":"Pregão Eletrônico nº 85/2026 (Retificado) – Processo Licitatório nº 26860/2026 – Registro de Preços","validade":"90 (noventa) dias","pagamento":"Até 15 (quinze) dias contados da apresentação da Nota Fiscal","localEntrega":"Endereços indicados pelos setores requisitantes nos formulários anexos às requisições / nota de empenho","prazoEntrega":"15 (quinze) dias corridos, após o recebimento da nota de empenho","items":[{"n":1,"desc":"Papel sulfite A4, nas seguintes especificações mínimas: Cor: branco; Peso: 75 g/m2; Medidas: 210 x 297 mm; Embalagem com 500 folhas.","unid":"EMBALAGEM","qtd":10775,"ref":"27,80","unit":"","marca":"","modelo":""},{"n":2,"desc":"Papel sulfite A4, nas seguintes especificações mínimas: Cor: branco; Peso: 75 g/m2; Medidas: 210 x 297 mm; Embalagem com 500 folhas.","unid":"EMBALAGEM","qtd":3591,"ref":"27,80","unit":"","marca":"","modelo":""},{"n":3,"desc":"Plástico para plastificação nas seguintes especificações mínimas: Tamanho: A4; Polaseal; Medidas: 220 x 307 mm; Espessura de 0,05 mm ou 125 micras; Folhas duplas com solda em uma das pontas, com cantos arredondados; Acabamento brilho. Embalagem com 100 unidades.","unid":"EMBALAGEM","qtd":1076,"ref":"84,25","unit":"","marca":"","modelo":""},{"n":4,"desc":"Plástico para plastificação nas seguintes especificações mínimas: Tamanho: A4; Polaseal; Medidas: 220 x 307 mm; Espessura de 0,05 mm ou 125 micras; Folhas duplas com solda em uma das pontas, com cantos arredondados; Acabamento brilho. Embalagem com 100 unidades.","unid":"EMBALAGEM","qtd":358,"ref":"84,25","unit":"","marca":"","modelo":""},{"n":5,"desc":"Balão 7\", nas seguintes especificações mínimas: Material: látex atóxico; Formato redondo ou pêra; Embalagem com 50 balões; Cores lisas a serem definidas pelo setor requisitante.","unid":"PACOTES","qtd":1685,"ref":"12,85","unit":"","marca":"","modelo":""},{"n":6,"desc":"Bateria alcalina 9V, nas seguintes especificações mínimas: Composição sem cádmio e mercúrio; Dentro dos padrões estabelecidos pela Resolução CONAMA nº 401, de 4 de novembro de 2008 e ser certificada pelo INMETRO ou instituto por ele credenciado. Embalagem com 1 unidade.","unid":"EMBALAGEM","qtd":136,"ref":"17,60","unit":"","marca":"","modelo":""},{"n":7,"desc":"Bateria alcalina, tamanho/modelo A23, nas seguintes especificações mínimas: Tensão nominal 12 volts; Não recarregável; Dentro dos padrões estabelecidos pela Resolução CONAMA nº 401, de 4 de novembro de 2008 e ser certificada pelo INMETRO ou instituto por ele credenciado. Embalagem com 5 unidades.","unid":"EMBALAGEM","qtd":112,"ref":"18,45","unit":"","marca":"","modelo":""},{"n":8,"desc":"Bateria alcalina, tamanho/modelo LR44, nas seguintes especificações mínimas: Tipo botão; Tensão nominal 1,5 volts; Não recarregável; Dentro dos padrões estabelecidos pela Resolução CONAMA nº 401, de 4 de novembro de 2008 e ser certifica
